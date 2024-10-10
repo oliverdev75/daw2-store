@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework;
+
 class Router {
 
     private static $routes = [
@@ -10,13 +12,19 @@ class Router {
     public static function assignRoute(
         string $method,
         string $route,
-        string | array $assignment
+        mixed $assignment
     ): void
     {
-        $routes[strtoupper($method)][$route] = $assignment;
+        Router::$routes[strtoupper($method)][$route]['assignment'] = $assignment;
+        
+        foreach (explode('/', $route) as $division) {
+            if (strpos($division, '{') && strpos($division, '}')) {
+                Router::$routes[strtoupper($method)][$route]['params'][] = explode('{', explode('}', $division)[0])[0];
+            }
+        }
     }
 
-    public static function get(string $route, string | array $assignment): void
+    public static function get(string $route, mixed $assignment): void
     {
         Router::assignRoute('GET', $route, $assignment);
     }
@@ -41,33 +49,84 @@ class Router {
     {
         $dividedReqRoute = explode('/', $reqRoute);
         $dividedRegisteredRoute = explode('/', $registeredRoute);
+        
+        for ($i = 0; $i < count($dividedReqRoute); $i++) {
+            if (strpos($dividedRegisteredRoute[$i], '{') != false && strpos($dividedRegisteredRoute[$i], '}') != false) {
+                continue;
+            }
+            if ($i == count($dividedReqRoute) - 1) {
+                echo "<br><br>final<br><br>";
+            }
+            echo "<br><br><h2>$i</h2>";
+            echo "<b>Req route:</b> $dividedRegisteredRoute[$i]";
+            echo "<br><b>Regist route:</b> $dividedReqRoute[$i]";
+            if ($dividedReqRoute[$i] != $dividedRegisteredRoute[$i]) {
+                return false;
+            }
+        }
 
-        foreach ()
+        return true;
     }
 
-    private static function checkRoute(string $reqRoute, string $reqMethod)
+    private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
     {
         $params = [
             'URL' => [],
             'QUERY' => []
         ];
 
+        $dividedReqRoute = explode('/', $reqRoute);
+        $dividedMatchedRoute = explode('/', $matchedRoute);
+        $paramValueIndex = -1;
 
-        foreach ($routes as $route) {
-            if (Router::countDivisions($reqRoute) == Router::countDivisions($route)) {
-                if ($reqRoute == '/') {
-                    return '/';
-                } else {
-
-                }
-            }
+        foreach (Router::$routes[strtoupper($reqMethod)][$matchedRoute]['params'] as $paramKey) {
+            $paramValueIndex = array_search("\{$paramKey\}", $dividedMatchedRoute);
+            $params['URL'][] = $dividedReqRoute[$paramValueIndex];
         }
+
+        return $params;
     }
 
-    public static function launch()
+    private static function checkRoute(string $reqRoute, string $reqMethod)
+    {
+        $matchedRoute = '404';
+
+        foreach (Router::$routes[$reqMethod] as $registeredRoute => $assignment) {
+            if (Router::countDivisions($reqRoute) != Router::countDivisions($registeredRoute)) {
+                continue;
+            }
+            if (Router::matchRoute($reqRoute, $registeredRoute)) {
+                $matchedRoute = $registeredRoute;
+            }
+        }
+
+        return $matchedRoute;
+    }
+
+    public static function enable()
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
-        $params = Router::checkRoute($reqRoute, $reqMethod);
+        $matchedRoute = Router::checkRoute($reqRoute, $reqMethod);
+
+        if ($matchedRoute == '404') {
+            http_response_code(404);
+            die;
+        }
+
+        $params = Router::matchParams($reqRoute, $matchedRoute, $reqMethod);
+        $allParams = array_merge($params['URL'], $params['QUERY']);
+        $assignment = Router::$routes[$reqMethod][$matchedRoute]['assignment'];
+
+        if (is_array($assignment)) {
+            $controller = new $assignment[0]();
+            return $controller->$assignment[1](...$allParams);
+        } else if (is_string($assignment)) {
+            $callableAssignment = explode('@', $assignment);
+            $controller = new $callableAssignment[0]();
+            return $controller->$callableAssignment[1](...$allParams);
+        } else if (is_callable($assignment)) {
+            return $assignment(...$allParams);
+        }
     }
 }
