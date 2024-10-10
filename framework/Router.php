@@ -26,28 +26,48 @@ class Router {
         Router::assignRoute('POST', $route, $assignment);
     }
 
-    public static function readParams() {
-        $params = [];
-        $dividedReqRoute = explode('', $_SERVER['REQUEST_URI']);
-        $comparedRoute = $dividedReqRoute;
-        $openningBracketsIndex = -1;
-        $closingBracketsIndex = -1;
-        
-        foreach ($dividedReqRoute as $char) {
-            if ($char == '{') {
-                $openningBracketsIndex = array_search('{', $dividedReqRoute);
-            } else if ($char == '}') {
-                $closingBracketsIndex = array_search('}', $dividedReqRoute);
-            }
+    private static function countDivisions(string $route): int
+    {
+        if ($dividedRoute = explode('/', $route)) {
+            return count($dividedRoute);
+        } else {
+            return 0;
         }
 
-        for ($char = $openningBracketsIndex + 1; $char < $closingBracketsIndex; $char++) {
-            
+        return $counter;
+    }
+
+    private static function matchRoute($reqRoute, $registeredRoute): bool
+    {
+        $dividedReqRoute = explode('/', $reqRoute);
+        $dividedRegisteredRoute = explode('/', $registeredRoute);
+
+        foreach ()
+    }
+
+    private static function checkRoute(string $reqRoute, string $reqMethod)
+    {
+        $params = [
+            'URL' => [],
+            'QUERY' => []
+        ];
+
+
+        foreach ($routes as $route) {
+            if (Router::countDivisions($reqRoute) == Router::countDivisions($route)) {
+                if ($reqRoute == '/') {
+                    return '/';
+                } else {
+
+                }
+            }
         }
     }
 
     public static function launch()
     {
-        $params = null;
+        $reqRoute = $_SERVER['REQUEST_URI'];
+        $reqMethod = $_SERVER['REQUEST_METHOD'];
+        $params = Router::checkRoute($reqRoute, $reqMethod);
     }
 }
