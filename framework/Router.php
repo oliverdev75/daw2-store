@@ -16,10 +16,18 @@ class Router {
     ): void
     {
         Router::$routes[strtoupper($method)][$route]['assignment'] = $assignment;
-        
+        Router::$routes[strtoupper($method)][$route]['params'] = [];
+        $bracketsOpenPos;
+        $bracketsClosePos;
+        $cleanArrayParam;
+        $cleanArrayParamFunc = fn ($value) => $value !== false && $value !== '' && $value !== null;
+
         foreach (explode('/', $route) as $division) {
-            if (strpos($division, '{') && strpos($division, '}')) {
-                Router::$routes[strtoupper($method)][$route]['params'][] = explode('{', explode('}', $division)[0])[0];
+            $bracketsOpenPos = strpos($division, '{') == 0;
+            $bracketsClosePos = strpos($division, '}') > 0;
+            if ($bracketsOpenPos && $bracketsClosePos) {
+                $cleanArrayParam = array_filter(preg_split('/[\{\}]/', '{id}'), $cleanArrayParamFunc);
+                Router::$routes[strtoupper($method)][$route]['params'][] = reset($cleanArrayParam);
             }
         }
     }
@@ -49,17 +57,17 @@ class Router {
     {
         $dividedReqRoute = explode('/', $reqRoute);
         $dividedRegisteredRoute = explode('/', $registeredRoute);
-        
+        $bracketsOpenPos;
+        $bracketsClosePos;
+
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
-            if (strpos($dividedRegisteredRoute[$i], '{') != false && strpos($dividedRegisteredRoute[$i], '}') != false) {
+            $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
+            $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
+
+            if ($bracketsOpenPos && $bracketsClosePos) {
                 continue;
             }
-            if ($i == count($dividedReqRoute) - 1) {
-                echo "<br><br>final<br><br>";
-            }
-            echo "<br><br><h2>$i</h2>";
-            echo "<b>Req route:</b> $dividedRegisteredRoute[$i]";
-            echo "<br><b>Regist route:</b> $dividedReqRoute[$i]";
+            
             if ($dividedReqRoute[$i] != $dividedRegisteredRoute[$i]) {
                 return false;
             }
@@ -74,14 +82,15 @@ class Router {
             'URL' => [],
             'QUERY' => []
         ];
-
+        
         $dividedReqRoute = explode('/', $reqRoute);
         $dividedMatchedRoute = explode('/', $matchedRoute);
         $paramValueIndex = -1;
-
-        foreach (Router::$routes[strtoupper($reqMethod)][$matchedRoute]['params'] as $paramKey) {
-            $paramValueIndex = array_search("\{$paramKey\}", $dividedMatchedRoute);
+        
+        foreach (Router::$routes[$reqMethod][$matchedRoute]['params'] as $paramKey) {
+            $paramValueIndex = array_search('{'.$paramKey.'}', $dividedMatchedRoute);
             $params['URL'][] = $dividedReqRoute[$paramValueIndex];
+            var_dump($dividedReqRoute[$paramValueIndex]);
         }
 
         return $params;
@@ -117,7 +126,7 @@ class Router {
         $params = Router::matchParams($reqRoute, $matchedRoute, $reqMethod);
         $allParams = array_merge($params['URL'], $params['QUERY']);
         $assignment = Router::$routes[$reqMethod][$matchedRoute]['assignment'];
-
+        
         if (is_array($assignment)) {
             $controller = new $assignment[0]();
             return $controller->$assignment[1](...$allParams);

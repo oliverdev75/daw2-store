@@ -13,3 +13,7 @@ Router::get('/users', function () {
 Router::get('/user/{id}', function ($id) {
     echo "This is $id user";
 });
+
+Router::get('/user/{id}/settings/page/{page}', function ($id, $page) {
+    echo "This is $id user and the page $page";
+});
