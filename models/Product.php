@@ -1,3 +1,7 @@
 <?php
 
-abstract class Product {}
+abstract class Product {
+
+    public function __construct(){}
+
+}
