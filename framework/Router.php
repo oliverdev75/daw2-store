@@ -50,23 +50,21 @@ class Router {
 
     private static function countDivisions(string $route): int
     {
-        if ($dividedRoute = preg_split('/[\/]/', $route)) {
-            return count($dividedRoute);
-        } else {
-            return 0;
-        }
-
-        return $counter;
+        return count(explode('/', $route));
     }
 
     private static function matchRoute($reqRoute, $registeredRoute): bool
     {
+        if ($reqRoute == $registeredRoute) {
+            return true;
+        }
+
         $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
         $dividedRegisteredRoute = Router::cleanArray(explode('/', $registeredRoute));
-        
+
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
-        
+
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
             $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
             $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
@@ -112,6 +110,7 @@ class Router {
             }
             if (Router::matchRoute($reqRoute, $registeredRoute)) {
                 $matchedRoute = $registeredRoute;
+                break;
             }
         }
 
@@ -123,7 +122,7 @@ class Router {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
         $matchedRoute = Router::checkRoute($reqRoute, $reqMethod);
-
+        
         if ($matchedRoute == '404') {
             http_response_code(404);
             die;

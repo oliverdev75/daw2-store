@@ -1,7 +1,8 @@
 <?php
-require('controllers/Controller.php');
-/* namespace Controllers;
- */use Controller;
+
+namespace Controllers;
+
+use Controller;
 
 class ProductController extends Controller {
 
