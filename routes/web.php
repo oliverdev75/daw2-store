@@ -15,8 +15,8 @@ Router::get('/user/{id}', function ($id) {
     return "This is $id user";
 });
 
-Router::get('/user/{id}/settings/page/{page}', function ($id, $page) {
-    return "This is $id user and the page $page";
+Router::get('/user/{id}/settings', function ($page, $some, $id) {
+    return "This is $id user and the page $page in $some";
 });
 
-Router::get('/product/{prodId}/category/{categoryId}', [ProductController::class, 'show']);
+Router::get('/product/{fill}', [ProductController::class, 'index']);
