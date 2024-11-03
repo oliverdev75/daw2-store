@@ -2,17 +2,17 @@
 
 namespace Controllers;
 
-use Controller;
+use Controllers\Controller;
 
 class ProductController extends Controller {
 
-    public static function index($fill)
+    public function index($fill)
     {
         return "This is an argument and example is -> $fill";
     }
     
-    public static function show($prodId, $categoryId)
+    public function show($id)
     {
-        return $this->view("products/show", ["This is the product $prodId in the category $categoryId"]);
+        return $this->view("product.show", compact('id'));
     }
 }

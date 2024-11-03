@@ -1,11 +1,13 @@
 <?php
 
+namespace Controllers;
+
+use Framework\View;
+
 class Controller {
 
-    public function view(string $path, array $data)
-    
+    public function view(string $name, array $data): View
     {
-
-        require_once("views/$path.php");
+        return new View($name, $data);
     }
 }

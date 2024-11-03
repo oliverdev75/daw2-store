@@ -1,12 +1,10 @@
 <?php
 
-require_once('framework/Router.php');
+require_once('framework/Response.php');
+require_once('framework/routing/Router.php');
 require_once('routes/web.php');
+require_once('framework/View.php');
 require_once('controllers/Controller.php');
 require_once('controllers/ProductController.php');
 
-// spl_autoload_register(function ($class) {
-//     require_once(dirname($class));
-// });
-
-echo Framework\Router::enable();
+Framework\Routing\Router::enable()->getView()->show();

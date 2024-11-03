@@ -1,22 +1,10 @@
 <?php
 
-use Framework\Router;
+use Framework\Routing\Router;
 use Controllers\ProductController;
 
-Router::get('/', function () {
-    return "Main page";
+Router::get('main', '/', function () {
+    return new Framework\View("index");
 });
 
-Router::get('/users', function () {
-    return "Users page";
-});
-
-Router::get('/user/{id}', function ($id) {
-    return "This is $id user";
-});
-
-Router::get('/user/{id}/settings', function ($page, $some, $id) {
-    return "This is $id user and the page $page in $some";
-});
-
-Router::get('/product/{fill}', [ProductController::class, 'index']);
+Router::get('product.show', '/product/{id}', [ProductController::class, 'show']);

@@ -1,0 +1,1 @@
+<h1>This is the restaurant main page</h1>
