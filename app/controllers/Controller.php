@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-use Framework\View;
+use Framework\View\View;
 
 class Controller {
 

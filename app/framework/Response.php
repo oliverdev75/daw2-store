@@ -2,7 +2,7 @@
 
 namespace Framework;
 
-use Framework\Response;
+use Framework\View\View;
 
 class Response {
 
@@ -16,7 +16,7 @@ class Response {
     /**
      * Get the value of view
      */ 
-    public function getView()
+    public function getView(): View
     {
         return $this->view;
     }

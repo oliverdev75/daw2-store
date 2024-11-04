@@ -70,7 +70,6 @@ class Router {
 
         $dividedReqRoute = self::cleanArray(explode('/', $reqRoute));
         $dividedRegisteredRoute = self::cleanArray(explode('/', $registeredRoute));
-        var_dump($reqRoute);
 
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
