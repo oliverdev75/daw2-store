@@ -16,18 +16,17 @@ class Router {
      */
     private static $routes = [];
 
-    public static function get(string $name, string $route, mixed $assignment): void
-    private static function get(string $name, string $route, mixed $assignment): void
+    static function get(string $name, string $route, mixed $assignment): void
     {
         self::$routes[] = new Route($name, $route, 'GET', $assignment);
     }
 
-    public static function post(string $name, string $route, mixed $assignment): void
+    static function post(string $name, string $route, mixed $assignment): void
     {
         self::$routes[] = new Route($name, $route, 'POST', $assignment);
     }
 
-    public static function enable()
+    static function enable()
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
