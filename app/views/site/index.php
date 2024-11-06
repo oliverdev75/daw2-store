@@ -1,1 +1,1 @@
-<h1>This is the restaurant main page</h1>
+<h1>Main page</h1>
