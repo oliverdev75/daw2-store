@@ -6,3 +6,4 @@
     <link rel="stylesheet" href="<?= $this->css('header') ?>">
     <title><?= $title ?></title>
 </head>
+<body>
