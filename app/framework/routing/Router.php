@@ -26,8 +26,7 @@ class Router {
         self::$routes[] = new Route($name, $route, 'POST', $assignment);
     }
 
-    static function enable()
-    static function enable()
+    static function enable(): Response
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
