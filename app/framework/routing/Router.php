@@ -68,8 +68,8 @@ class Router {
             return true;
         }
 
-        $dividedReqRoute = self::cleanArray(explode('/', $reqRoute));
-        $dividedRegisteredRoute = self::cleanArray(explode('/', $registeredRoute));
+        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
+        $dividedRegisteredRoute = Router::cleanArray(explode('/', $registeredRoute));
 
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
@@ -115,8 +115,14 @@ class Router {
             'QUERY' => []
         ];
         
-        $params['URL'] = self::matchURLParams($reqRoute, $matchedRoute->getUri());
-        $params['QUERY'] = self::matchQueryParams($reqMethod);
+        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
+        $dividedMatchedRoute = Router::cleanArray(explode('/', $matchedRoute));
+        $paramValueIndex = -1;
+        
+        foreach (Router::$routes[$reqMethod][$matchedRoute]['params'] as $paramKey) {
+            $paramValueIndex = array_search('{'.$paramKey.'}', $dividedMatchedRoute);
+            $params['URL'][] = $dividedReqRoute[$paramValueIndex];
+        }
 
         return $params;
     }
