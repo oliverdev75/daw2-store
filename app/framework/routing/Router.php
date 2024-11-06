@@ -10,6 +10,10 @@ use Framework\Response;
 
 class Router {
 
+    /**
+     * Contains all registered routes assigned to all pages of the applcation.
+     * @param array $routes
+     */
     private static $routes = [];
 
     private static function get(string $name, string $route, mixed $assignment): void
