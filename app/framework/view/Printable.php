@@ -15,11 +15,12 @@ abstract class Printable {
     {
         $this->name = $name;
         $this->data = $data;
+        $this->show($this->path());
     }
 
     abstract protected function path();
 
-    function show(): void
+    function show($viewFile): void
     {
         if ($this->data) {
             foreach ($this->data as $key => $value) {
@@ -27,7 +28,7 @@ abstract class Printable {
             }
         }
 
-        require_once($this->path());
+        require_once($viewFile);
     }
 
     protected function css(string $name): string
@@ -56,12 +57,5 @@ abstract class Printable {
     public function getName(): string
     {
         return $this->name;
-    }
-
-    public function __toString()
-    {
-        $this->show();
-
-        return '';
     }
 }
