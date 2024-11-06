@@ -15,6 +15,6 @@ class Component extends Printable {
 
     protected function path(): string
     {
-        return self::VIEWS_PATH.self::COMPONENTS_PATH.'/' . str_replace('.', '/', $this->name).'.php';
+        return '/'.self::VIEWS_PATH.self::COMPONENTS_PATH.'/' . str_replace('.', '/', $this->name).'.php';
     }
 }
