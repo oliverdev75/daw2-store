@@ -16,6 +16,7 @@ class Router {
      */
     private static $routes = [];
 
+    public static function get(string $name, string $route, mixed $assignment): void
     private static function get(string $name, string $route, mixed $assignment): void
     {
         self::$routes[] = new Route($name, $route, 'GET', $assignment);
