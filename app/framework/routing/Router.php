@@ -111,21 +111,10 @@ class Router {
 
     private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
     {
-        $params = [
-            'URL' => [],
-            'QUERY' => []
+        return [
+            'URL' => self::matchURLParams($reqRoute, $matchedRoute),
+            'QUERY' => self::matchQueryParams($reqMethod)
         ];
-        
-        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
-        $dividedMatchedRoute = Router::cleanArray(explode('/', $matchedRoute));
-        $paramValueIndex = -1;
-        
-        foreach (Router::$routes[$reqMethod][$matchedRoute]['params'] as $paramKey) {
-            $paramValueIndex = array_search('{'.$paramKey.'}', $dividedMatchedRoute);
-            $params['URL'][] = $dividedReqRoute[$paramValueIndex];
-        }
-
-        return $params;
     }
 
     private static function matchURLParams(string $reqRoute, string $matchedRoute): array
