@@ -16,17 +16,17 @@ class Router {
      */
     private static $routes = [];
 
-    public static function get(string $name, string $route, mixed $assignment): void
+    static function get(string $name, string $route, mixed $assignment): void
     {
         self::$routes[] = new Route($name, $route, 'GET', $assignment);
     }
 
-    public static function post(string $name, string $route, mixed $assignment): void
+    static function post(string $name, string $route, mixed $assignment): void
     {
         self::$routes[] = new Route($name, $route, 'POST', $assignment);
     }
 
-    public static function enable()
+    static function enable(): Response
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
@@ -37,7 +37,7 @@ class Router {
             die;
         }
 
-        $params = self::matchParams($reqRoute, $matchedRoute, $reqMethod);
+        $params = self::matchParams($reqRoute, $matchedRoute->getUri(), $reqMethod);
         $allParams = array_merge($params['URL'], $params['QUERY']);
         
         return self::sendResponse($matchedRoute, $allParams);
@@ -69,8 +69,8 @@ class Router {
             return true;
         }
 
-        $dividedReqRoute = self::cleanArray(explode('/', $reqRoute));
-        $dividedRegisteredRoute = self::cleanArray(explode('/', $registeredRoute));
+        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
+        $dividedRegisteredRoute = Router::cleanArray(explode('/', $registeredRoute));
 
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
@@ -109,15 +109,21 @@ class Router {
         }
     }
 
-    private static function matchParams(string $reqRoute, Route $matchedRoute, string $reqMethod): array
+    private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
     {
         $params = [
             'URL' => [],
             'QUERY' => []
         ];
         
-        $params['URL'] = self::matchURLParams($reqRoute, $matchedRoute->getUri());
-        $params['QUERY'] = self::matchQueryParams($reqMethod);
+        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
+        $dividedMatchedRoute = Router::cleanArray(explode('/', $matchedRoute));
+        $paramValueIndex = -1;
+        
+        foreach (Router::$routes[$reqMethod][$matchedRoute]['params'] as $paramKey) {
+            $paramValueIndex = array_search('{'.$paramKey.'}', $dividedMatchedRoute);
+            $params['URL'][] = $dividedReqRoute[$paramValueIndex];
+        }
 
         return $params;
     }
