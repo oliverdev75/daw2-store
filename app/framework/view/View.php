@@ -8,7 +8,7 @@ class View extends Printable {
 
     protected const TEMPLATE = self::VIEWS_PATH.'/layout/template.php';
 
-    public function __construct(string $name, string $title, array | null $data = null)
+    public function __construct(string $name, string $title = "SymfonyRestaurant", array | null $data = null)
     {
         $viewData = [
             'title' => $title,
@@ -17,6 +17,11 @@ class View extends Printable {
         ];
         
         parent::__construct(self::TEMPLATE, $viewData);
+    }
+
+    public function send()
+    {
+        $this->show($this->path());
     }
 
     protected function path(): string

@@ -11,6 +11,7 @@ class Component extends Printable {
     public function __construct(string $name, array | null $data = null)
     {
         parent::__construct($name, $data);
+        $this->show($this->path());
     }
 
     protected function path(): string

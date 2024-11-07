@@ -15,7 +15,6 @@ abstract class Printable {
     {
         $this->name = $name;
         $this->data = $data;
-        $this->show($this->path());
     }
 
     abstract protected function path();
