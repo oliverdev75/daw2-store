@@ -9,4 +9,4 @@ require_once('framework/view/Component.php');
 require_once('controllers/Controller.php');
 require_once('controllers/ProductController.php');
 
-Framework\Routing\Router::enable()->getView()->show();
+Framework\Routing\Router::enable()->getView();
