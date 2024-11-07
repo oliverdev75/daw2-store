@@ -48,14 +48,15 @@ class Router {
         $matchedRoute = '404';
 
         foreach (self::$routes as $route) {
-            if ($route->getMethod() == $reqMethod)
-            if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
-                continue;
-            }
-
-            if (self::matchDivisions($reqRoute, $route->getUri())) {
-                $matchedRoute = $route;
-                break;
+            if ($route->getMethod() == $reqMethod) {
+                if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
+                    continue;
+                }
+    
+                if (self::matchDivisions($reqRoute, $route->getUri())) {
+                    $matchedRoute = $route;
+                    break;
+                }
             }
         }
 
