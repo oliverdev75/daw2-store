@@ -1,7 +1,7 @@
 <?php $this->meta(compact('title')) ?>
 
-<?php $this->header($user) ?>
+<?php $this->header(compact('user')) ?>
 
-<?php $this->component($bodyContent, $bodyData) ?>
+<?php $this->component($bodyContent, $bodyData, 'body') ?>
 
 <?php $this->footer() ?>

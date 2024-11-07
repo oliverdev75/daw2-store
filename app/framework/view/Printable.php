@@ -44,9 +44,9 @@ class Printable {
         return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$parsedName}.{$type}";
     }
 
-    protected function component(string $name, array | null $data = null): Component
+    protected function component(string $name, array | null $data = null, string $type = 'components'): Component
     {
-        return new Component($name, $data);
+        return new Component($name, $data, $type);
     }
 
     /**

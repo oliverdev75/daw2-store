@@ -35,16 +35,16 @@ class View extends Printable {
 
     protected function meta(array | null $data = null): void
     {
-        $this->component('layout.meta', $data, 'layout');
+        $this->component('meta', $data, 'layout');
     }
 
     protected function header(array | null $data = null): void
     {
-        $this->component('layout.header', $data, 'layout');
+        $this->component('header', $data, 'layout');
     }
 
     protected function footer(): void
     {
-        $this->component('layout.footer', [], 'layout');
+        $this->component('footer', [], 'layout');
     }
 }

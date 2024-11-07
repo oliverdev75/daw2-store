@@ -6,9 +6,17 @@ use Framework\View\Printable;
 
 class Component extends Printable {
 
-    public function __construct(string $name, array | null $data = null, string $type = 'components')
+    public function __construct(string $name, array | null $data = null, string $type = 'component')
     {
-        $path = self::VIEWS_PATH."/{$type}/" . str_replace('.', '/', $name).'.php';
+        $directory = '';
+
+        if ($type == 'components') {
+            $directory = 'components/';
+        } else if ($type == 'layout') {
+            $directory = 'layout/';
+        }
+
+        $path = self::VIEWS_PATH."/{$directory}" . str_replace('.', '/', $name).'.php';
         parent::__construct($path, $data);
         $this->show($this->path);
     }
