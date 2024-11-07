@@ -1,1 +1,1 @@
-<h1>Products id is <?= $id ?></h1>
+<h1>Product id is <?= $id ?></h1>

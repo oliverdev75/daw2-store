@@ -37,7 +37,7 @@ class Router {
             die;
         }
 
-        $params = self::matchParams($reqRoute, $matchedRoute, $reqMethod);
+        $params = self::matchParams($reqRoute, $matchedRoute->getUri(), $reqMethod);
         $allParams = array_merge($params['URL'], $params['QUERY']);
         
         return self::sendResponse($matchedRoute, $allParams);
@@ -108,7 +108,7 @@ class Router {
         }
     }
 
-    private static function matchParams(string $reqRoute, Route $matchedRoute, string $reqMethod): array
+    private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
     {
         $params = [
             'URL' => [],
