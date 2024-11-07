@@ -15,6 +15,7 @@ class View extends Printable {
             'body' => $name,
             'body_data' => $data
         ];
+        
         parent::__construct(self::TEMPLATE, $viewData);
     }
 
