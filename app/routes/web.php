@@ -1,10 +1,6 @@
 <?php
 
 use Framework\Routing\Router;
-use Controllers\ProductController;
+use Controllers\SiteController;
 
-Router::get('main', '/', function () {
-    return new Framework\View\View('site.index');
-});
-
-Router::get('product.show', '/product/{id}', [ProductController::class, 'show']);
+Router::get('main', '/', [SiteController::class, 'index']);

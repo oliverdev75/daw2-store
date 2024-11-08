@@ -17,19 +17,19 @@
 
     /* Buttons */
 
-    --btn-primary: var(--primary-color);
-    --btn-secondary: var(--secondary-color);
-    --btn-third: var(--third-color);
+    --btn-primary-backgroundColor: var(--primary-color);
+    --btn-secondary-backgroundColor: var(--secondary-color);
+    --btn-third-backgroundColor: var(--third-color);
 
-    --btn-hover-primary: #1e8abe;
-    --btn-hover-secondary: #003555;
-    --btn-hover-third: #004d7b;
+    --btn-hover-primary-backgroundColor: #1e8abe;
+    --btn-hover-secondary-backgroundColor: #003555;
+    --btn-hover-tertiary-backgroundColor: #004d7b;
 
-    --btn-active-primary: #14719d;
-    --btn-active-secondary: #002a44;
-    --btn-active-third: #003859;
+    --btn-active-primary-backgroundColor: #14719d;
+    --btn-active-secondary-backgroundColor: #002a44;
+    --btn-active-tertiary-backgroundColor: #003859;
 
-    --btn-disabled-primary: #14719d;
-    --btn-disabled-secondary: #002a44;
-    --btn-disabled-third: #003859;
+    --btn-disabled-primary-backgroundColor: #14719d;
+    --btn-disabled-secondary-backgroundColor: #002a44;
+    --btn-disabled-tertiary-backgroundColor: #003859;
 }

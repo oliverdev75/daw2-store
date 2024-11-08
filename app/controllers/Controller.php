@@ -6,8 +6,18 @@ use Framework\View\View;
 
 class Controller {
 
-    public function view(string $name, array $data): View
+    public function view(
+        string $bodyContent,
+        string $title = "SymfonyRestaurant",
+        array | null $bodyData = null, 
+        mixed $user = 'none'
+    ): View
     {
-        return new View($name, $data);
+        return new View(
+            $bodyContent,
+            $title,
+            $bodyData, 
+            $user
+        );
     }
 }
