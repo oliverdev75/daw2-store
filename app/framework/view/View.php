@@ -6,35 +6,45 @@ use Framework\View\Printable;
 
 class View extends Printable {
 
-    protected const TEMPLATE = self::VIEWS_PATH.'/layout/template.php';
+    protected const TEMPLATE = 'layout.template';
 
-    public function __construct(string $name, string $title, array | null $data = null)
-    {
-        $viewData = [
-            'title' => $title,
-            'body' => $name,
-            'body_data' => $data
-        ];
-        parent::__construct(self::TEMPLATE, $viewData);
+    public function __construct(
+        string $bodyContent,
+        string $title = "SymfonyRestaurant",
+        array | null $bodyData = null, 
+        mixed $user = 'none'
+    )
+    {        
+        $path = self::VIEWS_PATH.'/' . str_replace('.', '/', self::TEMPLATE).'.php';
+
+        parent::__construct(
+            $path,
+            compact(
+                'title',
+                'bodyContent',
+                'bodyData',
+                'user'
+            )
+        );
     }
 
-    protected function path(): string
+    public function send()
     {
-        return self::VIEWS_PATH.'/' . str_replace('.', '/', $this->name).'.php';
+        $this->show($this->path);
     }
 
     protected function meta(array | null $data = null): void
     {
-        $this->component('layout.meta', $data);
+        $this->component('meta', $data, 'layout');
     }
 
     protected function header(array | null $data = null): void
     {
-        $this->component('layout.header', $data);
+        $this->component('header', $data, 'layout');
     }
 
-    protected function footer(array | null $data = null): void
+    protected function footer(): void
     {
-        $this->component('layout.footer', $data);
+        $this->component('footer', [], 'layout');
     }
 }

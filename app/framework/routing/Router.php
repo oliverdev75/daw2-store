@@ -26,7 +26,7 @@ class Router {
         self::$routes[] = new Route($name, $route, 'POST', $assignment);
     }
 
-    static function enable()
+    static function enable(): Response
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
@@ -37,7 +37,7 @@ class Router {
             die;
         }
 
-        $params = self::matchParams($reqRoute, $matchedRoute, $reqMethod);
+        $params = self::matchParams($reqRoute, $matchedRoute->getUri(), $reqMethod);
         $allParams = array_merge($params['URL'], $params['QUERY']);
         
         return self::sendResponse($matchedRoute, $allParams);
@@ -48,14 +48,15 @@ class Router {
         $matchedRoute = '404';
 
         foreach (self::$routes as $route) {
-            if ($route->getMethod() == $reqMethod)
-            if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
-                continue;
-            }
-
-            if (self::matchDivisions($reqRoute, $route->getUri())) {
-                $matchedRoute = $route;
-                break;
+            if ($route->getMethod() == $reqMethod) {
+                if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
+                    continue;
+                }
+    
+                if (self::matchDivisions($reqRoute, $route->getUri())) {
+                    $matchedRoute = $route;
+                    break;
+                }
             }
         }
 
@@ -108,17 +109,12 @@ class Router {
         }
     }
 
-    private static function matchParams(string $reqRoute, Route $matchedRoute, string $reqMethod): array
+    private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
     {
-        $params = [
-            'URL' => [],
-            'QUERY' => []
+        return [
+            'URL' => self::matchURLParams($reqRoute, $matchedRoute),
+            'QUERY' => self::matchQueryParams($reqMethod)
         ];
-        
-        $params['URL'] = self::matchURLParams($reqRoute, $matchedRoute->getUri());
-        $params['QUERY'] = self::matchQueryParams($reqMethod);
-
-        return $params;
     }
 
     private static function matchURLParams(string $reqRoute, string $matchedRoute): array

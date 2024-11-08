@@ -4,21 +4,18 @@ namespace Framework\View;
 
 use Framework\View\Component;
 
-abstract class Printable {
+class Printable {
 
     protected const VIEWS_PATH = 'views';
     protected const RESOURCES_PATH = '/resources';
-    protected $name;
     protected $data;
+    protected $path;
 
-    public function __construct(string $name, array | null $data = null)
+    public function __construct(string $path, array | null $data = null)
     {
-        $this->name = $name;
         $this->data = $data;
-        $this->show($this->path());
+        $this->path = $path;
     }
-
-    abstract protected function path();
 
     function show($viewFile): void
     {
@@ -43,19 +40,20 @@ abstract class Printable {
 
     protected function resource(string $type, string $name): string
     {
-        return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$name}.{$type}";
+        $parsedName = str_replace('.', '/', $name);
+        return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$parsedName}.{$type}";
     }
 
-    protected function component(string $name, array | null $data = null): Component
+    protected function component(string $name, array | null $data = null, string $type = 'components'): Component
     {
-        return new Component($name, $data);
+        return new Component($name, $data, $type);
     }
 
     /**
-     * Get the value of name
+     * Get the value of path
      */ 
-    public function getName(): string
+    public function getPath()
     {
-        return $this->name;
+        return $this->path;
     }
 }
