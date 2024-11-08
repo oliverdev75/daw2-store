@@ -2,7 +2,7 @@
 <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
         <a class="navbar-brand fs-4 fw-bold" href="">
-            <img src="" alt="">
+            <img src="<?= $this->image('logo') ?>" alt="">
             SymfonyRestaurant
         </a>
         <button class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

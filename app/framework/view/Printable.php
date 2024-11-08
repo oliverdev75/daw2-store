@@ -28,6 +28,11 @@ class Printable {
         require_once($viewFile);
     }
 
+    protected function image(string $name): string
+    {
+        return $this->resource('img', $name);
+    }
+
     protected function css(string $name): string
     {
         return $this->resource('css', $name);
@@ -41,7 +46,12 @@ class Printable {
     protected function resource(string $type, string $name): string
     {
         $parsedName = str_replace('.', '/', $name);
-        return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$parsedName}.{$type}";
+        $extension = match ($type) {
+            'img' => 'webp',
+            default => $type
+        };
+
+        return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$parsedName}.{$extension}";
     }
 
     protected function component(string $name, array | null $data = null, string $type = 'components'): Component
