@@ -12,17 +12,14 @@
         <title><?= $title ?></title>
     </head>
     <body>
-        <header>
-            <?php $this->header(compact('user')) ?>
-        </header>
+        
+        <?php $this->header(compact('user')) ?>
 
         <main>
             <?php $this->component($bodyContent, $bodyData, 'body') ?>
         </main>
 
-        <footer>
-            <?php $this->footer() ?>
-        </footer>
+        <?php $this->footer() ?>
 
         <script
             src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"

@@ -1,1 +1,1 @@
-<h1>Main page</h1>
+<div class="ms-5 bg-secondary" style="width: 500px; height: 500px"></div>
