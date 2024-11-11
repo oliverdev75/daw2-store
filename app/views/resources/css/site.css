@@ -5,11 +5,13 @@
 }
 
 html, body {
+    height: 100%;
     width: 100%;
 }
 
 .btn,
 .btn:hover {
+    width: fit-content;
     display: block;
     border-radius: 3px;
     padding: 10px 15px;
