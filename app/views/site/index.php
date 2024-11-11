@@ -1,1 +1,1 @@
-<div class="ms-5 bg-secondary" style="width: 500px; height: 500px"></div>
+<div class="ms-5 bg-grey" style="width: 500px; height: 500px"></div>
