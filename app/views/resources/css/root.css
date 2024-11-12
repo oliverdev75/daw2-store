@@ -19,7 +19,7 @@
 
     --btn-primary-backgroundColor: var(--primary-color);
     --btn-secondary-backgroundColor: var(--secondary-color);
-    --btn-third-backgroundColor: var(--third-color);
+    --btn-tertiary-color: var(--secondary-color);
 
     --btn-hover-primary-backgroundColor: #1e8abe;
     --btn-hover-secondary-backgroundColor: #003555;

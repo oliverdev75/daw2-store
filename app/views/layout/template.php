@@ -15,7 +15,7 @@
         
         <?php $this->header(compact('user')) ?>
 
-        <main class="lg:mx-20">
+        <main class="lg:mx-32">
             <?php $this->component($bodyContent, $bodyData, 'body') ?>
         </main>
 

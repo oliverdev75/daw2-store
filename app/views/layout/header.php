@@ -1,5 +1,5 @@
 
-<header class="w-full px-7 py-5">
+<header class="w-full px-7 py-5 shadow-lg">
     <nav class="w-full grid grid-flow-col justify-between items-center">
         <a class="w-fit flex gap-x-3 items-center" href="">
             <img src="<?= $this->image('logo') ?>" class="w-14 h-14" alt="SymfonyRestaurant logo">

@@ -9,25 +9,36 @@ html, body {
     width: 100%;
 }
 
+h1 {
+    font-size: 3.375rem !important;
+    line-height: 1.2;
+    font-weight: 800 !important;
+    color: var(--important-heading-color) !important;
+}
+
 .btn,
 .btn:hover {
     width: fit-content;
     display: block;
     border-radius: 3px;
-    padding: 10px 15px;
+    font-weight: 700;
     color: var(--neutral-base-color);
 }
 
 .btn-primary {
+    padding: 8px 16px;
     background-color: var(--btn-primary-backgroundColor);
 }
 
 .btn-secondary {
+    padding: 10px 20px;
     background-color: var(--btn-secondary-backgroundColor);
 }
 
 .btn-tertiary {
-    background-color: var(--btn-tertiary-backgroundColor);
+    padding: 9px 18.496px;
+    color: var(--btn-tertiary-color);
+    border: 1px solid var(--btn-tertiary-color);
 }
 
 .btn-primary:hover {
