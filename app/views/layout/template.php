@@ -16,7 +16,7 @@
         <?php $this->header(compact('user')) ?>
 
         <main class="lg:mx-40">
-            <?php $this->component($bodyContent, $bodyData, 'body') ?>
+            <?php $this->component($templateParsedName, $bodyData, 'body') ?>
         </main>
 
         <?php $this->footer() ?>

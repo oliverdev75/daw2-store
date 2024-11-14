@@ -6,22 +6,23 @@ use Framework\View\Printable;
 
 class View extends Printable {
 
-    protected const TEMPLATE = 'layout.template';
+    protected const TEMPLATE = 'template';
 
     public function __construct(
-        string $bodyContent,
+        string $template,
         string $title = "SymfonyRestaurant",
         array | null $bodyData = null, 
         mixed $user = 'none'
     )
     {        
-        $path = self::VIEWS_PATH.'/' . str_replace('.', '/', self::TEMPLATE).'.php';
+        $path = self::VIEWS_PATH.'/layout/' . self::TEMPLATE.'.php';
+        $templateParsedName = "/templates/$template";
 
         parent::__construct(
             $path,
             compact(
                 'title',
-                'bodyContent',
+                'templateParsedName',
                 'bodyData',
                 'user'
             )
