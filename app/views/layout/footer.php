@@ -19,5 +19,5 @@
         </a>
         <a class="btn btn-secondary text-md lg:text-lg font-bold" role="button" href="" title="Contact us">Contact us</a>
     </div>
-    <small class="col-span-2 justify-self-center self-center">&copy; SymfonyRestaurant 2024 All rights reserved</small>
+    <small class="col-span-2 justify-self-center self-center text-center">&copy; SymfonyRestaurant 2024 All rights reserved</small>
 </footer>
