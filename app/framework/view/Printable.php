@@ -7,7 +7,7 @@ use Framework\View\Component;
 class Printable {
 
     protected const VIEWS_PATH = 'views';
-    protected const RESOURCES_PATH = '/resources';
+    protected const ASSETS_PATH = '/assets';
     protected $data;
     protected $path;
 
@@ -25,25 +25,25 @@ class Printable {
             }
         }
 
-        require_once($viewFile);
+        require($viewFile);
     }
 
     protected function image(string $name): string
     {
-        return $this->resource('img', $name);
+        return $this->asset('img', $name);
     }
 
     protected function css(string $name): string
     {
-        return $this->resource('css', $name);
+        return $this->asset('css', $name);
     }
 
     protected function js(string $name): string
     {
-        return $this->resource('js', $name);
+        return $this->asset('js', $name);
     }
 
-    protected function resource(string $type, string $name): string
+    protected function asset(string $type, string $name): string
     {
         $parsedName = str_replace('.', '/', $name);
         $extension = match ($type) {
@@ -51,7 +51,7 @@ class Printable {
             default => $type
         };
 
-        return '/'.self::VIEWS_PATH.self::RESOURCES_PATH."/{$type}/{$parsedName}.{$extension}";
+        return '/'.self::VIEWS_PATH.self::ASSETS_PATH."/{$type}/{$parsedName}.{$extension}";
     }
 
     protected function component(string $name, array | null $data = null, string $type = 'components'): Component

@@ -9,24 +9,32 @@
         <link rel="stylesheet" href="<?= $this->css('root') ?>">
         <link rel="stylesheet" href="<?= $this->css('site') ?>">
         <link rel="stylesheet" href="<?= $this->css('header') ?>">
+        <link rel="stylesheet" href="<?= $this->css('header') ?>">
         <title><?= $title ?></title>
     </head>
     <body>
         
         <?php $this->header(compact('user')) ?>
 
-        <main>
-            <?php $this->component($bodyContent, $bodyData, 'body') ?>
-        </main>
+        <?php if($templateParsedName != '.templates.site.index'): ?>
+            <main class="lg:mx-40">
+                <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            </main>
+        <?php else: ?>
+            <main>
+                <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            </main>
+        <?php endif; ?>
 
         <?php $this->footer() ?>
         
         <script src="https://cdn.tailwindcss.com"></script>
+
+        <script src="https://cdn.tailwindcss.com"></script>
         <script
             src="https://kit.fontawesome.com/fa5d3f8bd9.js"
             crossorigin="anonymous"
-        >
-        </script>
+        ></script>
 
     </body>
 </html>

@@ -1,0 +1,14 @@
+
+header label {
+    cursor: pointer;
+}
+
+#header-nav-toggler-button ~ #header-nav {
+    right: -100%;
+    transition: .5s ease;
+}
+
+#header-nav-toggler-button:checked ~ #header-nav {
+    right: 0;
+    transition: .5s ease;
+}
