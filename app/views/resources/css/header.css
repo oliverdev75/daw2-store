@@ -1,0 +1,11 @@
+@media (max-width: 1279px) {
+  #header-nav-toggler-button ~ #header-nav {
+    top: 0;
+    right: -100%;
+    transition: .5s ease-out;
+  }
+  
+  #header-nav-toggler-button:checked ~ #header-nav {
+    right: 0;
+  }
+}
