@@ -24,6 +24,23 @@
 <section class="grid">
     <h3 class="text-2xl md:text-3xl min-[1121px]:text-2xl min-[1374px]:text-4xl text-center text-[#303952]">Our clients say</h3>
     <div class="grid md:grid-cols-3 md:gap-x-5">
-        
+        <?php $this->component('dish.comment', [
+            'text' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            molestie at risus. Vivamus vel lorem aliquet ante cursus 
+            semper nec a libero. Curabitur interdum ipsum sed augue 
+            maximus varius.'
+        ]) ?>
+        <?php $this->component('dish.comment', [
+            'text' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            molestie at risus. Vivamus vel lorem aliquet ante cursus 
+            semper nec a libero. Curabitur interdum ipsum sed augue 
+            maximus varius.'
+        ]) ?>
     </div>
+        <?php $this->component('dish.comment', [
+            'text' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            molestie at risus. Vivamus vel lorem aliquet ante cursus 
+            semper nec a libero. Curabitur interdum ipsum sed augue 
+            maximus varius.'
+        ]) ?>
 </section>
