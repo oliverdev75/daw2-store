@@ -1,13 +1,2 @@
-<?php
+#!/bin/env php
 
-function handleCommand() {
-    /* if (isset($argv[1])) {
-        switch ($argv[0]) {
-            case 
-        }
-    } else {
-
-    } */
-}
-
-handleCommand();
