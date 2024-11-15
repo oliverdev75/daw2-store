@@ -16,7 +16,7 @@ class View extends Printable {
     )
     {        
         $path = self::VIEWS_PATH.'/layout/' . self::TEMPLATE.'.php';
-        $templateParsedName = "/templates/$template";
+        $templateParsedName = ".templates.$template";
 
         parent::__construct(
             $path,
