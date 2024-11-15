@@ -1,0 +1,1 @@
+<img class="w-14 rounded-full" src="<?= $image ?>" alt="<?= $alt ?>">

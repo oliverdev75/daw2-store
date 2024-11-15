@@ -15,9 +15,15 @@
         
         <?php $this->header(compact('user')) ?>
 
-        <main class="lg:mx-40">
-            <?php $this->component($templateParsedName, $bodyData, 'body') ?>
-        </main>
+        <?php if($templateParsedName != 'site.index'): ?>
+            <main class="lg:mx-40">
+                <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            </main>
+        <?php else: ?>
+            <main>
+                <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            </main>
+        <?php endif; ?>
 
         <?php $this->footer() ?>
 
