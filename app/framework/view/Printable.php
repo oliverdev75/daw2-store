@@ -25,7 +25,7 @@ class Printable {
             }
         }
 
-        require_once($viewFile);
+        require($viewFile);
     }
 
     protected function image(string $name): string
