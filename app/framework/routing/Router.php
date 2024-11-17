@@ -11,7 +11,7 @@ use Framework\Response;
 class Router {
 
     /**
-     * Contains all registered routes assigned to all pages of the applcation.
+     * Contains all registered routes assigned to all pages of the application.
      * @param array $routes
      */
     private static $routes = [];

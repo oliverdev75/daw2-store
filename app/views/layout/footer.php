@@ -1,5 +1,5 @@
-<footer class="w-full px-20 pt-5 grid grid-rows-4 md:grid-rows-3 grid-cols-1 lg:grid-cols-2 auto-rows-max auto-cols-max lg:gap-x-10 gap-y-3">
-    <div class="row-span-2 md:row-span-1 lg:row-span-2 w-full pb-5 grid grid-cols-1 md:grid-cols-2 md:auto-cols-max justify-center justify-items-center md:gap-x-6">
+<footer class="w-full px-20 pt-16 pb-10 grid grid-rows-4 md:grid-rows-3 grid-cols-1 lg:grid-cols-2 auto-rows-max auto-cols-max lg:gap-x-10 gap-y-3">
+    <div class="row-span-2 md:row-span-1 lg:row-span-2 w-full pb-5 lg:px-56 grid grid-cols-1 md:grid-cols-2 md:auto-cols-max justify-center justify-items-center md:gap-x-6">
         <ul class="w-fit grid justify-items-center md:justify-items-start auto-rows-max auto-cols-max gap-y-4 md:gap-y-2">
             <li>Home</li>
             <li>Menu</li>
