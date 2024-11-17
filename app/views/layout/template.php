@@ -15,7 +15,7 @@
         
         <?php $this->header(compact('user')) ?>
 
-        <?php if($templateParsedName != 'site.index'): ?>
+        <?php if($templateParsedName != '.templates.site.index'): ?>
             <main class="lg:mx-40">
                 <?php $this->component($templateParsedName, $bodyData, 'body') ?>
             </main>
