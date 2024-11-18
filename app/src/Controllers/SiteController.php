@@ -16,4 +16,9 @@ class SiteController extends Controller {
     {
         return $this->json(['status' => 'OK', 'data' => 'The API Works!!']);
     }
+
+    function testApiParams($value): Json
+    {
+        return $this->json(['status' => 'OK', 'data' => $value]);
+    }
 }

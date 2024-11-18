@@ -4,8 +4,6 @@ namespace Framework\Routing;
 
 class Route {
 
-    protected const API_PREFIX = '/api';
-
     protected static $collection = [];
 
     protected $name;
@@ -92,7 +90,7 @@ class Route {
         if ($this->type == 'web') {
             return $this->uri;
         } else {
-            return self::API_PREFIX.$this->uri;
+            return \API_PREFIX.$this->uri;
         }
     }
 

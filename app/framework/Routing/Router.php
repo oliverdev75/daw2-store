@@ -61,9 +61,12 @@ class Router {
         $reqMethod = $_SERVER['REQUEST_METHOD'];
         $matchedRoute = $this->checkRoute($reqRoute, $reqMethod);
         
-        if ($matchedRoute == '404') {
-            http_response_code(404);
-            die;
+        if ($matchedRoute == 'notfound') {
+            header('Location: /');
+        }
+
+        if (str_ends_with($reqRoute, '/')) {
+            header("Location: {$this->parseToOriginalRoute($reqRoute)}");
         }
 
         $params = $this->matchParams($reqRoute, $matchedRoute, $reqMethod);
@@ -75,18 +78,12 @@ class Router {
 
     private function checkRoute(string $reqRoute, string $reqMethod)
     {
-        $matchedRoute = '404';
+        $matchedRoute = 'notfound';
         
         foreach ($this->routes as $route) {
-            if ($route->getMethod() == $reqMethod) {
-                if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
-                    continue;
-                }
-    
-                if ($this->matchRoute($reqRoute, $route->getUri())) {
-                    $matchedRoute = $route;
-                    break;
-                }
+            if ($route->getMethod() == $reqMethod && $this->matchRoute($reqRoute, $route->getUri())) {    
+                $matchedRoute = $route;
+                break;
             }
         }
 
@@ -100,8 +97,8 @@ class Router {
             return true;
         }
 
-        $dividedReqRoute = Router::cleanArray(explode('/', $reqRoute));
-        $dividedRegisteredRoute = Router::cleanArray(explode('/', $registeredRoute));
+        $dividedReqRoute = $this->divideRoute($reqRoute);
+        $dividedRegisteredRoute = $this->divideRoute($registeredRoute);
 
         return $this->matchDivisions($dividedReqRoute, $dividedRegisteredRoute);
     }
@@ -142,8 +139,8 @@ class Router {
     {
         $params = [];
 
-        $dividedReqRoute = $this->cleanArray(explode('/', $reqRoute));
-        $dividedMatchedRoute = $this->cleanArray(explode('/', $matchedRoute->getUri()));
+        $dividedReqRoute = $this->divideRoute($reqRoute);
+        $dividedMatchedRoute = $this->divideRoute($matchedRoute->getUri());
         $bracketsOpen = -1;
         $bracketsClose = -1;
         $cleanParamKey = '';
@@ -185,6 +182,18 @@ class Router {
         $removeEmptiesFunc = fn ($value) => $value !== false && $value !== '' && $value !== null;
 
         return array_values(array_filter($array, $removeEmptiesFunc));
+    }
+
+    private function divideRoute(string $route): array
+    {
+        return $this->cleanArray(explode('/', $route));
+    }
+
+    private function parseToOriginalRoute($reqRoute): string
+    {
+        $dividedRoute = $this->divideRoute($reqRoute);
+
+        return '/'.join('/', $dividedRoute);
     }
 
 

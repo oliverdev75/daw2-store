@@ -5,7 +5,10 @@
         "psr-4": {
             "App\\": "src",
             "Framework\\": "framework"
-        }
+        },
+        "files": [
+            "config/globals.php"
+        ]
     },
     "authors": [
         {

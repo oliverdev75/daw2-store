@@ -9,8 +9,6 @@ class View extends Printable {
 
     use Response;
 
-    protected const TEMPLATE = 'template';
-
     public function __construct(
         string $template,
         string $title = "SymfonyRestaurant",
@@ -18,7 +16,7 @@ class View extends Printable {
         mixed $user = 'none'
     )
     {        
-        $path = self::VIEWS_PATH.'/layout/' . self::TEMPLATE.'.php';
+        $path = \VIEWS_PATH.\VIEWS_LAYOUT_DIR.\VIEWS_TEMPLATE.'.php';
         $templateParsedName = ".templates.$template";
 
         parent::__construct(
@@ -35,11 +33,6 @@ class View extends Printable {
     public function send()
     {
         $this->show($this->path);
-    }
-
-    protected function meta(array | null $data = null): void
-    {
-        $this->component('meta', $data, 'layout');
     }
 
     protected function header(array | null $data = null): void

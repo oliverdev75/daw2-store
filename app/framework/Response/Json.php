@@ -2,7 +2,6 @@
 
 namespace Framework\Response;
 
-use Framework\Response\Response;
 
 class Json {
 
