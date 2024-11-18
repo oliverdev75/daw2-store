@@ -33,7 +33,7 @@
                 <li>
                     <a class="font-bold" href="#">Log in</a>
                 </li>
-                <li class="">
+                <li>
                     <a class="btn btn-primary font-bold" href="#" role="button" title="Sign up">Sign up</a>
                 </li>
             </ul>

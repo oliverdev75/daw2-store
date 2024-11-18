@@ -3,8 +3,9 @@
 namespace Framework\View;
 
 use Framework\View\Printable;
+use Framework\Response\Response;
 
-class View extends Printable {
+class View extends Printable implements Response {
 
     protected const TEMPLATE = 'template';
 

@@ -1,6 +1,6 @@
 <?php
 
-use Framework\Routing\Router;
+use Framework\Routing\Route;
 use Controllers\SiteController;
 
-Router::get('main', '/', [SiteController::class, 'index']);
+Route::get('main', '/', [SiteController::class, 'index']);

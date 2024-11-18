@@ -4,12 +4,10 @@ header label {
 }
 
 #header-nav-toggler-button ~ #header-nav {
-    display: none;
     right: -100vw;
     transition: .5s ease;
 }
 
 #header-nav-toggler-button:checked ~ #header-nav {
-    display: flex;
     right: 0;
 }

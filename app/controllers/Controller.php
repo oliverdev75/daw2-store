@@ -3,10 +3,11 @@
 namespace Controllers;
 
 use Framework\View\View;
+use Framework\Response\Json;
 
 class Controller {
 
-    public function view(
+    protected function view(
         string $bodyContent,
         string $title = "SymfonyRestaurant",
         array | null $bodyData = null, 
@@ -20,4 +21,9 @@ class Controller {
             $user
         );
     }
+
+    protected function json(array $data): Json
+    {
+        return new Json($data);
+    } 
 }
