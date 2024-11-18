@@ -2,7 +2,6 @@
 
 namespace Framework\View;
 
-use Framework\View\Printable;
 
 class Component extends Printable {
 

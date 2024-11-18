@@ -1,6 +1,6 @@
 <?php
 
-namespace Controllers;
+namespace App\Controllers;
 
 use Framework\View\View;
 use Framework\Response\Json;

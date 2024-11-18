@@ -2,17 +2,8 @@
 
 namespace Framework\Routing;
 
-require_once(__DIR__.'/Route.php');
-
-use Framework\Routing\Route;
 
 class Router {
-
-    /**
-     * Is the instance of the Router created once the web is starting.
-     * @param Router $singleton
-     */
-    static $singleton = null;
 
     /**
      * Contains all registered routes assigned to all resources of the application.
@@ -27,31 +18,15 @@ class Router {
     }
 
 
-    static function instance()
+    private function getWebRoutes(): void
     {
-        if (!self::$singleton) {
-            self::$singleton = new self;
-        }
-        
-        return self::$singleton;
+        $this->getRegisteredRoutes(__DIR__.'/../../routes/web.php');
     }
 
 
-    function createRoute(Route $route): void
+    private function getApiRoutes(): void
     {
-        array_push($this->routes, $route);
-    }
-
-
-    function getWebRoutes(): void
-    {
-        require('routes/web.php');
-    }
-
-
-    function getApiRoutes(): void
-    {
-        $regiterRoutes = fn() => require('routes/api.php');
+        $registerRoutes = fn () => $this->getRegisteredRoutes(__DIR__.'/../../routes/api.php');
         $this->catchRoutes($registerRoutes, function (Route $catched) {
             $catched->setType('api');
 
@@ -60,18 +35,27 @@ class Router {
     }
 
 
-    function catchRoutes(callable $registerRoutesFunc, callable $callback): void
+    private function getRegisteredRoutes(string $routesFile): void
     {
-        $routesQuantBeforeAdding = count($this->routes);
-        $registerRoutesFunc();
+        require($routesFile);
 
-        for ($i = $routesQuantBeforeAdding - 1; $i < count($this->routes); $i++) {
+        $this->routes = array_merge($this->routes, Route::getCollection());
+        Route::emptyCollection();
+    }
+
+
+    private function catchRoutes(callable $registerRoutesFunc, callable $callback): void
+    {
+        $newRoutesStart = count($this->routes);
+        $registerRoutesFunc();
+        
+        for ($i = $newRoutesStart; $i < count($this->routes); $i++) {
             $this->routes[$i] = $callback($this->routes[$i]);
         }
     }
 
 
-    static function enable(): Response
+    function solve()
     {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
@@ -89,11 +73,11 @@ class Router {
     }
 
 
-    private static function checkRoute(string $reqRoute, string $reqMethod)
+    private function checkRoute(string $reqRoute, string $reqMethod)
     {
         $matchedRoute = '404';
-
-        foreach ($this->$routes as $route) {
+        
+        foreach ($this->routes as $route) {
             if ($route->getMethod() == $reqMethod) {
                 if (count(explode('/', $route->getUri())) != count(explode('/', $reqRoute))) {
                     continue;
@@ -110,7 +94,7 @@ class Router {
     }
 
 
-    private static function matchRoute(string $reqRoute, string $registeredRoute): bool
+    private function matchRoute(string $reqRoute, string $registeredRoute): bool
     {
         if ($reqRoute == $registeredRoute) {
             return true;
@@ -123,7 +107,7 @@ class Router {
     }
 
 
-    private static function matchDivisions(array $dividedReqRoute, array $dividedRegisteredRoute): bool
+    private function matchDivisions(array $dividedReqRoute, array $dividedRegisteredRoute): bool
     {
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
@@ -145,7 +129,7 @@ class Router {
     }
 
 
-    private static function matchParams(string $reqRoute, string $matchedRoute, string $reqMethod): array
+    private function matchParams(string $reqRoute, Route $matchedRoute, string $reqMethod): array
     {
         return [
             'URL' => $this->matchURLParams($reqRoute, $matchedRoute),
@@ -154,7 +138,7 @@ class Router {
     }
 
 
-    private static function matchURLParams(string $reqRoute, string $matchedRoute): array
+    private function matchURLParams(string $reqRoute, Route $matchedRoute): array
     {
         $params = [];
 
@@ -177,7 +161,7 @@ class Router {
     }
 
 
-    private static function matchQueryParams(string $reqMethod, Route $matchedRoute): array
+    private function matchQueryParams(string $reqMethod, Route $matchedRoute): array
     {
         if ($reqMethod == 'GET') {
             return $_GET;
@@ -196,7 +180,7 @@ class Router {
      * @param array $array the array to be cleaned
      * @return array the cleaned array
      */
-    private static function cleanArray(array $array): array
+    private function cleanArray(array $array): array
     {
         $removeEmptiesFunc = fn ($value) => $value !== false && $value !== '' && $value !== null;
 
@@ -204,21 +188,21 @@ class Router {
     }
 
 
-    private static function sendResponse(Route $route, array $params)
+    private function sendResponse(Route $route, array $params)
     {
-        $assignment = $route->getAssignment();
+        $action = $route->getAction();
 
-        if (is_array($assignment)) {
-            $controller = new $assignment[0]();
-            $function = $assignment[1];
+        if (is_array($action)) {
+            $controller = new $action[0]();
+            $function = $action[1];
             return $controller->$function(...$params);
-        } else if (is_string($assignment)) {
-            $callableAssignment = explode('@', $assignment);
-            $function = $callableAssignment[1];
-            $controller = new $callableAssignment[0]();
+        } else if (is_string($action)) {
+            $callableAction = explode('@', $action);
+            $function = $callableAction[1];
+            $controller = new $callableAction[0]();
             return $controller->$function(...$params);
-        } else if (is_callable($assignment)) {
-            return $assignment(...$params);
+        } else if (is_callable($action)) {
+            return $action(...$params);
         }
     }
 }

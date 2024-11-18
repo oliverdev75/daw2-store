@@ -2,10 +2,12 @@
 
 namespace Framework\View;
 
-use Framework\View\Printable;
+
 use Framework\Response\Response;
 
-class View extends Printable implements Response {
+class View extends Printable {
+
+    use Response;
 
     protected const TEMPLATE = 'template';
 

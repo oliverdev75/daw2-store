@@ -1,8 +1,7 @@
 <?php
 
-namespace Controllers;
+namespace App\Controllers;
 
-use Controllers\Controller;
 use Framework\View\View;
 use Framework\Response\Json;
 

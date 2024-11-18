@@ -2,11 +2,10 @@
 
 namespace Framework\View;
 
-use Framework\View\Component;
 
 class Printable {
 
-    protected const VIEWS_PATH = 'views';
+    protected const VIEWS_PATH = __DIR__.'/../../views';
     protected const ASSETS_PATH = '/assets';
     protected $data;
     protected $path;
@@ -51,7 +50,7 @@ class Printable {
             default => $type
         };
 
-        return '/'.self::VIEWS_PATH.self::ASSETS_PATH."/{$type}/{$parsedName}.{$extension}";
+        return self::ASSETS_PATH."/{$type}/{$parsedName}.{$extension}";
     }
 
     protected function component(string $name, array | null $data = null, string $type = 'components'): Component

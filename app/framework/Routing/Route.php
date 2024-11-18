@@ -2,35 +2,46 @@
 
 namespace Framework\Routing;
 
-use Framework\Routing\Router;
-
 class Route {
 
     protected const API_PREFIX = '/api';
+
+    protected static $collection = [];
 
     protected $name;
     protected $type;
     protected $uri;
     protected $method;
-    protected $assignment;
+    protected $action;
 
-    public function __construct(string | null $name = null, string $uri, string $method, mixed $assignment, string $type)
+    private function __construct(string | null $name = null, string $uri, string $method, mixed $action, string $type)
     {
         $this->name = $name;
         $this->uri = $uri;
+        $this->type = $type;
         $this->method = $method;
-        $this->assignment = $assignment;
+        $this->action = $action;
     }
 
-    static function get(string $name, string $route, mixed $assignment, string $type = 'web'): Route
+    static function getCollection(): array
     {
-        Router::instance()->createRoute(new self($name, $route, 'GET', $assignment, $type));
+        return self::$collection;
+    }
+
+    static function emptyCollection(): void
+    {
+        self::$collection = [];
+    }
+
+    static function get(string $name, string $route, mixed $action, string $type = 'web'): void
+    {
+        array_push(self::$collection, new self($name, $route, 'GET', $action, $type));
     }
 
 
-    static function post(string $name, string $route, mixed $assignment, string $type = 'web'): Route
+    static function post(string $name, string $route, mixed $action, string $type = 'web'): void
     {
-        Router::instance()->createRoute(new self($name, $route, 'POST', $assignment, $type));
+        array_push(self::$collection, new self($name, $route, 'POST', $action, $type));
     }
 
     /**
@@ -94,10 +105,10 @@ class Route {
     }
     
     /**
-     * Get the value of assignment
+     * Get the value of action
      */ 
-    function getAssignment()
+    function getAction()
     {
-        return $this->assignment;
+        return $this->action;
     }
 }

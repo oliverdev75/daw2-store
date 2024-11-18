@@ -1,0 +1,17 @@
+{
+    "name": "oliver/symfonyrestaurant",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src",
+            "Framework\\": "framework"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oliver Ros",
+            "email": "seair75@gmail.com"
+        }
+    ],
+    "require": {}
+}
