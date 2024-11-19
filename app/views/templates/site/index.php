@@ -7,8 +7,8 @@
             <div class="w-full lg:w-fit px-3 lg:p-0 grid lg:grid-rows-2 auto-rows-max gap-y-3 lg:gap-y-2 text-center lg:text-start">
                 <p class="text-lg lg:text-2xl">We have a lot of dishes, from principals to desserts</p>
                 <div class="w-full lg:w-fit grid grid-flow-col auto-rows-max auto-cols-max justify-center lg:justify-start gap-x-5">
-                    <a class="btn btn-secondary" title="Sign up" href="">Sign up</a>
-                    <a class="btn btn-tertiary" title="Menu" href="">Menu</a>
+                    <a class="btn btn-secondary" title="Sign up" href="<?= \Framework\Routing\Router::get('signup') ?>">Sign up</a>
+                    <a class="btn btn-tertiary" title="Menu" href="<?= \Framework\Routing\Router::get('menu') ?>">Menu</a>
                 </div>
             </div>
         </div>

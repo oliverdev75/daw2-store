@@ -1,8 +1,8 @@
 <?php
 
-namespace Framework\View;
+namespace Framework\Response\Types;
 
-
+use Framework\View\Printable;
 use Framework\Response\Response;
 
 class View extends Printable {
@@ -13,9 +13,12 @@ class View extends Printable {
         string $template,
         string $title = "SymfonyRestaurant",
         array | null $bodyData = null, 
-        mixed $user = 'none'
+        mixed $user = 'none',
+        int $statusCode = 200
     )
-    {        
+    {
+        $this->setStatusCode($statusCode);
+
         $path = \VIEWS_PATH.\VIEWS_LAYOUT_DIR.\VIEWS_TEMPLATE.'.php';
         $templateParsedName = ".templates.$template";
 

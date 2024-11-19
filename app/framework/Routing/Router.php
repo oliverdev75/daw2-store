@@ -2,6 +2,7 @@
 
 namespace Framework\Routing;
 
+use Framework\Response\Send;
 
 class Router {
 
@@ -9,7 +10,7 @@ class Router {
      * Contains all registered routes assigned to all resources of the application.
      * @param array $routes
      */
-    private $routes = [];
+    private static $routes = [];
 
     public function __construct()
     {
@@ -39,21 +40,29 @@ class Router {
     {
         require($routesFile);
 
-        $this->routes = array_merge($this->routes, Route::getCollection());
+        self::$routes = array_merge(self::$routes ?? [], Route::getCollection());
         Route::emptyCollection();
     }
 
 
     private function catchRoutes(callable $registerRoutesFunc, callable $callback): void
     {
-        $newRoutesStart = count($this->routes);
+        $newRoutesStart = count(self::$routes);
         $registerRoutesFunc();
         
-        for ($i = $newRoutesStart; $i < count($this->routes); $i++) {
-            $this->routes[$i] = $callback($this->routes[$i]);
+        for ($i = $newRoutesStart; $i < count(self::$routes); $i++) {
+            self::$routes[$i] = $callback(self::$routes[$i]);
         }
     }
 
+    static function get(string $routeName): string
+    {
+        foreach (self::$routes as $route) {
+            if ($route->getName() == $routeName) {
+                return $route->getUri();
+            }
+        }
+    }
 
     function solve()
     {
@@ -62,7 +71,11 @@ class Router {
         $matchedRoute = $this->checkRoute($reqRoute, $reqMethod);
         
         if ($matchedRoute == 'notfound') {
-            header('Location: /');
+            if (! $this->isApiRoute($reqRoute)) {
+                header('Location: /');
+            } else {
+                return Send::json(['status' => 'denied', 'message' => 'Not Found'], 404);
+            }
         }
 
         if ($reqRoute != '/' && str_ends_with($reqRoute, '/')) {
@@ -70,8 +83,11 @@ class Router {
         }
 
         $params = $this->matchParams($reqRoute, $matchedRoute, $reqMethod);
-        $allParams = array_merge($params['URL'], $params['QUERY']);
-        
+        $allParams = [];
+        if ($params) {
+            $allParams = array_merge($params['URL'], $params['QUERY']);
+        }
+
         return $this->sendResponse($matchedRoute, $allParams);
     }
 
@@ -80,8 +96,8 @@ class Router {
     {
         $matchedRoute = 'notfound';
         
-        foreach ($this->routes as $route) {
-            if ($route->getMethod() == $reqMethod && $this->matchRoute($reqRoute, $route->getUri())) {    
+        foreach (self::$routes as $route) {
+            if ($this->matchRoute($reqRoute, $route->getUri()) && $route->getMethod() == $reqMethod) {    
                 $matchedRoute = $route;
                 break;
             }
@@ -95,6 +111,8 @@ class Router {
     {
         if ($reqRoute == $registeredRoute) {
             return true;
+        } else if ($registeredRoute == '/') {
+            return false;
         }
 
         $dividedReqRoute = $this->divideRoute($reqRoute);
@@ -193,11 +211,16 @@ class Router {
     }
 
 
-    private function parseToOriginalRoute($reqRoute): string
+    private function parseToOriginalRoute(string $reqRoute): string
     {
         return rtrim($reqRoute, '/');
     }
 
+
+    private function isApiRoute(string $route): bool
+    {
+        return str_starts_with($route, API_PREFIX);
+    }
 
     private function sendResponse(Route $route, array $params)
     {

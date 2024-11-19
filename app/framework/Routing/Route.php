@@ -42,6 +42,23 @@ class Route {
         array_push(self::$collection, new self($name, $route, 'POST', $action, $type));
     }
 
+    static function controller(string $controller, callable $routesExec): void
+    {
+        self::catchRoutes($routesExec, function (Route $catched) use ($controller) {
+            return $catched->setAction([$controller, $catched->getAction()]);
+        });
+    }
+
+    private static function catchRoutes(callable $registerRoutesFunc, callable $callback): void
+    {
+        $newRoutesStart = count(self::$collection);
+        $registerRoutesFunc();
+        
+        for ($i = $newRoutesStart; $i < count(self::$collection); $i++) {
+            self::$collection[$i] = $callback(self::$collection[$i]);
+        }
+    }
+
     /**
      * Get the value of name
      */ 
@@ -108,5 +125,17 @@ class Route {
     function getAction()
     {
         return $this->action;
+    }
+
+    /**
+     * Set the value of action
+     *
+     * @return  self
+     */ 
+    public function setAction($action)
+    {
+        $this->action = $action;
+
+        return $this;
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-namespace Framework\Response;
+namespace Framework\Response\Types;
+
+use Framework\Response\Response;
 
 class Text {
     
@@ -8,8 +10,9 @@ class Text {
 
     protected $content;
 
-    function __construct(string $text)
+    function __construct(string $text, int $statusCode = 200)
     {
+        $this->setStatusCode($statusCode);
         $this->content = $text;
     }
 
