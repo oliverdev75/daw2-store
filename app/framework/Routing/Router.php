@@ -65,7 +65,7 @@ class Router {
             header('Location: /');
         }
 
-        if (str_ends_with($reqRoute, '/')) {
+        if ($reqRoute != '/' && str_ends_with($reqRoute, '/')) {
             header("Location: {$this->parseToOriginalRoute($reqRoute)}");
         }
 
@@ -110,15 +110,17 @@ class Router {
         $bracketsClosePos = -1;
 
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
-            $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
-            $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
+            if (count($dividedRegisteredRoute) > 0) {
+                $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
+                $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
+                
+                if ($bracketsOpenPos && $bracketsClosePos) {
+                    continue;
+                }
 
-            if ($bracketsOpenPos && $bracketsClosePos) {
-                continue;
-            }
-            
-            if ($dividedReqRoute[$i] != $dividedRegisteredRoute[$i]) {
-                return false;
+                if ($dividedReqRoute[$i] != $dividedRegisteredRoute[$i]) {
+                    return false;
+                }
             }
         }
 
@@ -184,16 +186,16 @@ class Router {
         return array_values(array_filter($array, $removeEmptiesFunc));
     }
 
+
     private function divideRoute(string $route): array
     {
         return $this->cleanArray(explode('/', $route));
     }
 
+
     private function parseToOriginalRoute($reqRoute): string
     {
-        $dividedRoute = $this->divideRoute($reqRoute);
-
-        return '/'.join('/', $dividedRoute);
+        return rtrim($reqRoute, '/');
     }
 
 
