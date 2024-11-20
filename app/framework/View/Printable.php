@@ -2,6 +2,7 @@
 
 namespace Framework\View;
 
+use Framework\Routing\Router;
 
 class Printable {
 
@@ -56,6 +57,11 @@ class Printable {
     protected function component(string $name, array | null $data = null, string $type = 'components'): Component
     {
         return new Component($name, $data, $type);
+    }
+
+    protected function route(string $routeName): string
+    {
+        return Router::get($routeName);
     }
 
     /**

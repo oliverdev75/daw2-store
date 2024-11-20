@@ -4,7 +4,6 @@ namespace App\Controllers;
 
 use Framework\Response\Send;
 use Framework\Response\Types\View;
-use Framework\Response\Types\Json;
 
 class SiteController extends Controller {
 

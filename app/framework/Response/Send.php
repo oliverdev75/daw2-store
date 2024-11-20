@@ -5,6 +5,7 @@ namespace Framework\Response;
 use Framework\Response\Types\View;
 use Framework\Response\Types\Json;
 use Framework\Response\Types\Text;
+use Framework\Response\Types\Redirection;
 
 class Send {
 
@@ -33,5 +34,10 @@ class Send {
     static function text(string $text, int $statusCode = 200): Text
     {
         return new Text($text, $statusCode);
+    }
+
+    static function redirect(string $uri = '/'): Redirection
+    {
+        return new Redirection($uri);
     }
 }

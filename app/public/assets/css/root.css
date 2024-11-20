@@ -4,9 +4,10 @@
 
     --primary-color: #25a1dd;
     --secondary-color: #004d7b;
+    --secondary-color-2: #63cdda;
 
     --important-heading-color: #303952;
-    --icon-color: #63cdda;
+    --icon-color: var(--secondary-color-2);
     --tag-color: #f19066;
 
     --neutral-base-color: #fff;

@@ -62,6 +62,8 @@ class Router {
                 return $route->getUri();
             }
         }
+
+        return '';
     }
 
     function solve()
@@ -72,14 +74,14 @@ class Router {
         
         if ($matchedRoute == 'notfound') {
             if (! $this->isApiRoute($reqRoute)) {
-                header('Location: /');
+                return Send::redirect();
             } else {
                 return Send::json(['status' => 'denied', 'message' => 'Not Found'], 404);
             }
         }
 
         if ($reqRoute != '/' && str_ends_with($reqRoute, '/')) {
-            header("Location: {$this->parseToOriginalRoute($reqRoute)}");
+            return Send::redirect($this->parseToOriginalRoute($reqRoute));
         }
 
         $params = $this->matchParams($reqRoute, $matchedRoute, $reqMethod);

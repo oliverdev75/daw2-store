@@ -13,8 +13,12 @@ h1, h2, h3 {
     font-weight: 800 !important;
 }
 
-h1 {
+.heading-important {
     color: var(--important-heading-color) !important;
+}
+
+.icon-size {
+    size: .8rem;
 }
 
 .btn,
@@ -76,4 +80,20 @@ h1 {
 
 .btn-tertiary:disabled {
     background-color: var(--btn-disabled-tertiary-backgroundColor);
+}
+
+.checkbox-box-color {
+    border: 2px solid var(--secondary-color-2);
+}
+
+.checkbox-content-color {
+    background-color: var(--secondary-color-2);
+}
+
+.menu-filter-border-color {
+    border-color: var(--secondary-color-2);
+}
+
+.container-shadow {
+    box-shadow: 2px 4px 10.8px 4px rgb(202,204,203,0.5);
 }
