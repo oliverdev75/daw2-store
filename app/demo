@@ -1,0 +1,5 @@
+#!/bin/bash
+
+port=3000
+
+echo $port

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+host=localhost
+port=3000
+
+if [ -n $2 ]
+then
+    host=$(echo $2 | cut -d':' -f1)
+    if [ $(echo $2 | cut -d':' -f2) ]
+    then
+        port=$(echo $2 | cut -d':' -f2)
+    fi
+fi
+
+case $1 in
+    'run')
+        if ! [ $(ps -a | grep php | cut -d' ' -f3) ]
+        then
+            php -S $host:$port -t public &
+        else
+            echo -e "\n\tThere's a server already running on http://$host:$port\n"
+        fi
+    ;;
+    'stop')
+        if [ $(ps -a | grep php | cut -d' ' -f3) ]
+        then
+            kill -9 $(ps -a | grep php | cut -d' ' -f3)
+        fi
+    ;;
+esac
