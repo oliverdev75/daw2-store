@@ -15,7 +15,7 @@ class Redirection {
 
     function route(string $routeName): self
     {
-        $this->uri = Router::get($routeName);
+        $this->uri = Router::getRoute($routeName);
         return $this;
     }
 

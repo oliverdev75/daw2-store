@@ -6,6 +6,9 @@ use Framework\Response\Send;
 
 class Router {
 
+    private const PARAM_OPENER = '{';
+    private const PARAM_CLOSER = '}';
+
     /**
      * Contains all registered routes assigned to all resources of the application.
      * @param array $routes
@@ -55,7 +58,7 @@ class Router {
         }
     }
 
-    static function get(string $routeName): string
+    private static function getName(string $routeName): string
     {
         foreach (self::$routes as $route) {
             if ($route->getName() == $routeName) {
@@ -64,6 +67,20 @@ class Router {
         }
 
         return '';
+    }
+
+    static function route(string $name, array $params = []): string
+    {
+        $route = self::getName($name);
+
+        if ($params) {
+            $dividedRoute = self::divideRoute($route);
+            foreach ($params as $param => $value) {
+                $route = str_replace(self::parseToParam($param), $value, $route);
+            }
+        }
+
+        return $route;
     }
 
     function solve()
@@ -99,9 +116,11 @@ class Router {
         $matchedRoute = 'notfound';
         
         foreach (self::$routes as $route) {
-            if ($this->matchRoute($reqRoute, $route->getUri()) && $route->getMethod() == $reqMethod) {    
-                $matchedRoute = $route;
-                break;
+            if ($route->getMethod() == $reqMethod && (count($this->divideRoute($reqRoute)) == count($this->divideRoute($route->getUri())))) {
+                if ($this->matchRoute($reqRoute, $route->getUri())) {    
+                    $matchedRoute = $route;
+                    break;
+                }
             }
         }
 
@@ -120,21 +139,25 @@ class Router {
         $dividedReqRoute = $this->divideRoute($reqRoute);
         $dividedRegisteredRoute = $this->divideRoute($registeredRoute);
 
-        return $this->matchDivisions($dividedReqRoute, $dividedRegisteredRoute);
+        return $this->matchChilds($dividedReqRoute, $dividedRegisteredRoute);
     }
 
 
-    private function matchDivisions(array $dividedReqRoute, array $dividedRegisteredRoute): bool
+    private function matchChilds(array $dividedReqRoute, array $dividedRegisteredRoute): bool
     {
         $bracketsOpenPos = -1;
         $bracketsClosePos = -1;
 
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
             if (count($dividedRegisteredRoute) > 0) {
-                $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
-                $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
+                // $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
+                // $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
                 
-                if ($bracketsOpenPos && $bracketsClosePos) {
+                // if ($bracketsOpenPos && $bracketsClosePos) {
+                //     continue;
+                // }
+
+                if ($this->isParam($dividedRegisteredRoute[$i])) {
                     continue;
                 }
 
@@ -199,7 +222,7 @@ class Router {
      * @param array $array the array to be cleaned
      * @return array the cleaned array
      */
-    private function cleanArray(array $array): array
+    private static function cleanArray(array $array): array
     {
         $removeEmptiesFunc = fn ($value) => $value !== false && $value !== '' && $value !== null;
 
@@ -207,9 +230,9 @@ class Router {
     }
 
 
-    private function divideRoute(string $route): array
+    private static function divideRoute(string $route): array
     {
-        return $this->cleanArray(explode('/', $route));
+        return self::cleanArray(explode('/', $route));
     }
 
 
@@ -223,6 +246,23 @@ class Router {
     {
         return str_starts_with($route, API_PREFIX);
     }
+
+
+    private function isParam(string $child): bool
+    {
+        if (str_contains($child, self::PARAM_OPENER) && str_contains($child, self::PARAM_CLOSER)) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    private static function parseToParam(string $param): string
+    {
+        return self::PARAM_OPENER.$param.self::PARAM_CLOSER;
+    }
+
 
     private function sendResponse(Route $route, array $params)
     {
