@@ -9,11 +9,10 @@
         <link rel="stylesheet" href="<?= $this->css('root') ?>">
         <link rel="stylesheet" href="<?= $this->css('site') ?>">
         <link rel="stylesheet" href="<?= $this->css('header') ?>">
-        <link rel="stylesheet" href="<?= $this->css('header') ?>">
+        <link rel="stylesheet" href="<?= $this->css('product.card') ?>">
         <title><?= $title ?></title>
     </head>
     <body>
-        
         <?php $this->header(compact('user')) ?>
 
         <?php if($templateParsedName != '.templates.site.index'): ?>
@@ -31,10 +30,8 @@
         <script src="https://cdn.tailwindcss.com"></script>
 
         <script src="https://cdn.tailwindcss.com"></script>
-        <script
-            src="https://kit.fontawesome.com/fa5d3f8bd9.js"
-            crossorigin="anonymous"
-        ></script>
-
+        <script src="https://kit.fontawesome.com/fa5d3f8bd9.js" crossorigin="anonymous"></script>
+        <script src="<?= $this->js('form.checkbox') ?>"></script>
+        <script src="<?= $this->js('menu.filter') ?>"></script>
     </body>
 </html>

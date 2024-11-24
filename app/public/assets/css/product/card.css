@@ -1,0 +1,16 @@
+
+.product-card-desc-shadow {
+    position: relative;
+    height: 100px;
+    overflow: hidden;
+}
+
+.product-card-desc-shadow::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -15px;
+    right: -15px;
+    box-shadow: inset white 0 -10px 10px;
+}

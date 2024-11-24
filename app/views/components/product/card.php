@@ -1,5 +1,5 @@
 <article class="p-5 grid md:grid-cols-4 md:grid-flow-col md:gap-x-4 container-shadow">
-    <div class="w-fit flex items-center">
+    <div class="flex justify-center items-center">
         <img class="w-50" src="<?= $this->image('home.ceviche') ?>" alt="Ceviche">
     </div>
     <div class="col-span-3 w-full grid gap-y-5">
@@ -15,7 +15,7 @@
                     <button class="btn btn-secondary" type="submit">Add to cart</button>
                 </form>
             </div>
-            <p class="col-span-2 max-h-12 overflow-hidden text-ellipsis">
+            <p class="col-span-2 h-full product-card-desc-shadow">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
                 Aenean dapibus, massa et cursus viverra, libero lacus sodales sem, 
                 a ullamcorper ligula purus sed risus. Aenean vel purus consequat, 
