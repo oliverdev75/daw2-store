@@ -9,6 +9,7 @@
         <link rel="stylesheet" href="<?= $this->css('root') ?>">
         <link rel="stylesheet" href="<?= $this->css('site') ?>">
         <link rel="stylesheet" href="<?= $this->css('header') ?>">
+        <link rel="stylesheet" href="<?= $this->css('menu') ?>">
         <link rel="stylesheet" href="<?= $this->css('product.card') ?>">
         <title><?= $title ?></title>
     </head>
@@ -16,7 +17,7 @@
         <?php $this->header(compact('user')) ?>
 
         <?php if($templateParsedName != '.templates.site.index'): ?>
-            <main class="lg:mx-56">
+            <main class="lg:mx-32">
                 <?php $this->component($templateParsedName, $bodyData, 'body') ?>
             </main>
         <?php else: ?>

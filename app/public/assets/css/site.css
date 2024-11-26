@@ -21,13 +21,17 @@ h1, h2, h3 {
     size: .8rem;
 }
 
-.btn,
-.btn:hover {
+.btn {
     width: fit-content;
     display: block;
     border-radius: 3px;
     font-weight: 700;
+    text-align: center;
     color: var(--neutral-base-color);
+}
+
+.btn-full {
+    width: 100%;
 }
 
 .btn-primary {
@@ -53,6 +57,11 @@ h1, h2, h3 {
 .btn-secondary:hover {
     background-color: var(--btn-hover-secondary-backgroundColor);
 }
+
+/* .btn-tertiary:hover {
+    color: var(--neutral-base-color);
+    background-color: var(--btn-hover-tertiary-backgroundColor);
+} */
 
 .btn-tertiary:hover {
     background-color: var(--btn-hover-tertiary-backgroundColor);

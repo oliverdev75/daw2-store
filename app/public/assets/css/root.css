@@ -24,11 +24,13 @@
 
     --btn-hover-primary-backgroundColor: #1e8abe;
     --btn-hover-secondary-backgroundColor: #003555;
-    --btn-hover-tertiary-backgroundColor: #004d7b;
+    --btn-hover-tertiary-backgroundColor: #ccebfd42;
+    /* --btn-hover-tertiary-backgroundColor: #004d7b; */
 
     --btn-active-primary-backgroundColor: #14719d;
     --btn-active-secondary-backgroundColor: #002a44;
-    --btn-active-tertiary-backgroundColor: #003859;
+    --btn-active-tertiary-backgroundColor: var(--btn-hover-tertiary-backgroundColor);
+    /* --btn-active-tertiary-backgroundColor: #004d7b; */
 
     --btn-disabled-primary-backgroundColor: #14719d;
     --btn-disabled-secondary-backgroundColor: #002a44;
