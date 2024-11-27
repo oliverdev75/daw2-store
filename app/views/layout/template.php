@@ -17,7 +17,7 @@
         <?php $this->header(compact('user')) ?>
 
         <?php if($templateParsedName != '.templates.site.index'): ?>
-            <main class="lg:mx-32">
+            <main class="mx-5 sm:mx-12 min-[1290px]:mx-32">
                 <?php $this->component($templateParsedName, $bodyData, 'body') ?>
             </main>
         <?php else: ?>
@@ -27,8 +27,6 @@
         <?php endif; ?>
 
         <?php $this->footer() ?>
-        
-        <script src="https://cdn.tailwindcss.com"></script>
 
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://kit.fontawesome.com/fa5d3f8bd9.js" crossorigin="anonymous"></script>

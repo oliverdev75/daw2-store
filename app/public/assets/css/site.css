@@ -17,8 +17,8 @@ h1, h2, h3 {
     color: var(--important-heading-color) !important;
 }
 
-.icon-size {
-    size: .8rem;
+i.fa-solid path {
+    color: var(--neutral-base-color);
 }
 
 .btn {

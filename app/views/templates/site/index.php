@@ -63,7 +63,7 @@
         </div>
     </section>
 </div>
-<section class="px-7 lg:px-0 py-20 md:py-36 bg-[url(<?= $this->image('home.space') ?>)] bg-center bg-no-repeat bg-cover">
+<section class="px-7 lg:px-0 py-20 md:py-32 bg-[url(<?= $this->image('home.space') ?>)] bg-center bg-no-repeat bg-cover">
     <div class="grid justify-center justify-items-center text-center gap-y-7">
         <h3 class="text-2xl md:text-3xl min-[1121px]:text-2xl min-[1374px]:text-4xl text-white">Join us and enjoy right now of all of our delicious eats!</h3>
         <a class="btn btn-secondary" role="button" href="">Sign up</a>
