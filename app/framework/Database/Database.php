@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Database;
+namespace Framework\Database;
 
 use mysqli;
 use mysqli_result;
@@ -20,15 +20,26 @@ class Database {
     protected static function query(string $query, string $model): mixed
     {
         self::connect();
-        self::$connection->query($query);
+        $exec = self::$connection->query($query);
+        $found = self::getObjects($exec->get_result(), $model);
+        $exec->close();
 
-        return self::getObjects(self::$connection->get_result(), $model);
+        return $found;
+    }
+
+    protected function execPrepared(string $query, array $paramBinders, string $model): array
+    {
+        self::connect();
+        $exec = $this->connection->prepare($query)->execute();
+        $found = $this->getObjects($exec->get_results(), $model);
+        $exec->close();
+
+        return $found;
     }
 
 
     protected static function getObjects(mysqli_result $found, string $model): array
     {
-        self::connect();
         $modelRows = [];
         while ($entity = $found->fetch_object($model)) {
             array_push($modelRows, $entity);

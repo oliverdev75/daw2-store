@@ -2,7 +2,10 @@
 
 namespace App\Database;
 
-abstract class Model extends Database {
+use Framework\Database\Database;
+use Framework\Database\QueryBuilder;
+
+class Model extends Database {
 
     protected static function all(): array
     {
@@ -16,15 +19,11 @@ abstract class Model extends Database {
         return $rows;
     }
 
-    abstract static function filter(): array;
-
     protected static function find(int $id): Model
     {
-        self::$connection->prepare('select * from ' . strtolower(get_called_class()) . ' where id = ?');
-        self::$connection->bind_param('i', $id);
-        self::$connection->execute();
+        $query = new QueryBuilder(get_called_class());
 
-        return self::getObjects(self::$connection->get_result(), get_called_class())[0];
+        return $query->where('id', $id)->get()[0];
     }
 
 }
