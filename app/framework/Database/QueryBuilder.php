@@ -49,7 +49,7 @@ class QueryBuilder extends Database {
 
     function setCondition(string $column, string $condOperator, mixed $value, string $sequenceOperator): QueryBuilder
     {
-        array_push($this->filterStrings, "$column $condOperator :$column $sequenceOperator");
+        array_push($this->filterParams, "$column $condOperator :$column $sequenceOperator");
         $dataType = 's';
 
         $this->paramBinders[":$column"] = $value;

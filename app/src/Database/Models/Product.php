@@ -8,8 +8,5 @@ class Product extends Model {
 
     public function __construct(){}
 
-    static function filter(string $category = ''): array
-    {
-        
-    }
+
 }

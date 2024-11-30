@@ -4,6 +4,7 @@ namespace Framework\Database;
 
 use mysqli;
 use mysqli_result;
+use ReflectionClass;
 
 class Database {
 
@@ -30,7 +31,8 @@ class Database {
     protected function execPrepared(string $query, array $paramBinders, string $model): array
     {
         self::connect();
-        $exec = $this->connection->prepare($query)->execute();
+        $prepQuery = null;
+        $exec = $this->connection->query($query);
         $found = $this->getObjects($exec->get_results(), $model);
         $exec->close();
 
@@ -46,5 +48,13 @@ class Database {
         }
 
         return $modelRows;
+    }
+
+    private function checkDataTypes(array $paramBinders): void
+    {
+        $modelClass = new ReflectionClass(get_called_class());
+        foreach ($modelClass->getProperties() as $prop) {
+            if ($prop)
+        }
     }
 }
