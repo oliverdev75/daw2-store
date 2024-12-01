@@ -5,9 +5,10 @@ namespace App\Controllers;
 use Framework\Response\Send;
 use Framework\Response\Types\View;
 use Framework\Response\Types\Json;
-use App\Database\Models\User;
+use App\Models\User;
 
-class UserController extends Controller {
+class UserController extends Controller
+{
 
     function login(): View
     {
@@ -21,8 +22,12 @@ class UserController extends Controller {
 
     function show(
         $id
-    ): Json
-    {
-        return Send::json([User::find($id)]);
+    ): Json {
+        // $users = [];
+        // foreach (User::all() as $user) {
+        //     $users[] = $user->toArray();
+        // }
+        // return Send::json(['data' => $users]);
+        return Send::json(['data' => User::where('role', 'editor')->set('surnames', 'sf')->update()]);
     }
 }
