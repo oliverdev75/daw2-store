@@ -21,15 +21,23 @@ class Database
 
     protected static function connect(): void
     {
-        self::$connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT);
+        self::$connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_SOCKET);
     }
 
 
-    protected static function query(string $query, string $model): mixed
+    public static function query(string $query): mixed
     {
         self::connect();
-        $found = self::getObjects(self::$connection->query($query), $model);
-        // var_dump($query);
+        $result = self::$connection->query($query);
+        self::$connection->close();
+
+        return $result;
+    }
+
+    protected static function queryObjects(string $query, string $model): mixed
+    {
+        self::connect();
+        $found = self::parseObjects(self::$connection->query($query), $model);
         self::$connection->close();
 
         return $found;
@@ -42,7 +50,7 @@ class Database
         $preparedQuery = $this->execPrepared($query, $paramBinders, $typeIndicators);
         // $this->query = $this->prepareQuery($query, $paramBinders);
 
-        $found = $this->getObjects($preparedQuery->get_result(), $model);
+        $found = $this->parseObjects($preparedQuery->get_result(), $model);
         self::$connection->close();
         
         return $found;
@@ -53,18 +61,17 @@ class Database
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);
         $this->query = preg_replace('/(?J)[ ]+(?<columns>:([a-zA-Z]+)[0-9]?)[ ]{0,}/', ' ? ', $query);
+        
         $preparedQuery = self::$connection->prepare($this->query);
         $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
-        var_dump($paramBinders, $typeIndicators);
         $preparedQuery->execute();
-        var_dump($this->query);
         // $this->query = $this->prepareQuery($query, $paramBinders);
         
         return $preparedQuery;
     }
 
 
-    protected static function getObjects(mysqli_result $found, string $model): array
+    protected static function parseObjects(mysqli_result $found, string $model): array
     {
         $modelRows = [];
         while ($modelUnit = $found->fetch_object($model)) {

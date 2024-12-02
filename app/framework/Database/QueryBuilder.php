@@ -7,11 +7,12 @@ class QueryBuilder extends Database
 {
 
     protected $model;
-    protected $filterParams = [];
+    protected $conditionParams = [];
     protected $updateParams = [];
-    protected $paramBinders;
-    protected $updateTypeIndicators;
-    protected $typeIndicators = '';
+    protected $conditionParamBinders = [];
+    protected $updateParamBinders = [];
+    protected $updateTypeIndicators = '';
+    protected $conditionTypeIndicators = '';
     protected $order = '';
 
     function __construct(string $model)
@@ -59,24 +60,24 @@ class QueryBuilder extends Database
 
     function in(string $column, array $values): self
     {
-        $this->filterParams[] = "and $column in(";
-        $conditionPos = count($this->filterParams) - 1;
+        $this->conditionParams[] = "and $column in(";
+        $conditionPos = count($this->conditionParams) - 1;
 
         foreach ($values as $value) {
             if (is_string($value)) {
-                $this->typeIndicators .= 's';
+                $this->conditionTypeIndicators .= 's';
             } else if (is_int($value)) {
-                $this->typeIndicators .= 'i';
+                $this->conditionTypeIndicators .= 'i';
             } else if (is_float($value)) {
-                $this->typeIndicators .= 'f';
+                $this->conditionTypeIndicators .= 'f';
             }
 
-            $this->filterParams[$conditionPos] .= "?,";
-            $this->paramBinders[] = $value;
+            $this->conditionParams[$conditionPos] .= "?,";
+            $this->conditionParamBinders[] = $value;
         }
 
-        $this->filterParams[$conditionPos] = rtrim($this->filterParams[$conditionPos], ',');
-        $this->filterParams[$conditionPos] .= ')';
+        $this->conditionParams[$conditionPos] = rtrim($this->conditionParams[$conditionPos], ',');
+        $this->conditionParams[$conditionPos] .= ')';
 
         return $this;
     }
@@ -105,21 +106,26 @@ class QueryBuilder extends Database
      */
     private function setParam(string $column, string $condOperator, mixed $value, string $sequenceOperator = ', '): void
     {
+        $typeIndicatorsProperty = 'conditionTypeIndicators';
+        $paramsProperty = 'conditionParams';
+        $paramBindersProperty = 'conditionParamBinders';
+
+        if ($sequenceOperator == ', ') {
+            $typeIndicatorsProperty = 'updateTypeIndicators';
+            $paramsProperty = 'updateParams';
+            $paramBindersProperty = 'updateParamBinders';
+        }
+
         if (is_string($value)) {
-            $this->typeIndicators .= 's';
+            $this->$typeIndicatorsProperty .= 's';
         } else if (is_int($value)) {
-            $this->typeIndicators .= 'i';
+            $this->$typeIndicatorsProperty .= 'i';
         } else if (is_float($value)) {
-            $this->typeIndicators .= 'f';
+            $this->$typeIndicatorsProperty .= 'f';
         }
 
-        if ($sequenceOperator != ', ') {
-            $this->filterParams[] = "$sequenceOperator $column $condOperator :$column";
-        } else {
-            $this->updateParams[] = "$sequenceOperator $column $condOperator :$column";
-        }
-
-        $this->paramBinders[] = $value;
+        array_push($this->$paramsProperty, "$sequenceOperator $column $condOperator :$column");
+        array_push($this->$paramBindersProperty, $value);
     }
 
 
@@ -146,8 +152,8 @@ class QueryBuilder extends Database
     {
         return $this->select(
             "select * from {$this->table($this->model)} where {$this->parseFilterParams()}",
-            $this->paramBinders,
-            $this->typeIndicators,
+            array_merge($this->conditionParamBinders, $this->updateParamBinders),
+            $this->conditionTypeIndicators . $this->updateTypeIndicators,
             $this->model
         );
     }
@@ -161,8 +167,8 @@ class QueryBuilder extends Database
     {
         $this->execPrepared(
             "update {$this->table($this->model)} set {$this->parseUpdateParams()} where {$this->parseFilterParams()}",
-            $this->paramBinders,
-            $this->typeIndicators
+            array_merge($this->conditionParamBinders, $this->updateParamBinders),
+            $this->conditionTypeIndicators . $this->updateTypeIndicators
         );
     }
 
@@ -175,8 +181,8 @@ class QueryBuilder extends Database
     {
         $this->execPrepared(
             "delete from table {$this->table($this->model)} where {$this->parseFilterParams()}",
-            $this->paramBinders,
-            $this->typeIndicators
+            array_merge($this->conditionParamBinders, $this->updateParamBinders),
+            $this->conditionTypeIndicators . $this->updateTypeIndicators
         );
     }
 
@@ -187,7 +193,7 @@ class QueryBuilder extends Database
      */
     private function parseFilterParams()
     {
-        $string = implode(' ', $this->filterParams);
+        $string = implode(' ', $this->conditionParams);
         $parsed = preg_replace('/^(and|or )/', '', $string);
 
         return $parsed;

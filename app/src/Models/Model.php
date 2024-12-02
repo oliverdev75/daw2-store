@@ -10,7 +10,7 @@ class Model extends Database
 
     static function all(): array
     {
-        $rows = self::query(
+        $rows = self::queryObjects(
             "select * from " . self::table(get_called_class()),
             get_called_class()
         );

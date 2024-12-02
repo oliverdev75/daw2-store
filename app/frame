@@ -1,0 +1,16 @@
+<?php
+
+use App\Models\Product;
+use Framework\Database\Database;
+
+require('vendor/autoload.php');
+
+define('MIGRATIONS_DIR', '/migrations');
+
+if ($argv[1] == 'migrate') {
+    echo PROJECT_ROOT;
+    /* foreach (scandir(PROJECT_ROOT.'/migrations') as $migrationFile) {
+        $migration = file_get_contents($migrationFile);
+        Database::query($migration);
+    } */
+}
