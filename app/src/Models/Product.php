@@ -7,5 +7,6 @@ use App\Models\Model;
 class Product extends Model
 {
 
-    public function __construct() {}
+    function __construct(){}
+    
 }

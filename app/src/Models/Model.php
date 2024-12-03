@@ -8,6 +8,8 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
+    public int $id;
+
     static function all(): array
     {
         $rows = self::queryObjects(
@@ -73,6 +75,6 @@ class Model extends Database
      */
     protected function getCreationTime()
     {
-        return $this->creation_time;
+        return $this->create_time;
     }
 }

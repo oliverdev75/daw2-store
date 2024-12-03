@@ -2,6 +2,7 @@
 
 namespace Framework\Database;
 
+use ReflectionClass;
 
 class QueryBuilder extends Database
 {
@@ -167,8 +168,8 @@ class QueryBuilder extends Database
     {
         $this->execPrepared(
             "update {$this->table($this->model)} set {$this->parseUpdateParams()} where {$this->parseFilterParams()}",
-            array_merge($this->conditionParamBinders, $this->updateParamBinders),
-            $this->conditionTypeIndicators . $this->updateTypeIndicators
+            array_merge($this->updateParamBinders, $this->conditionParamBinders),
+            $this->updateTypeIndicators . $this->conditionTypeIndicators
         );
     }
 
