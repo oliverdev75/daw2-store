@@ -1,7 +1,12 @@
 <?php
 
-abstract class Product {
+namespace App\Models;
 
-    public function __construct(){}
+use App\Models\Model;
 
+class Product extends Model
+{
+
+    function __construct(){}
+    
 }
