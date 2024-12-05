@@ -17,8 +17,8 @@ h1, h2, h3 {
     color: var(--important-heading-color) !important;
 }
 
-i.fa-solid path {
-    color: var(--neutral-base-color);
+.icon-white svg {
+    color: var(--neutral-base-color) !important;
 }
 
 .btn {
@@ -105,4 +105,13 @@ i.fa-solid path {
 
 .container-shadow {
     box-shadow: 2px 4px 10.8px 4px rgb(202,204,203,0.5);
+}
+
+.sidepanel-toggler-button ~ .sidepanel {
+    will-change: transform;
+    transition: transform .25s ease-in-out;
+}
+
+.sidepanel-toggler-button:checked ~ .sidepanel {
+    transform: translateX(-240px);
 }
