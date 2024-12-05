@@ -6,11 +6,7 @@ use App\Models\Model;
 
 class User extends Model
 {
-    public string $name;
-    public ?string $surnames = null;
-    public string $username;
-    public string $password;
-    public string $role;
+    
 
     function __construct() {}
 

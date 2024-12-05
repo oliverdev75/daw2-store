@@ -37,6 +37,7 @@ class Database
     protected static function queryObjects(string $query, string $model): mixed
     {
         self::connect();
+        var_dump($query);
         $found = self::parseObjects(self::$connection->query($query), $model);
         self::$connection->close();
 
@@ -60,7 +61,9 @@ class Database
     {
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);
-        $this->query = preg_replace('/(?J)[ ]+(?<columns>:([a-zA-Z]+)[0-9]?)[ ]{0,}/', ' ? ', $query);
+        $this->query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
+        var_dump($this->query);
+        var_dump($paramBinders);
         
         $preparedQuery = self::$connection->prepare($this->query);
         $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
@@ -69,7 +72,6 @@ class Database
         
         return $preparedQuery;
     }
-
 
     protected static function parseObjects(mysqli_result $found, string $model): array
     {
