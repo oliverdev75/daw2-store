@@ -2,12 +2,3 @@
 header label {
     cursor: pointer;
 }
-
-#header-nav-toggler-button ~ #header-nav {
-    will-change: transform;
-    transition: transform .25s ease-in-out;
-}
-
-#header-nav-toggler-button:checked ~ #header-nav {
-    transform: translateX(-240px);
-}

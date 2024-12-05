@@ -1,9 +1,38 @@
 #!/bin/bash
 
-host=localhost
-port=3000
+message() {
+    echo "$(tput setab $2)"
+    echo -e " $1 $(tput sgr0)"
+    echo "$3"
+}
 
-if [ -n $2 ]
+color_reset() {
+    echo -e "\e[0m"
+}
+
+info() {
+    message "INFO" 6 $1
+}
+
+success() {
+    message "SUCCESS" 2 $1
+}
+
+warn() {
+    message "WARNING" 3 $1
+}
+
+danger() {
+    message "ERROR" 1 $1
+}
+
+
+host=127.0.0.1
+port=3000
+app_root=~/Documents/Dev/projects/restaurant/app/public
+empty=
+
+if [ "$2" = '' ]
 then
     host=$(echo $2 | cut -d':' -f1)
     if [ $(echo $2 | cut -d':' -f2) ]
@@ -12,19 +41,29 @@ then
     fi
 fi
 
-case $1 in
-    'run')
-        if ! [ $(ps -a | grep php | cut -d' ' -f3) ]
-        then
-            php -S $host:$port -t public &
-        else
-            echo -e "\n\tThere's a server already running on http://$host:$port\n"
-        fi
-    ;;
-    'stop')
-        if [ $(ps -a | grep php | cut -d' ' -f3) ]
-        then
-            kill -9 $(ps -a | grep php | cut -d' ' -f3)
-        fi
-    ;;
-esac
+if [ "$1" = '' ]
+then
+    case $1 in
+        'run')
+            if ! [ $(ps -a | grep php | cut -d' ' -f3) ]
+            then
+                echo $host
+                empty=$(php -S $host:$port -t $app_root)
+                echo $empty
+            else
+                info "There's a server already running on http://$host:$port"
+            fi
+        ;;
+        'stop')
+            if [ $(ps -a | grep php | cut -d' ' -f3) ]
+            then
+                kill -9 $(ps -a | grep php | cut -d' ' -f3)
+            fi
+        ;;
+        *)
+            danger "Oups! The command does not exist."
+        ;;
+    esac
+else
+    info "You must provide an argument, like \"run\" or \"stop\"."
+fi

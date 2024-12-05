@@ -74,7 +74,6 @@ class Router {
         $route = self::getName($name);
 
         if ($params) {
-            $dividedRoute = self::divideRoute($route);
             foreach ($params as $param => $value) {
                 $route = str_replace(self::parseToParam($param), $value, $route);
             }

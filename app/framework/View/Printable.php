@@ -61,7 +61,7 @@ class Printable {
 
     protected function route(string $routeName): string
     {
-        return Router::route($routeName);
+        return APP_URL.Router::route($routeName);
     }
 
     /**
