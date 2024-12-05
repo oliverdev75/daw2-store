@@ -20,7 +20,6 @@
                             </button>
                         </label>
                         <?php $this->component('side_hidden_panel.open', ['id' => 'menu-filter-btn']) ?>
-                            <div class="menu-filter hidden min-[1120px]:block h-fit">
                                 <form class="grid gap-y-5" method="get">
                                     <h2 class="text-2xl">Filter</h2>
                                     <div class="flex flex-col gap-y-3">
