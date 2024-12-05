@@ -17,3 +17,11 @@ define('ASSETS_PATH', '/assets');
 /* Routes */
 
 define('API_PREFIX', '/api');
+
+/* Database */
+
+define('DB_HOST', 'localhost');
+define('DB_PORT', '3333');
+define('DB_USER', 'restaurant');
+define('DB_PASSWORD', 'P@ssw0rd');
+define('DB_NAME', 'restaurant');
