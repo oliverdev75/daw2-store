@@ -34,13 +34,6 @@ class Model extends Database
         return $query->where(...$args);
     }
 
-    static function orWhere(...$args): QueryBuilder
-    {
-        $query = new QueryBuilder(get_called_class());
-
-        return $query->orWhere(...$args);
-    }
-
     static function in(string $column, array $args): QueryBuilder
     {
         $query = new QueryBuilder(get_called_class());
