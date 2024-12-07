@@ -18,7 +18,7 @@
         <?php $this->header(compact('user')) ?>
 
         <?php if($templateParsedName != '.templates.site.index'): ?>
-            <main class="mx-5 sm:mx-12 min-[1290px]:mx-32">
+            <main class="mx-5 sm:mx-12 min-[1700px]:mx-32 min-[1900px]:mx-80">
                 <?php $this->component($templateParsedName, $bodyData, 'body') ?>
             </main>
         <?php else: ?>

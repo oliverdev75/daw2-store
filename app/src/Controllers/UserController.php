@@ -20,6 +20,11 @@ class UserController extends Controller
         return Send::view('user.signup');
     }
 
+    function cart(): View
+    {
+        return Send::view('user.cart');
+    }
+
     function show(
         $id
     ): Json {
