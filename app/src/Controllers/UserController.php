@@ -22,7 +22,9 @@ class UserController extends Controller
 
     function auth($username, $password): void
     {
-        $user = User::where('username')
+        $user = User::where('username', $username)->where('password', password_hash($password, PASSWORD_BCRYPT))->get();
+
+        if 
     }
 
     function cart(): View
