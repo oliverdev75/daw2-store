@@ -20,6 +20,11 @@ class UserController extends Controller
         return Send::view('user.signup');
     }
 
+    function auth($username, $password): void
+    {
+        $user = User::where('username')
+    }
+
     function cart(): View
     {
         return Send::view('user.cart');

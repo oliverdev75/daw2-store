@@ -1,4 +1,3 @@
-
 <header class="w-full px-7 py-5 shadow-lg">
     <nav class="w-full grid grid-flow-col justify-between items-center overflow-hidden">
         <a class="w-fit flex gap-x-3 items-center" href="/">
@@ -21,7 +20,7 @@
                     <a class="font-bold" href="/">Home</a>
                 </li>
                 <li>
-                    <a class="font-bold" href="<?= $this->route('menu') ?>">Menu</a>
+                    <a class="font-bold" href="<?= $this->route('product.index') ?>">Menu</a>
                 </li>
                 <li>
                     <a class="font-bold" href="<?= $this->route('offers') ?>">Offers</a>

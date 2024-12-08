@@ -5,7 +5,7 @@ namespace App\Controllers;
 use Framework\Response\Send;
 use Framework\Response\Types\View;
 
-class SiteController extends Controller
+class CartController extends Controller
 {
 
     function index(): View

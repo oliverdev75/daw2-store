@@ -2,7 +2,7 @@
     <div class="row-span-2 md:row-span-1 lg:row-span-2 w-full pb-5 min-[1024px]:px-16 min-[1506px]:px-32 grid grid-cols-1 md:grid-cols-2 md:auto-cols-max justify-center justify-items-center md:gap-x-6">
         <ul class="w-fit grid justify-items-center md:justify-items-start auto-rows-max auto-cols-max gap-y-4 md:gap-y-2">
             <li><a href="/">Home</a></li>
-            <li><a href="<?= $this->route('menu') ?>">Menu</a></li>
+            <li><a href="<?= $this->route('product.index') ?>">Menu</a></li>
             <li><a href="<?= $this->route('offers') ?>">Offers</a></li>
             <li><a href="<?= $this->route('site.aboutus') ?>">About us</a></li>
         </ul>

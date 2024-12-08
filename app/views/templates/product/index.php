@@ -5,7 +5,7 @@
         <div class="grid min-[1120px]:grid-cols-5 md:gap-x-16">
             <?php $this->component('menu.filter') ?>
             <div class="min-[1120px]:col-span-4 grid min-[1120px]:grid-cols-1 gap-y-16">
-                <form action="<?= $this->route('menu') ?>" method="get">
+                <form action="<?= $this->route('product.index') ?>" method="get">
                     <div class="grid grid-rows-3 sm:grid-rows-2 grid-cols-1 sm:grid-cols-2 justify-items-center sm:justify-items-start gap-y-2 sm:gap-y-4">
                         <div class="sm:col-span-2 w-full h-fit px-5 sm:px-3 py-[6px] flex gap-2 sm:gap-0 justify-between rounded-[0.1rem] border border-solid border-neutral-500 text-neutral-500">
                             <input class="w-full focus:outline-none" type="text" name="<?= $name ?>" placeholder="Search by product name..." value="<?= $defaultValue ?>">
