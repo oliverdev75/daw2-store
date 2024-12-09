@@ -59,7 +59,7 @@ class Router
         }
     }
 
-    private static function getName(string $routeName): string
+    private static function getRouteUri(string $routeName): string
     {
         foreach (self::$routes as $route) {
             if ($route->getName() == $routeName) {
@@ -72,7 +72,7 @@ class Router
 
     static function route(string $name, ?array $params = null): string
     {
-        $route = self::getName($name);
+        $route = self::getRouteUri($name);
 
         if ($params) {
             foreach ($params as $param => $value) {

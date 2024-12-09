@@ -20,11 +20,30 @@ class UserController extends Controller
         return Send::view('user.signup');
     }
 
-    function auth($username, $password): void
+    function auth($username, $password)
     {
         $user = User::where('username', $username)->where('password', password_hash($password, PASSWORD_BCRYPT))->get();
 
-        if 
+        if ($user) {
+            session_start();
+            return Send::redirect();
+        }
+
+        return Send::view('user.login');
+    }
+
+    function current()
+    {
+        if (isset($_SESSION['user'])) {
+            return $_SESSION['user'];
+        }
+
+        return null;
+    }
+
+    function logout()
+    {
+        session_destroy();
     }
 
     function cart(): View

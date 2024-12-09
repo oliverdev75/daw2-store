@@ -29,10 +29,10 @@
                     <a class="font-bold" href="<?= $this->route('site.aboutus') ?>">About us</a>
                 </li>
                 <li>
-                    <a class="font-bold" href="<?= $this->route('account.signup') ?>">Log in</a>
+                    <a class="font-bold" href="<?= $this->route('user.login') ?>">Log in</a>
                 </li>
                 <li>
-                    <a class="btn btn-primary font-bold" href="<?= $this->route('account.signup') ?>" role="button" title="Sign up">Sign up</a>
+                    <a class="btn btn-primary font-bold" href="<?= $this->route('user.signup') ?>" role="button" title="Sign up">Sign up</a>
                 </li>
             </ul>
         </div>
