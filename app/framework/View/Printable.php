@@ -4,9 +4,10 @@ namespace Framework\View;
 
 use Framework\Routing\Router;
 
-class Printable {
+class Printable
+{
 
-    protected const VIEWS_PATH = __DIR__.'/../../views';
+    protected const VIEWS_PATH = __DIR__ . '/../../views';
     protected const ASSETS_PATH = '/assets';
     protected $data;
     protected $path;
@@ -51,7 +52,7 @@ class Printable {
             default => $type
         };
 
-        return self::ASSETS_PATH."/{$type}/{$parsedName}.{$extension}";
+        return self::ASSETS_PATH . "/{$type}/{$parsedName}.{$extension}";
     }
 
     protected function component(string $name, array | null $data = null, string $type = 'components'): Component
@@ -59,14 +60,14 @@ class Printable {
         return new Component($name, $data, $type);
     }
 
-    protected function route(string $routeName): string
+    protected function route(string $routeName, ?array $params = null): string
     {
-        return Router::route($routeName);
+        return Router::route($routeName, $params);
     }
 
     /**
      * Get the value of path
-     */ 
+     */
     public function getPath()
     {
         return $this->path;

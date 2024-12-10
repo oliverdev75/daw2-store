@@ -1,4 +1,3 @@
-
 <header class="w-full px-7 py-5 shadow-lg">
     <nav class="w-full grid grid-flow-col justify-between items-center overflow-hidden">
         <a class="w-fit flex gap-x-3 items-center" href="/">
@@ -6,13 +5,13 @@
             <span class="text-xl font-bold hidden md:inline">SymfonyRestaurant</span>
         </a>
         <label class="lg:hidden" for="header-nav-toggler-button" aria-label="Toggle navigation">
-            <span class="fas fa-bars text-2xl"></span>
+            <i class="bi bi-list text-3xl"></i>
         </label>
-        <input id="header-nav-toggler-button" class="hidden" type="checkbox">
-        <div id="header-nav" class="h-full w-60 lg:w-fit py-10 px-10 lg:p-0 fixed lg:static top-0 right-[-240px] flex flex-col lg:flex-row gap-3 lg:gap-5 bg-white shadow-lg lg:shadow-none lg:justify-end lg:items-center">
+        <input id="header-nav-toggler-button" class="sidepanel-toggler-button hidden" type="checkbox">
+        <div class="sidepanel h-full w-60 lg:w-fit py-10 px-10 lg:p-0 fixed lg:static top-0 right-[-240px] flex flex-col lg:flex-row gap-3 lg:gap-5 bg-white shadow-lg lg:shadow-none lg:justify-end lg:items-center">
             <div class="w-full flex lg:hidden justify-end">
                 <label for="header-nav-toggler-button" aria-label="Toggle navigation">
-                    <span class="fas fa-xmark text-2xl"></span>
+                    <i class="bi bi-x-lg text-2xl"></i>
                 </label>
             </div>
             <ul class="w-full lg:w-fit lg:h-fit grid lg:grid-flow-col gap-y-5 auto-cols-max auto-rows-min
@@ -21,7 +20,7 @@
                     <a class="font-bold" href="/">Home</a>
                 </li>
                 <li>
-                    <a class="font-bold" href="<?= $this->route('menu') ?>">Menu</a>
+                    <a class="font-bold" href="<?= $this->route('product.index') ?>">Menu</a>
                 </li>
                 <li>
                     <a class="font-bold" href="<?= $this->route('offers') ?>">Offers</a>
@@ -29,41 +28,21 @@
                 <li>
                     <a class="font-bold" href="<?= $this->route('site.aboutus') ?>">About us</a>
                 </li>
-                <li>
-                    <a class="font-bold" href="<?= $this->route('account.signup') ?>">Log in</a>
-                </li>
-                <li>
-                    <a class="btn btn-primary font-bold" href="<?= $this->route('account.signup') ?>" role="button" title="Sign up">Sign up</a>
-                </li>
+                <?php if (!is_null($user)): ?>
+                    <li>
+                        <a href="<?= $this->route('user.cart') ?>">
+                            <i class="bi bi-cart2"></i>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a class="font-bold" href="<?= $this->route('user.login') ?>">Log in</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-primary font-bold" href="<?= $this->route('user.signup') ?>" role="button" title="Sign up">Sign up</a>
+                    </li>
+                <?php endif ?>
             </ul>
         </div>
     </nav>
-    <!-- <div class="h-full w-60 lg:w-fit py-10 px-10 lg:p-0 absolute lg:static top-0 flex flex-col lg:flex-row gap-3 lg:gap-5 bg-white shadow-lg
-    lg:shadow-none lg:justify-end lg:items-center" id="header-nav">
-            <div class="w-full flex lg:hidden justify-end">
-                <label for="header-nav-toggler-button" aria-label="Toggle navigation">
-                    <span class="fas fa-xmark text-2xl"></span>
-                </label>
-            </div>
-            <ul class="w-full lg:w-fit lg:h-fit grid lg:grid-flow-col gap-y-5 auto-cols-max auto-rows-min lg:justify-end lg:items-center lg:gap-0 lg:gap-x-7">
-                <li>
-                    <a class="font-bold" href="#">Home</a>
-                </li>
-                <li>
-                    <a class="font-bold" href="#">Menu</a>
-                </li>
-                <li>
-                    <a class="font-bold" href="#">Offers</a>
-                </li>
-                <li>
-                    <a class="font-bold" href="#">About us</a>
-                </li>
-                <li>
-                    <a class="font-bold" href="#">Log in</a>
-                </li>
-                <li class="">
-                    <a class="btn btn-primary font-bold" href="#" role="button" title="Sign up">Sign up</a>
-                </li>
-            </ul>
-    </div> -->
 </header>

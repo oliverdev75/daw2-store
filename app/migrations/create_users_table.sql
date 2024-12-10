@@ -1,5 +1,5 @@
--- Active: 1733158023054@@127.0.0.1@3336@restaurant
-CREATE TABLE IF NOT EXISTS users(  
+-- Active: 1733012109098@@127.0.0.1@3333@restaurant
+CREATE TABLE IF NOT EXISTS users (
     id int NOT NULL PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(20),
     surnames VARCHAR(30),

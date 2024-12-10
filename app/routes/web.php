@@ -1,18 +1,29 @@
 <?php
 
 use Framework\Routing\Route;
-use Framework\Routing\Router;
-use Framework\Response\Send;
-use App\Controllers\SiteController;
+use App\Controllers\GeneralController;
 use App\Controllers\UserController;
+use App\Controllers\ProductController;
+use App\Controllers\CartController;
 
-Route::controller(SiteController::class, function () {
+Route::controller(GeneralController::class, function () {
     Route::get('main', '/', 'index');
-    Route::get('menu', '/menu', 'menu');
-    Route::get('cart', '/cart', 'cart');
 });
 
 Route::controller(UserController::class, function () {
-    Route::get('account.login', '/login', 'login');
-    Route::get('account.signup', '/signup', 'signup');
+    Route::get('user.login', '/login', 'login');
+    Route::post('user.auth', '/login', 'auth');
+    Route::get('user.signup', '/signup', 'signup');
+    Route::post('user.store', '/signup', 'store');
+    Route::get('user.cart', '/cart', 'cart');
+});
+
+Route::controller(ProductController::class, function () {
+    Route::get('product.index', '/menu', 'index');
+    Route::get('product.show', '/product/{id}', 'show');
+});
+
+Route::controller(CartController::class, function () {
+    Route::post('cart.addproduct', '/cart/product/add', 'add');
+    Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
 });

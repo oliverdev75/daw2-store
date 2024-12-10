@@ -59,7 +59,7 @@ class Router
         }
     }
 
-    private static function getName(string $routeName): string
+    private static function getRouteUri(string $routeName): string
     {
         foreach (self::$routes as $route) {
             if ($route->getName() == $routeName) {
@@ -70,12 +70,11 @@ class Router
         return '';
     }
 
-    static function route(string $name, array $params = []): string
+    static function route(string $name, ?array $params = null): string
     {
-        $route = self::getName($name);
+        $route = self::getRouteUri($name);
 
         if ($params) {
-            $dividedRoute = self::divideRoute($route);
             foreach ($params as $param => $value) {
                 $route = str_replace(self::parseToParam($param), $value, $route);
             }

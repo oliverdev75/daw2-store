@@ -67,6 +67,7 @@ class Database
         $preparedQuery->execute();
         // $this->query = $this->prepareQuery($query, $paramBinders);
 
+
         return $preparedQuery;
     }
 
@@ -92,6 +93,7 @@ class Database
     //                 break;
     //             }
     //         }
+
 
     //         if (!$foundParam) {
     //             throw new LogicException("Model property not found.");
