@@ -4,18 +4,19 @@ namespace Framework\Response\Types;
 
 use Framework\Routing\Router;
 
-class Redirection {
+class Redirection
+{
 
     protected $uri;
 
     function __construct(string $uri = '/')
     {
-        $this->uri = $uri;    
+        $this->uri = $uri;
     }
 
-    function route(string $routeName): self
+    function route(string $routeName, ?array $params = null, ?array $queryParams = null): self
     {
-        $this->uri = Router::getRoute($routeName);
+        $this->uri = Router::getRoute($routeName, $params, $queryParams);
         return $this;
     }
 

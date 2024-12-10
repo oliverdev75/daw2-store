@@ -70,7 +70,7 @@ class Router
         return '';
     }
 
-    static function getRoute(string $name, ?array $params = null): string
+    static function getRoute(string $name, ?array $params = null, ?array $queryParams = null): string
     {
         $route = self::getRouteUri($name);
 
@@ -78,6 +78,15 @@ class Router
             foreach ($params as $param => $value) {
                 $route = str_replace(self::parseToParam($param), $value, $route);
             }
+        }
+
+        if ($queryParams) {
+            $queryString = '';
+            foreach ($queryParams as $key => $value) {
+                $queryString .= "$key=$value&&";
+            }
+
+            return $route . rtrim("?$queryString", '&&');
         }
 
         return $route;
