@@ -11,7 +11,6 @@ class SiteController extends Controller
 
     function index(): View
     {
-        User::create([]);
         return Send::view('site.index');
     }
 

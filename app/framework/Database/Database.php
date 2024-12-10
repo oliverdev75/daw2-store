@@ -12,7 +12,7 @@ class Database
 {
 
     private static $connection;
-    private $query;
+    private static $query;
 
     protected static function table(string $name): string
     {
@@ -61,11 +61,9 @@ class Database
     {
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);
-        $this->query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
-        var_dump($this->query);
-        var_dump($paramBinders);
+        self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
 
-        $preparedQuery = self::$connection->prepare($this->query);
+        $preparedQuery = self::$connection->prepare(self::$query);
         $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
         $preparedQuery->execute();
         // $this->query = $this->prepareQuery($query, $paramBinders);

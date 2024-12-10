@@ -12,18 +12,23 @@ class Model extends Database
     {
         $table = self::table(get_called_class());
         $values['create_time'] = date('c');
-        $columns = array_reduce(array_keys($values), fn($columnsLine, $value) => $columnsLine .= "{$value}, ", '');
-        $typeIndicators = array_reduce($values, function ($types, $value) {
-            if (is_string($value)) {
-                $types .= 's';
-            } else if (is_int($value)) {
-                $types .= 'i';
-            } else if (is_float($value) || is_double($value)) {
-                $types .= 'f';
-            }
-        }, '');
 
-        self::execPrepared("insert into $table ($columns) values ($values)", array_values($values), $typeIndicators);
+        $data = array_values($values);
+        $columns = rtrim(array_reduce(array_keys($values), fn($columnsLine, $value) => $columnsLine .= "{$value}, ", ''), ', ');
+        $valuesBinders = rtrim(array_reduce($data, fn($binders, $value) => $binders .= "?, ", ''), ', ');
+        $typeIndicators = '';
+
+        foreach (array_values($values) as $value) {
+            if (is_string($value)) {
+                $typeIndicators .= 's';
+            } else if (is_int($value)) {
+                $typeIndicators .= 'i';
+            } else if (is_float($value) || is_double($value)) {
+                $typeIndicators .= 'f';
+            }
+        }
+
+        self::execPrepared("insert into $table ($columns) values ($valuesBinders)", $data, $typeIndicators);
     }
 
     static function all(): array
