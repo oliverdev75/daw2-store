@@ -74,7 +74,7 @@
                         <?php endforeach ?>
                     </div>
                 <?php else: ?>
-                    <div class="grid place-content-center">
+                    <div class="w-full h-full grid place-content-center">
                         <p class="text-neutral-400">There're no products</p>
                     </div>
                 <?php endif ?>

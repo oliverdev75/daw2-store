@@ -1,4 +1,8 @@
 
+header a {
+    color: inherit !important;
+}
+
 header label {
     cursor: pointer;
 }

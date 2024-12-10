@@ -26,6 +26,7 @@ class UserController extends Controller
 
         if ($user) {
             session_start();
+            $_SESSION['user'] = $user;
             return Send::redirect();
         }
 
