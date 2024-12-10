@@ -12,11 +12,11 @@ class Database
 {
 
     private static $connection;
-    private $query;
+    private static $query;
 
     protected static function table(string $name): string
     {
-        return strtolower(explode('\\', $name)[count(explode('\\', $name)) - 1]).'s';
+        return strtolower(explode('\\', $name)[count(explode('\\', $name)) - 1]) . 's';
     }
 
     protected static function connect(): void
@@ -53,23 +53,21 @@ class Database
 
         $found = $this->parseObjects($preparedQuery->get_result(), $model);
         self::$connection->close();
-        
+
         return $found;
     }
 
-    protected function execPrepared(string $query, array $paramBinders, string $typeIndicators): \mysqli_stmt
+    protected static function execPrepared(string $query, array $paramBinders, string $typeIndicators): \mysqli_stmt
     {
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);
-        $this->query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
-        var_dump($this->query);
-        var_dump($paramBinders);
-        
-        $preparedQuery = self::$connection->prepare($this->query);
+        self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
+
+        $preparedQuery = self::$connection->prepare(self::$query);
         $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
         $preparedQuery->execute();
         // $this->query = $this->prepareQuery($query, $paramBinders);
-        
+
         return $preparedQuery;
     }
 
@@ -95,7 +93,7 @@ class Database
     //                 break;
     //             }
     //         }
-            
+
     //         if (!$foundParam) {
     //             throw new LogicException("Model property not found.");
     //         }

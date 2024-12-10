@@ -8,7 +8,28 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
-    public int $id;
+    static function create(array $values): void
+    {
+        $table = self::table(get_called_class());
+        $values['create_time'] = date('c');
+
+        $data = array_values($values);
+        $columns = rtrim(array_reduce(array_keys($values), fn($columnsLine, $value) => $columnsLine .= "{$value}, ", ''), ', ');
+        $valuesBinders = rtrim(array_reduce($data, fn($binders, $value) => $binders .= "?, ", ''), ', ');
+        $typeIndicators = '';
+
+        foreach (array_values($values) as $value) {
+            if (is_string($value)) {
+                $typeIndicators .= 's';
+            } else if (is_int($value)) {
+                $typeIndicators .= 'i';
+            } else if (is_float($value) || is_double($value)) {
+                $typeIndicators .= 'f';
+            }
+        }
+
+        self::execPrepared("insert into $table ($columns) values ($valuesBinders)", $data, $typeIndicators);
+    }
 
     static function all(): array
     {
@@ -51,15 +72,7 @@ class Model extends Database
 
     function toArray(): array
     {
-        $props = [];
-        foreach ((new \ReflectionClass(get_called_class()))->getProperties() as $prop) {
-            $propName = $prop->getName();
-            $props[$propName] = $this->$propName;
-        }
-
-        $props['id'] = $this->getId();
-
-        return $props;
+        return get_object_vars($this);
     }
 
     /**
@@ -75,6 +88,6 @@ class Model extends Database
      */
     protected function getCreationTime()
     {
-        return $this->create_time;
+        return date_parse($this->create_time);
     }
 }
