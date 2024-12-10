@@ -12,9 +12,9 @@ Route::controller(GeneralController::class, function () {
 
 Route::controller(UserController::class, function () {
     Route::get('user.login', '/login', 'login');
-    Route::post('user.auth', '/user/auth', 'auth');
+    Route::post('user.auth', '/login', 'auth');
     Route::get('user.signup', '/signup', 'signup');
-    Route::post('user.store', '/user/store', 'store');
+    Route::post('user.store', '/signup', 'store');
     Route::get('user.cart', '/cart', 'cart');
 });
 

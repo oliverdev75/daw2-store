@@ -3,6 +3,9 @@
         <form class="grid gap-y-20" action="<?= $this->route('user.auth') ?>" method="post">
             <h1 class="text-4xl text-center heading-important">Welcome back!</h1>
             <div class="grid justify-items-center gap-y-5">
+                <?php if (isset($message)): ?>
+                    <div class="message message-danger"><?= $message ?></div>
+                <?php endif ?>
                 <span class="text-sm text-center text-neutral-400 font-bold">Please remember us your data</span>
                 <div class="flex flex-col gap-y-5">
                     <input class="input-text text-lg" type="email" name="username" placeholder="Username" required>

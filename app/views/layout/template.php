@@ -18,15 +18,15 @@
 </head>
 
 <body>
-    <?php $this->header(compact('user')) ?>
+    <?php $this->header(['user' => $data['user']]) ?>
 
     <?php if ($templateParsedName != '.templates.site.index'): ?>
         <main class="min-h-full mx-5 sm:mx-12 min-[1700px]:mx-32 min-[1900px]:mx-80 grow flex flex-col">
-            <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            <?php $this->component($templateParsedName, $data, 'body') ?>
         </main>
     <?php else: ?>
         <main>
-            <?php $this->component($templateParsedName, $bodyData, 'body') ?>
+            <?php $this->component($templateParsedName, $data, 'body') ?>
         </main>
     <?php endif; ?>
 

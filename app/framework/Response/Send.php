@@ -7,21 +7,19 @@ use Framework\Response\Types\Json;
 use Framework\Response\Types\Text;
 use Framework\Response\Types\Redirection;
 
-class Send {
+class Send
+{
 
     static function view(
         string $bodyContent,
         string $title = "SymfonyRestaurant",
-        array | null $bodyData = null, 
-        mixed $user = 'none',
+        array | null $data = null,
         int $statusCode = 200
-    ): View
-    {
+    ): View {
         return new View(
             $bodyContent,
             $title,
-            $bodyData, 
-            $user,
+            $data,
             $statusCode
         );
     }

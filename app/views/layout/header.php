@@ -28,12 +28,20 @@
                 <li>
                     <a class="font-bold" href="<?= $this->route('site.aboutus') ?>">About us</a>
                 </li>
-                <li>
-                    <a class="font-bold" href="<?= $this->route('user.login') ?>">Log in</a>
-                </li>
-                <li>
-                    <a class="btn btn-primary font-bold" href="<?= $this->route('user.signup') ?>" role="button" title="Sign up">Sign up</a>
-                </li>
+                <?php if (!is_null($user)): ?>
+                    <li>
+                        <a href="<?= $this->route('user.cart') ?>">
+                            <i class="bi bi-cart2"></i>
+                        </a>
+                    </li>
+                <?php else: ?>
+                    <li>
+                        <a class="font-bold" href="<?= $this->route('user.login') ?>">Log in</a>
+                    </li>
+                    <li>
+                        <a class="btn btn-primary font-bold" href="<?= $this->route('user.signup') ?>" role="button" title="Sign up">Sign up</a>
+                    </li>
+                <?php endif ?>
             </ul>
         </div>
     </nav>
