@@ -4,7 +4,8 @@ namespace Framework\Routing;
 
 use Framework\Response\Send;
 
-class Router {
+class Router
+{
 
     private const PARAM_OPENER = '{';
     private const PARAM_CLOSER = '}';
@@ -24,13 +25,13 @@ class Router {
 
     private function getWebRoutes(): void
     {
-        $this->getRegisteredRoutes(__DIR__.'/../../routes/web.php');
+        $this->getRegisteredRoutes(__DIR__ . '/../../routes/web.php');
     }
 
 
     private function getApiRoutes(): void
     {
-        $registerRoutes = fn () => $this->getRegisteredRoutes(__DIR__.'/../../routes/api.php');
+        $registerRoutes = fn() => $this->getRegisteredRoutes(__DIR__ . '/../../routes/api.php');
         $this->catchRoutes($registerRoutes, function (Route $catched) {
             $catched->setType('api');
 
@@ -52,7 +53,7 @@ class Router {
     {
         $newRoutesStart = count(self::$routes);
         $registerRoutesFunc();
-        
+
         for ($i = $newRoutesStart; $i < count(self::$routes); $i++) {
             self::$routes[$i] = $callback(self::$routes[$i]);
         }
@@ -88,7 +89,7 @@ class Router {
         $reqRoute = $_SERVER['REQUEST_URI'];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
         $matchedRoute = $this->checkRoute($reqRoute, $reqMethod);
-        
+
         if ($matchedRoute == 'notfound') {
             if (! $this->isApiRoute($reqRoute)) {
                 return Send::redirect();
@@ -104,7 +105,7 @@ class Router {
         $params = $this->matchParams($reqRoute, $matchedRoute, $reqMethod);
         $allParams = [];
         if ($params) {
-            $allParams = array_merge($params['URL'], $params['QUERY']);
+            $allParams = array_merge($params['URL'], $params['METHOD']);
         }
 
         return $this->sendResponse($matchedRoute, $allParams);
@@ -114,10 +115,10 @@ class Router {
     private function checkRoute(string $reqRoute, string $reqMethod)
     {
         $matchedRoute = 'notfound';
-        
+
         foreach (self::$routes as $route) {
             if ($route->getMethod() == $reqMethod && (count($this->divideRoute($reqRoute)) == count($this->divideRoute($route->getUri())))) {
-                if ($this->matchRoute($reqRoute, $route->getUri())) {    
+                if ($this->matchRoute($reqRoute, $route->getUri())) {
                     $matchedRoute = $route;
                     break;
                 }
@@ -150,13 +151,6 @@ class Router {
 
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
             if (count($dividedRegisteredRoute) > 0) {
-                // $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
-                // $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
-                
-                // if ($bracketsOpenPos && $bracketsClosePos) {
-                //     continue;
-                // }
-
                 if ($this->isParam($dividedRegisteredRoute[$i])) {
                     continue;
                 }
@@ -175,7 +169,7 @@ class Router {
     {
         return [
             'URL' => $this->matchURLParams($reqRoute, $matchedRoute),
-            'QUERY' => $this->matchQueryParams($reqMethod, $matchedRoute)
+            'METHOD' => $this->matchQueryParams($reqMethod, $matchedRoute)
         ];
     }
 
@@ -209,14 +203,14 @@ class Router {
             return $_GET;
         } else if ($reqMethod == 'POST') {
             if ($matchedRoute->getType() == 'web') {
-                return $_POST;
+                return ['postData' => $_POST];
             } else {
-                return json_decode(file_get_contents('php://input'));
+                return ['postData' => json_decode(file_get_contents('php://input'))];
             }
         }
     }
 
-    
+
     /**
      * Cleans the given array, removing all empty positions and ordering indexes.
      * @param array $array the array to be cleaned
@@ -224,7 +218,7 @@ class Router {
      */
     private static function cleanArray(array $array): array
     {
-        $removeEmptiesFunc = fn ($value) => $value !== false && $value !== '' && $value !== null;
+        $removeEmptiesFunc = fn($value) => $value !== false && $value !== '' && $value !== null;
 
         return array_values(array_filter($array, $removeEmptiesFunc));
     }
@@ -260,7 +254,7 @@ class Router {
 
     private static function parseToParam(string $param): string
     {
-        return self::PARAM_OPENER.$param.self::PARAM_CLOSER;
+        return self::PARAM_OPENER . $param . self::PARAM_CLOSER;
     }
 
 
