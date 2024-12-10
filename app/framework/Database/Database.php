@@ -37,7 +37,6 @@ class Database
     protected static function queryObjects(string $query, string $model): mixed
     {
         self::connect();
-        var_dump($query);
         $found = self::parseObjects(self::$connection->query($query), $model);
         self::$connection->close();
 
