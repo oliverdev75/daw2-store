@@ -8,7 +8,7 @@ define('PROJECT_ROOT', join(DIRECTORY_SEPARATOR, array_slice(explode(DIRECTORY_S
 
 /* Views */
 
-define('VIEWS_PATH', PROJECT_ROOT.'/views');
+define('VIEWS_PATH', PROJECT_ROOT . '/views');
 define('VIEWS_TEMPLATE', '/template');
 define('VIEWS_LAYOUT_DIR', '/layout');
 

@@ -6,7 +6,7 @@
                 <p class="text-lg lg:text-2xl">We have a lot of dishes, from principals to desserts</p>
                 <div class="w-full lg:w-fit grid grid-flow-col auto-rows-max auto-cols-max justify-center lg:justify-start gap-x-5">
                     <a class="btn btn-secondary" title="Sign up" href="<?= $this->route('signup') ?>">Sign up</a>
-                    <a class="btn btn-tertiary" title="Menu" href="<?= $this->route('menu') ?>">Menu</a>
+                    <a class="btn btn-tertiary" title="Menu" href="<?= $this->route('product.index') ?>">Menu</a>
                 </div>
             </div>
         </div>
@@ -28,37 +28,37 @@
         <div class="grid lg:grid-cols-3 justify-center justify-items-center gap-y-10 lg:gap-x-10">
 
             <?php
-                $this->component('product.user_comment', [
-                    'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            $this->component('product.user_comment', [
+                'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
                     molestie at risus. Vivamus vel lorem aliquet ante cursus 
                     semper nec a libero. Curabitur interdum ipsum sed augue 
                     maximus varius.',
-                    'userImage' => $this->image('home.profileImage1'),
-                    'userImageAlt' => 'John Doe',
-                    'userName' => 'John Doe'
-                ])
+                'userImage' => $this->image('home.profileImage1'),
+                'userImageAlt' => 'John Doe',
+                'userName' => 'John Doe'
+            ])
             ?>
             <?php
-                $this->component('product.user_comment', [
-                    'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            $this->component('product.user_comment', [
+                'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
                     molestie at risus. Vivamus vel lorem aliquet ante cursus 
                     semper nec a libero. Curabitur interdum ipsum sed augue 
                     maximus varius.',
-                    'userImage' => $this->image('home.profileImage2'),
-                    'userImageAlt' => 'John Doe',
-                    'userName' => 'John Doe',
-                ])
+                'userImage' => $this->image('home.profileImage2'),
+                'userImageAlt' => 'John Doe',
+                'userName' => 'John Doe',
+            ])
             ?>
             <?php
-                $this->component('product.user_comment', [
-                    'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
+            $this->component('product.user_comment', [
+                'commentText' => 'Maecenas erat velit, pulvinar ut sagittis a,
                     molestie at risus. Vivamus vel lorem aliquet ante cursus 
                     semper nec a libero. Curabitur interdum ipsum sed augue 
                     maximus varius.',
-                    'userImage' => $this->image('home.profileImage3'),
-                    'userImageAlt' => 'John Doe',
-                    'userName' => 'John Doe',
-                ])
+                'userImage' => $this->image('home.profileImage3'),
+                'userImageAlt' => 'John Doe',
+                'userName' => 'John Doe',
+            ])
             ?>
         </div>
     </section>

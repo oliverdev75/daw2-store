@@ -4,13 +4,13 @@
     </div>
     <div class="grid gap-y-6">
         <div class="flex flex-col gap-y-2">
-            <span>Principals</span>
-            <span class="text-2xl font-bold">Ceviche</span>
+            <span><?= $category ?></span>
+            <span class="text-2xl font-bold"><?= $name ?></span>
         </div>
         <div class="justify-self-end w-full grid gap-y-2">
-            <a class="btn btn-tertiary btn-full" role="button" href="">Details</a>
+            <a class="btn btn-tertiary btn-full" role="button" href="<?= $this->route('product.show', compact('id')) ?>">Details</a>
             <form action="" method="post">
-                <input type="hidden" name="id" value="">
+                <input type="hidden" name="id" value="<?= $id ?>">
                 <button class="btn btn-secondary btn-full" type="submit">Add to cart</button>
             </form>
         </div>

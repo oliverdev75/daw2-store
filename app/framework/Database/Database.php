@@ -37,7 +37,6 @@ class Database
     protected static function queryObjects(string $query, string $model): mixed
     {
         self::connect();
-        var_dump($query);
         $found = self::parseObjects(self::$connection->query($query), $model);
         self::$connection->close();
 
@@ -64,9 +63,15 @@ class Database
         self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
 
         $preparedQuery = self::$connection->prepare(self::$query);
+        $this->query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
+        var_dump($this->query);
+        var_dump($paramBinders);
+
+        $preparedQuery = self::$connection->prepare($this->query);
         $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
         $preparedQuery->execute();
         // $this->query = $this->prepareQuery($query, $paramBinders);
+
 
         return $preparedQuery;
     }
@@ -93,6 +98,7 @@ class Database
     //                 break;
     //             }
     //         }
+
 
     //         if (!$foundParam) {
     //             throw new LogicException("Model property not found.");
