@@ -15,6 +15,7 @@ Route::controller(UserController::class, function () {
     Route::post('user.auth', '/login', 'auth');
     Route::get('user.signup', '/signup', 'signup');
     Route::post('user.store', '/signup', 'store');
+    Route::get('user.logout', '/logout', 'logout');
     Route::get('user.cart', '/cart', 'cart');
 });
 

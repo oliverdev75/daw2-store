@@ -70,7 +70,7 @@ class Router
         return '';
     }
 
-    static function route(string $name, ?array $params = null): string
+    static function getRoute(string $name, ?array $params = null): string
     {
         $route = self::getRouteUri($name);
 

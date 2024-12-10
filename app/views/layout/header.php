@@ -31,7 +31,12 @@
                 <?php if (!is_null($user)): ?>
                     <li>
                         <a href="<?= $this->route('user.cart') ?>">
-                            <i class="bi bi-cart2"></i>
+                            <i class="bi bi-cart2 text-2xl"></i>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="<?= $this->route('user.logout') ?>">
+                            LOG OUT
                         </a>
                     </li>
                 <?php else: ?>

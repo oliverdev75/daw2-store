@@ -22,24 +22,20 @@ class UserController extends Controller
         return Send::view('user.signup');
     }
 
-    static function store(
-        $name,
-        $surnames,
-        $email,
-        $password,
-        $password_confirm
-    ) {
-        if ($password != $password_confirm) {
+    static function store($postData)
+    {
+        var_dump($postData);
+        if ($postData['password'] != $postData['password_confirm']) {
             return Send::view('user.signup', self::LOGIN_TITLE, ['message' => 'Passwords don\'t match.']);
         }
 
         $data = [
-            'name' => $name,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_BCRYPT)
+            'name' => $postData['name'],
+            'email' => $postData['email'],
+            'password' => password_hash($postData['password'], PASSWORD_BCRYPT)
         ];
-        if ($surnames) {
-            $data['surnames'] = $surnames;
+        if ($postData['surnames']) {
+            $data['surnames'] = $postData['surnames'];
         }
 
         User::create($data);
@@ -47,11 +43,14 @@ class UserController extends Controller
         return Send::redirect()->route('user.login');
     }
 
-    static function auth($username, $password)
+    static function auth($postData)
     {
-        $user = User::where('email', $username)->where('password', password_hash($password, PASSWORD_BCRYPT))->get();
+        $user = User::where('email', $postData['username'])->get();
+        if (!$user) {
+            return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong']);
+        }
 
-        if ($user) {
+        if (password_verify($postData['password'], $user[0]->password)) {
             session_start();
             $_SESSION['user'] = $user;
             return Send::redirect();
@@ -72,7 +71,11 @@ class UserController extends Controller
 
     static function logout()
     {
+        session_start();
+        session_unset();
         session_destroy();
+
+        return Send::redirect()->route('user.login');
     }
 
     static function cart(): View
