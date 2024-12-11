@@ -20,7 +20,9 @@
                 "-dxdebug.mode=debug",
                 "-dxdebug.start_with_request=yes",
                 "-S",
-                "localhost:3000"
+                "localhost:3000",
+                "-t",
+                "public"
             ],
             "program": "",
             "cwd": "${workspaceRoot}",
