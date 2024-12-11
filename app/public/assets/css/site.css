@@ -57,7 +57,7 @@ a:hover {
 
 .btn-tertiary {
     padding: 9px 18.496px;
-    color: var(--btn-tertiary-color);
+    color: var(--btn-tertiary-color) !important;
     border: 1px solid var(--btn-tertiary-color);
 }
 
