@@ -62,7 +62,7 @@ class Printable
 
     protected function route(string $routeName, ?array $params = null): string
     {
-        return Router::route($routeName, $params);
+        return Router::getRoute($routeName, $params);
     }
 
     /**

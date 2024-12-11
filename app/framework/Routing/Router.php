@@ -70,7 +70,7 @@ class Router
         return '';
     }
 
-    static function route(string $name, ?array $params = null): string
+    static function getRoute(string $name, ?array $params = null): string
     {
         $route = self::getRouteUri($name);
 
@@ -104,7 +104,7 @@ class Router
         $params = $this->matchParams($reqRoute, $matchedRoute, $reqMethod);
         $allParams = [];
         if ($params) {
-            $allParams = array_merge($params['URL'], $params['QUERY']);
+            $allParams = array_merge($params['URL'], $params['METHOD']);
         }
 
         return $this->sendResponse($matchedRoute, $allParams);
@@ -150,13 +150,6 @@ class Router
 
         for ($i = 0; $i < count($dividedReqRoute); $i++) {
             if (count($dividedRegisteredRoute) > 0) {
-                // $bracketsOpenPos = strpos($dividedRegisteredRoute[$i], '{') == 0;
-                // $bracketsClosePos = strpos($dividedRegisteredRoute[$i], '}') > 0;
-
-                // if ($bracketsOpenPos && $bracketsClosePos) {
-                //     continue;
-                // }
-
                 if ($this->isParam($dividedRegisteredRoute[$i])) {
                     continue;
                 }
@@ -175,7 +168,7 @@ class Router
     {
         return [
             'URL' => $this->matchURLParams($reqRoute, $matchedRoute),
-            'QUERY' => $this->matchQueryParams($reqMethod, $matchedRoute)
+            'METHOD' => $this->matchQueryParams($reqMethod, $matchedRoute)
         ];
     }
 
@@ -209,9 +202,9 @@ class Router
             return $_GET;
         } else if ($reqMethod == 'POST') {
             if ($matchedRoute->getType() == 'web') {
-                return $_POST;
+                return ['postData' => $_POST];
             } else {
-                return json_decode(file_get_contents('php://input'));
+                return ['postData' => json_decode(file_get_contents('php://input'))];
             }
         }
     }

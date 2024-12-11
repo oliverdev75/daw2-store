@@ -8,8 +8,10 @@ use Framework\Response\Types\View;
 class CartController extends Controller
 {
 
-    function index(): View
+    static function add($postData)
     {
-        return Send::view('site.index');
+        if (!UserController::current()) {
+            return Send::redirect()->route('user.login')
+        }
     }
 }

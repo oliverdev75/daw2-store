@@ -10,31 +10,58 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    function login(): View
+    const LOGIN_TITLE = 'Log in: SymfonyRestaurant';
+
+    static function login(): View
     {
         return Send::view('user.login');
     }
 
-    function signup(): View
+    static function signup(): View
     {
         return Send::view('user.signup');
     }
 
-    function auth($username, $password)
+    static function store($postData)
     {
-        $user = User::where('username', $username)->where('password', password_hash($password, PASSWORD_BCRYPT))->get();
+        var_dump($postData);
+        if ($postData['password'] != $postData['password_confirm']) {
+            return Send::view('user.signup', self::LOGIN_TITLE, ['message' => 'Passwords don\'t match.']);
+        }
 
-        if ($user) {
+        $data = [
+            'name' => $postData['name'],
+            'email' => $postData['email'],
+            'password' => password_hash($postData['password'], PASSWORD_BCRYPT)
+        ];
+        if ($postData['surnames']) {
+            $data['surnames'] = $postData['surnames'];
+        }
+
+        User::create($data);
+
+        return Send::redirect()->route('user.login');
+    }
+
+    static function auth($postData)
+    {
+        $user = User::where('email', $postData['username'])->get();
+        if (!$user) {
+            return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong']);
+        }
+
+        if (password_verify($postData['password'], $user[0]->password)) {
             session_start();
             $_SESSION['user'] = $user;
             return Send::redirect();
         }
 
-        return Send::view('user.login');
+        return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong']);
     }
 
-    function current()
+    static function current()
     {
+        session_start();
         if (isset($_SESSION['user'])) {
             return $_SESSION['user'];
         }
@@ -42,17 +69,21 @@ class UserController extends Controller
         return null;
     }
 
-    function logout()
+    static function logout()
     {
+        session_start();
+        session_unset();
         session_destroy();
+
+        return Send::redirect()->route('user.login');
     }
 
-    function cart(): View
+    static function cart(): View
     {
         return Send::view('user.cart');
     }
 
-    function show(
+    static function show(
         $id
     ): Json {
         // $users = [];

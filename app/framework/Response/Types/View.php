@@ -4,31 +4,31 @@ namespace Framework\Response\Types;
 
 use Framework\View\Printable;
 use Framework\Response\Response;
+use App\Controllers\UserController;
 
-class View extends Printable {
+class View extends Printable
+{
 
     use Response;
 
     public function __construct(
         string $template,
         string $title = "SymfonyRestaurant",
-        array | null $bodyData = null, 
-        mixed $user = 'none',
+        array | null $data = null,
         int $statusCode = 200
-    )
-    {
+    ) {
         $this->setStatusCode($statusCode);
 
-        $path = \VIEWS_PATH.\VIEWS_LAYOUT_DIR.\VIEWS_TEMPLATE.'.php';
+        $path = \VIEWS_PATH . \VIEWS_LAYOUT_DIR . \VIEWS_TEMPLATE . '.php';
         $templateParsedName = ".templates.$template";
+        $data['user'] = UserController::current();
 
         parent::__construct(
             $path,
             compact(
                 'title',
                 'templateParsedName',
-                'bodyData',
-                'user'
+                'data'
             )
         );
     }
