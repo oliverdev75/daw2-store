@@ -11,7 +11,7 @@ class ProductController extends Controller
 
     function index(): View
     {
-        return Send::view('product.index', 'Menu', ['products' => Product::all()]);
+        return Send::view('product.index', 'Menu: SymfonyRestaurant', ['products' => Product::all()]);
     }
 
     function menu(): View

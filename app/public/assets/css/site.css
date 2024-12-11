@@ -23,6 +23,10 @@ h1, h2, h3 {
     color: var(--neutral-base-color) !important;
 }
 
+i.bi {
+    height: fit-content;
+}
+
 a {
     color: #2f82ff !important;
 }

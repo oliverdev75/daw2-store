@@ -24,7 +24,6 @@ class UserController extends Controller
 
     static function store($postData)
     {
-        var_dump($postData);
         if ($postData['password'] != $postData['password_confirm']) {
             return Send::view('user.signup', self::LOGIN_TITLE, ['message' => 'Passwords don\'t match.']);
         }

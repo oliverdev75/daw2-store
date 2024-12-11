@@ -25,23 +25,29 @@
                                 <div class="ms-2 flex flex-col gap-y-3">
                                     <?php
                                     $this->component('form.checkbox', [
-                                        'label' => 'Snacks',
-                                        'name' => 'snacks',
-                                        'id' => 'snacks'
+                                        'id' => 'snacks',
+                                        'inputType' => 'radio',
+                                        'name' => 'category',
+                                        'value' => 'snacks',
+                                        'label' => 'Snacks'
                                     ])
                                     ?>
                                     <?php
                                     $this->component('form.checkbox', [
-                                        'label' => 'Principals',
-                                        'name' => 'principals',
-                                        'id' => 'principals'
+                                        'id' => 'principals',
+                                        'inputType' => 'radio',
+                                        'name' => 'category',
+                                        'value' => 'principles',
+                                        'label' => 'Principles',
                                     ])
                                     ?>
                                     <?php
                                     $this->component('form.checkbox', [
-                                        'label' => 'Desserts',
+                                        'id' => 'desserts',
+                                        'inputType' => 'radio',
                                         'name' => 'desserts',
-                                        'id' => 'desserts'
+                                        'value' => 'desserts',
+                                        'label' => 'Desserts'
                                     ])
                                     ?>
                                 </div>
