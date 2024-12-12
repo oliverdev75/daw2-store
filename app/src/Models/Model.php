@@ -31,14 +31,14 @@ class Model extends Database
         self::execPrepared("insert into $table ($columns) values ($valuesBinders)", $data, $typeIndicators);
     }
 
-    static function all(): array
+    static function all(): QueryBuilder
     {
-        $rows = self::queryObjects(
+        /* $rows = self::queryObjects(
             "select * from " . self::table(get_called_class()),
             get_called_class()
-        );
+        ); */
 
-        return $rows;
+        return (new QueryBuilder(get_called_class()))->all();
     }
 
     static function find(int $id): Model
@@ -46,6 +46,11 @@ class Model extends Database
         $query = new QueryBuilder(get_called_class());
 
         return $query->where('id', $id)->get()[0];
+    }
+
+    static function first(): Model
+    {
+        return (new QueryBuilder(get_called_class()))->all()->first();
     }
 
     static function where(...$args): QueryBuilder

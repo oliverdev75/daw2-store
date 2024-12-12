@@ -14,10 +14,17 @@
                             </button>
                         </div>
                         <div class="row-start-2 sm:row-start-2 min-[1120px]:col-start-2 sm:justify-self-end flex items-center gap-3">
-                            <label for="results-order">Order by</label>
-                            <select class="px-5 py-3 md:px-3 md:py-2 rounded" name="order" id="results-order">
-                                <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="name" selected>Name</option>
-                                <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="price">Price</option>
+                            <div>
+                                <label for="results-order">Order by</label>
+                                <select class="px-5 py-3 md:px-3 md:py-2 rounded" name="order" id="results-order">
+                                    <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="name" selected>Name</option>
+                                    <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="price">Price</option>
+                                    <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="">None</option>
+                                </select>
+                            </div>
+                            <select class="px-5 py-3 md:px-3 md:py-2 rounded" name="order_type">
+                                <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="asc" selected>Ascendant</option>
+                                <option class="bg-white hover:active:bg-sea-blue hover:cursor-pointer" value="desc">Descendant</option>
                             </select>
                         </div>
                         <label class="row-start-3 sm:row-start-2 col-start-1 justify-self-start btn btn-secondary block min-[1120px]:hidden w-full sm:w-fit flex justify-center items-center gap-3" for="menu-filter-btn" role="button" aria-label="Toggle products filter">

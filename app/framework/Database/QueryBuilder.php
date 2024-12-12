@@ -2,12 +2,14 @@
 
 namespace Framework\Database;
 
+use App\Models\Model;
 use ReflectionClass;
 
 class QueryBuilder extends Database
 {
 
     protected $model;
+    protected $filtered = true;
     protected $conditionParams = [];
     protected $updateParams = [];
     protected $conditionParamBinders = [];
@@ -19,6 +21,13 @@ class QueryBuilder extends Database
     function __construct(string $model)
     {
         $this->model = $model;
+    }
+
+    function all(): self
+    {
+        $this->filtered = false;
+
+        return $this;
     }
 
     function where(): self
@@ -144,6 +153,11 @@ class QueryBuilder extends Database
         return $this;
     }
 
+    function first(): Model
+    {
+        return $this->get()[0];
+    }
+
     /**
      * Undocumented function
      *
@@ -151,12 +165,20 @@ class QueryBuilder extends Database
      */
     function get(): array
     {
-        return $this->select(
-            "select * from {$this->table($this->model)} where {$this->parseFilterParams()}",
-            array_merge($this->conditionParamBinders, $this->updateParamBinders),
-            $this->conditionTypeIndicators . $this->updateTypeIndicators,
-            $this->model
-        );
+        $query = "select * from {$this->table($this->model)}";
+        $query .= $this->filtered ? " where {$this->parseFilterParams()}" : '';
+        $query .= $this->order;
+
+        if ($this->filtered) {
+            return $this->select(
+                $query,
+                array_merge($this->conditionParamBinders, $this->updateParamBinders),
+                $this->conditionTypeIndicators . $this->updateTypeIndicators,
+                $this->model
+            );
+        } else {
+            return $this->queryObjects($query, $this->model);
+        }
     }
 
     /**

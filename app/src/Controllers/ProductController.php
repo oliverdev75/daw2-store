@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use Framework\Response\Send;
 use Framework\Response\Types\View;
+use Framework\Database\Database;
 use App\Models\Product;
 
 class ProductController extends Controller
@@ -11,18 +12,19 @@ class ProductController extends Controller
 
     function index(
         $product_name = null,
-        $order,
+        $order = null,
+        $order_type = null,
         $principles = null,
         $snacks = null,
         $desserts = null
     ): View
     {
         $viewTitle = 'Menu: SymfonyRestaurant';
-        $products = Product::all();
+        $productsQuery = Product::all();
         
         if ($product_name) {
-            $products = Product::where('name', 'like', "%$product_name%")->get();
-            return Send::view('product.index', $viewTitle, ['products' => $products]);
+            $productsQuery = Product::where('name', 'like', "%$product_name%");
+            return Send::view('product.index', $viewTitle, ['products' => $productsQuery]);
         }
 
         $productsCategoryFilter = [];
@@ -39,10 +41,17 @@ class ProductController extends Controller
         }
         
         if (count($productsCategoryFilter)) {
-            $products = Product::in('category', $productsCategoryFilter)->get();
-            return Send::view('product.index', $viewTitle, ['products' => $products]);
+            $productsQuery = Product::in('category', $productsCategoryFilter);
         }
 
-        return Send::view('product.index', $viewTitle, ['products' => $products]);
+        if ($order) {
+            if ($order == 'name') {
+                $productsQuery = $productsQuery->orderBy($order, $order_type);
+            } else {
+                $price = array_reduce(Database::queryObjects());
+            }
+        }
+
+        return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get()]);
     }
 }
