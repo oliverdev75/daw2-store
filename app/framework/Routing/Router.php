@@ -85,7 +85,7 @@ class Router
 
     function solve()
     {
-        $reqRoute = $_SERVER['REQUEST_URI'];
+        $reqRoute = explode('?', $_SERVER['REQUEST_URI'])[0];
         $reqMethod = $_SERVER['REQUEST_METHOD'];
         $matchedRoute = $this->checkRoute($reqRoute, $reqMethod);
 

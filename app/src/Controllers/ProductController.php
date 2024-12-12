@@ -9,13 +9,40 @@ use App\Models\Product;
 class ProductController extends Controller
 {
 
-    function index(): View
+    function index(
+        $product_name = null,
+        $order,
+        $principles = null,
+        $snacks = null,
+        $desserts = null
+    ): View
     {
-        return Send::view('product.index', 'Menu: SymfonyRestaurant', ['products' => Product::all()]);
-    }
+        $viewTitle = 'Menu: SymfonyRestaurant';
+        $products = Product::all();
+        
+        if ($product_name) {
+            $products = Product::where('name', 'like', "%$product_name%")->get();
+            return Send::view('product.index', $viewTitle, ['products' => $products]);
+        }
 
-    function menu(): View
-    {
-        return Send::view('site.menu');
+        $productsCategoryFilter = [];
+        if ($principles) {
+            $productsCategoryFilter[] = 'Principles';
+        }
+
+        if ($snacks) {
+            $productsCategoryFilter[] = 'Snacks';
+        }
+
+        if ($desserts) {
+            $productsCategoryFilter[] = 'Desserts';
+        }
+        
+        if (count($productsCategoryFilter)) {
+            $products = Product::in('category', $productsCategoryFilter)->get();
+            return Send::view('product.index', $viewTitle, ['products' => $products]);
+        }
+
+        return Send::view('product.index', $viewTitle, ['products' => $products]);
     }
 }
