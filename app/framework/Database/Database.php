@@ -11,7 +11,7 @@ use ReflectionProperty;
 class Database
 {
 
-    private static $connection;
+    protected static $connection;
     private static $query;
 
     protected static function table(string $name): string

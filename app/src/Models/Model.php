@@ -8,10 +8,9 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
-    static function getLastId(string $table): int
+    static function getLastId(): int
     {
-        $result = $this->query('select max(id) from ' . $this->table());
-        return (int) $result->fetch_column();
+        return (int) self::$connection->insert_id;
     }
 
     static function create(array $values): void
@@ -71,15 +70,20 @@ class Model extends Database
     /**
      * Get the value of id
      */
-    protected function getId()
+    function getId()
     {
         return (int) $this->id;
+    }
+
+    function getName()
+    {
+        return $this->name;
     }
 
     /**
      * Get the value of creation_time;
      */
-    protected function getCreationTime()
+    function getCreationTime()
     {
         return date_parse($this->create_time);
     }
