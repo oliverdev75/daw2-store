@@ -75,7 +75,8 @@
                             $this->component('product.card', [
                                 'id' => $product->id,
                                 'name' => $product->name,
-                                'category' => 'Principle'
+                                'category' => 'Principle',
+                                'price' => $product->getPrice()
                             ])
                             ?>
                         <?php endforeach ?>

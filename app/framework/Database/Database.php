@@ -25,13 +25,26 @@ class Database
     }
 
 
-    public static function query(string $query): mixed
+    static function query(string $query): mixed
     {
         self::connect();
         $result = self::$connection->query($query);
         self::$connection->close();
 
         return $result;
+    }
+
+    static function queryRows(string $query): mixed
+    {
+        self::connect();
+        $result = self::$connection->query($query);
+        $rows = [];
+        while ($row = $result->fetch_assoc()) {
+            $rows[] = $row;
+        }
+        self::$connection->close();
+
+        return $rows;
     }
 
     protected static function queryObjects(string $query, string $model): mixed
@@ -49,7 +62,6 @@ class Database
         // $this->checkDataTypes($paramBinders, $model);
         $preparedQuery = $this->execPrepared($query, $paramBinders, $typeIndicators);
         // $this->query = $this->prepareQuery($query, $paramBinders);
-
         $found = $this->parseObjects($preparedQuery->get_result(), $model);
         self::$connection->close();
 

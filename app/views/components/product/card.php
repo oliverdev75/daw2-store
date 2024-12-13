@@ -7,6 +7,7 @@
             <span><?= $category ?></span>
             <span class="text-2xl font-bold"><?= $name ?></span>
         </div>
+        <span class="text-xl"><?= $price ?></span>
         <div class="justify-self-end w-full grid gap-y-2">
             <a class="btn btn-tertiary btn-full" role="button" href="<?= $this->route('product.show', compact('id')) ?>">Details</a>
             <form action="" method="post">

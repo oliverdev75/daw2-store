@@ -6,6 +6,7 @@ use Framework\Response\Send;
 use Framework\Response\Types\View;
 use Framework\Database\Database;
 use App\Models\Product;
+use App\Models\Ingredient;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,7 @@ class ProductController extends Controller
         $principles = null,
         $snacks = null,
         $desserts = null
-    ): View
+    )
     {
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
@@ -48,10 +49,29 @@ class ProductController extends Controller
             if ($order == 'name') {
                 $productsQuery = $productsQuery->orderBy($order, $order_type);
             } else {
-                $price = array_reduce(Database::queryObjects());
+                return Send::view('product.index', $viewTitle, [
+                    'products' => $this->orderPrices($productsQuery->get(), $order_type)
+                ]);
             }
         }
 
         return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get()]);
+    }
+
+    private function orderPrices($products, $orderType): array
+    {
+        $ordered = [];
+        $orderedModels = [];
+        foreach ($products as $product) {
+            $ordered["$product->id"] = $product->getPrice(false);
+        }
+        $orderType == 'asc' ? asort($ordered, SORT_NUMERIC) : arsort($ordered, SORT_NUMERIC);
+        foreach($ordered as $id => $price) {
+            $orderedModels[] = reset(array_filter($products, function ($product) use ($id) {
+                return intval($id) == intval($product->id);
+            }));
+        }
+        
+        return $orderedModels;
     }
 }
