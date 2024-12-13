@@ -42,7 +42,7 @@ class CartController extends Controller
     static function delete($postData)
     {
         for ($i = 0; $i < $_SERVER['cart']['products']; $i++) {
-            if (intval($_SERVER['cart']['products'][$i]->getId()) == intval($postData)) {
+            if (intval($_SERVER['cart']['products'][$i]->getId()) == intval($postData['id'])) {
                 unset($_SERVER['cart']['products'][$i]);
                 break;
             }
@@ -64,18 +64,29 @@ class CartController extends Controller
                 $productId = explode(':', $prodIngredient)[0];
 
                 if ($productId == $product->getId()) {
-                    $query = "insert into order_line (order_id, product_id, ingredient_id, quantity, total_price) ";
-                    $query .= "values (?, ?, ?, ?, ?)";
-
-                    Database::queryRows($query, [
-                        $orderId,
-                        $product->getId(),
-                        $ingredientData['id'],
-                        $ingredientData['quantity'],
-                        floatval($ingredientData['quantity']) * $ingredientData['']
-                    ]);
+                    self::createOrderData(compact(
+                        'orderId',
+                        'product',
+                        'ingredientData',
+                        'postData',
+                    ));
                 }
             }
         }
+    }
+
+    static function createOrderData($data)
+    {
+        $ingredientQuant = $data['postData']["{$data['product']->getId()}_{$data['ingredientData']['id']}_quantity"];
+        $query = "insert into order_line (order_id, product_id, ingredient_id, quantity, total_price) ";
+        $query .= "values (:order_id, :product_id, :ingredient_id, :quantity, :total_price)";
+
+        Database::execPrepared($query, params: [
+            $data['orderId'],
+            $data['product']->getId(),
+            $data['ingredientData']['id'],
+            $ingredientQuant,
+            floatval($ingredientQuant * floatval($data['ingredientData']['price']))
+        ], typeIndicators: 'iiiif');
     }
 }

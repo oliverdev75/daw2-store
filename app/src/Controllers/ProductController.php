@@ -18,12 +18,11 @@ class ProductController extends Controller
         $principles = null,
         $snacks = null,
         $desserts = null
-    )
-    {
+    ) {
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
         $productsCategoryFilter = [];
-        
+
         if ($product_name) {
             $products = [];
             $productsQuery = Product::where('name', 'like', "%$product_name%");
@@ -33,15 +32,15 @@ class ProductController extends Controller
             if ($principles) {
                 $productsCategoryFilter[] = 'Principles';
             }
-    
+
             if ($snacks) {
                 $productsCategoryFilter[] = 'Snacks';
             }
-    
+
             if ($desserts) {
                 $productsCategoryFilter[] = 'Desserts';
             }
-            
+
             if (count($productsCategoryFilter)) {
                 $productsQuery = Product::in('category', $productsCategoryFilter);
             }
@@ -52,6 +51,7 @@ class ProductController extends Controller
                 $products = $productsQuery->orderBy($order, $order_type)->get();
             } else {
                 $products = $this->orderPrices($productsQuery->get(), $order_type);
+                return Send::view('product.index', $viewTitle, ['products' => $products]);
             }
         } else {
             $products = $productsQuery->get();
@@ -68,12 +68,12 @@ class ProductController extends Controller
             $ordered["$product->id"] = $product->getPrice(false);
         }
         $orderType == 'asc' ? asort($ordered, SORT_NUMERIC) : arsort($ordered, SORT_NUMERIC);
-        foreach($ordered as $id => $price) {
+        foreach ($ordered as $id => $price) {
             $orderedModels[] = reset(array_filter($products, function ($product) use ($id) {
                 return intval($id) == intval($product->id);
             }));
         }
-        
+
         return $orderedModels;
     }
 }

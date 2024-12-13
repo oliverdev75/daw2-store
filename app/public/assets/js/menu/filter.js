@@ -7,7 +7,6 @@ const checkInputsStatus = () => {
         if (input.checked) {
             return true
         }
-
     })
 
     return false
