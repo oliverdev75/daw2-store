@@ -24,6 +24,7 @@ class UserController extends Controller
 
     static function store($postData)
     {
+        $role = "";
         if ($postData['password'] != $postData['password_confirm']) {
             return Send::view('user.signup', self::LOGIN_TITLE, ['message' => 'Passwords don\'t match.']);
         }
@@ -31,10 +32,16 @@ class UserController extends Controller
         $data = [
             'name' => $postData['name'],
             'email' => $postData['email'],
+            'role' => 'client',
             'password' => password_hash($postData['password'], PASSWORD_BCRYPT)
         ];
+
         if ($postData['surnames']) {
             $data['surnames'] = $postData['surnames'];
+        }
+
+        if (!User::where('role', 'admin')->first()) {
+            $data['role'] = 'admin';
         }
 
         User::create($data);

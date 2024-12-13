@@ -22,37 +22,39 @@ class ProductController extends Controller
     {
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
+        $productsCategoryFilter = [];
         
         if ($product_name) {
+            $products = [];
             $productsQuery = Product::where('name', 'like', "%$product_name%");
-            return Send::view('product.index', $viewTitle, ['products' => $productsQuery]);
-        }
 
-        $productsCategoryFilter = [];
-        if ($principles) {
-            $productsCategoryFilter[] = 'Principles';
-        }
-
-        if ($snacks) {
-            $productsCategoryFilter[] = 'Snacks';
-        }
-
-        if ($desserts) {
-            $productsCategoryFilter[] = 'Desserts';
-        }
-        
-        if (count($productsCategoryFilter)) {
-            $productsQuery = Product::in('category', $productsCategoryFilter);
-        }
-
-        if ($order) {
-            if ($order == 'name') {
-                $productsQuery = $productsQuery->orderBy($order, $order_type);
-            } else {
-                return Send::view('product.index', $viewTitle, [
-                    'products' => $this->orderPrices($productsQuery->get(), $order_type)
-                ]);
+            return Send::view('product.index', $viewTitle, ['products' => $products]);
+        } else {
+            if ($principles) {
+                $productsCategoryFilter[] = 'Principles';
             }
+    
+            if ($snacks) {
+                $productsCategoryFilter[] = 'Snacks';
+            }
+    
+            if ($desserts) {
+                $productsCategoryFilter[] = 'Desserts';
+            }
+            
+            if (count($productsCategoryFilter)) {
+                $productsQuery = Product::in('category', $productsCategoryFilter);
+            }
+        }
+
+        if ($order || !($principles || $snacks || $desserts)) {
+            if ($order == 'name') {
+                $products = $productsQuery->orderBy($order, $order_type)->get();
+            } else {
+                $products = $this->orderPrices($productsQuery->get(), $order_type);
+            }
+        } else {
+            $products = $productsQuery->get();
         }
 
         return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get()]);

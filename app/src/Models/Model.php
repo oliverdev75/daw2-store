@@ -8,6 +8,12 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
+    static function getLastId(string $table): int
+    {
+        $result = $this->query('select max(id) from ' . $this->table());
+        return (int) $result->fetch_column();
+    }
+
     static function create(array $values): void
     {
         $table = self::table(get_called_class());
@@ -33,19 +39,12 @@ class Model extends Database
 
     static function all(): QueryBuilder
     {
-        /* $rows = self::queryObjects(
-            "select * from " . self::table(get_called_class()),
-            get_called_class()
-        ); */
-
         return (new QueryBuilder(get_called_class()))->all();
     }
 
     static function find(int $id): Model
     {
-        $query = new QueryBuilder(get_called_class());
-
-        return $query->where('id', $id)->get()[0];
+        return (new QueryBuilder(get_called_class()))->where('id', $id)->first();
     }
 
     static function first(): Model
@@ -55,16 +54,12 @@ class Model extends Database
 
     static function where(...$args): QueryBuilder
     {
-        $query = new QueryBuilder(get_called_class());
-
-        return $query->where(...$args);
+        return (new QueryBuilder(get_called_class()))->where(...$args);
     }
 
     static function in(string $column, array $args): QueryBuilder
     {
-        $query = new QueryBuilder(get_called_class());
-
-        return $query->in($column, $args);
+        return (new QueryBuilder(get_called_class()))->in($column, $args);
     }
 
 
@@ -78,7 +73,7 @@ class Model extends Database
      */
     protected function getId()
     {
-        return $this->id;
+        return (int) $this->id;
     }
 
     /**

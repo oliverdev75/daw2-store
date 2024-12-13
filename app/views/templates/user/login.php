@@ -1,5 +1,5 @@
 <div class="grow w-full min-h-[42rem] grid place-content-center">
-    <div class="px-16 py-20 grid gap-y-10 border border-neutral-400 rounded-lg">
+    <div class="min-w-[25rem] px-16 py-16 grid gap-y-10 border border-neutral-400 rounded-lg">
         <form class="grid gap-y-20" action="<?= $this->route('user.auth') ?>" method="post">
             <h1 class="text-4xl text-center heading-important">Welcome back!</h1>
             <div class="grid justify-items-center gap-y-5">

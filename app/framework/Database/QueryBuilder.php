@@ -153,9 +153,13 @@ class QueryBuilder extends Database
         return $this;
     }
 
-    function first(): Model
+    function first(): Model | null
     {
-        return $this->get()[0];
+        if ($found = $this->get()[0]) {
+            return $found;
+        }
+
+        return null;
     }
 
     /**

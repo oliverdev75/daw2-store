@@ -24,7 +24,6 @@ class Database
         self::$connection = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT, DB_SOCKET);
     }
 
-
     static function query(string $query): mixed
     {
         self::connect();
@@ -68,7 +67,7 @@ class Database
         return $found;
     }
 
-    protected static function execPrepared(string $query, array $paramBinders, string $typeIndicators): \mysqli_stmt
+    static function execPrepared(string $query, array $paramBinders, string $typeIndicators): \mysqli_stmt
     {
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);

@@ -8,5 +8,10 @@ class Ingredient extends Model
 {
 
     function __construct(){}
+
+    function getPrice()
+    {
+        return (float) $this->price;
+    }
     
 }

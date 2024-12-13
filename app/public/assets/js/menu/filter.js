@@ -7,6 +7,7 @@ const checkInputsStatus = () => {
         if (input.checked) {
             return true
         }
+
     })
 
     return false
@@ -16,6 +17,7 @@ const checkInputsStatus = () => {
 checkboxFilterInputs.forEach(input => {
     input.addEventListener('change', () => {
         if (checkInputsStatus()) {
+            console.log
             if (filterApplyBtn.classList.contains('hidden')) {
                 filterApplyBtn.classList.remove('hidden')
             }

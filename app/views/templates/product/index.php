@@ -7,11 +7,14 @@
             <div class="min-[1120px]:col-span-4 grid min-[1120px]:grid-cols-1 gap-y-16">
                 <form method="get" action="<?= $this->route('product.index') ?>">
                     <div class="grid grid-rows-3 sm:grid-rows-2 grid-cols-1 sm:grid-cols-2 justify-items-center sm:justify-items-start gap-y-2 sm:gap-y-4">
-                        <div class="sm:col-span-2 w-full h-fit px-5 sm:px-3 py-[6px] flex gap-2 sm:gap-0 justify-between rounded-[0.1rem] border border-solid border-neutral-500 text-neutral-500">
-                            <input class="w-full focus:outline-none" type="text" name="product_name" placeholder="Search by product name..." value="<?= $defaultValue ?>">
-                            <button class="md:px-3" type="submit">
-                                <i class="bi bi-search"></i>
-                            </button>
+                        <div class="sm:col-span-2 w-full grid grid-rows-2 sm:grid-rows-1 grid-cols-1 sm:grid-cols-2 sm:grid-flow-col justify-items-center sm:justify-items-start items-center gap-y-2 sm:gap-y-4 sm:gap-x-3">
+                            <div class="sm:col-span-2 w-full h-fit px-5 sm:px-3 py-[6px] flex gap-2 sm:gap-0 justify-between rounded-[0.1rem] border border-solid border-neutral-500 text-neutral-500">
+                                <input class="w-full focus:outline-none" type="text" name="product_name" placeholder="Search by product name..." value="<?= $defaultValue ?>">
+                                <button class="md:px-3 lg:px-0" type="submit">
+                                    <i class="bi bi-search"></i>
+                                </button>
+                            </div>
+                            <a class="btn btn-secondary" href="<?= $this->route('product.index') ?>" role="button">Reset</a>
                         </div>
                         <div class="row-start-2 sm:row-start-2 min-[1120px]:col-start-2 sm:justify-self-end flex items-center gap-3">
                             <div>

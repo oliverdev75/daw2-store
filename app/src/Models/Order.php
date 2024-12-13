@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Models\Model;
 
-class Product extends Model
+class Order extends Model
 {
 
     function __construct(){}
@@ -22,7 +22,7 @@ class Product extends Model
     function getIngredients(): array
     {
         $ingredients = [];
-        $productsIngredients = $this->queryRows("select * from products_ingredients where product_id = {$this->id}");
+        $orderLine = $this->queryRows("select * from order_line where order_id = {$this->id}");
         $ingredientObjects = array_map($productsIngredients, function ($prodIngredient) {
             return Ingredient::find($prodIngredient['ingredient_id']);
         });
