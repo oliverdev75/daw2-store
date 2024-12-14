@@ -60,9 +60,9 @@ class Printable
         return new Component($name, $data, $type);
     }
 
-    protected function route(string $routeName, ?array $params = null): string
+    protected function route(string $routeName, ?array $params = null, ?array $queryParams = null): string
     {
-        return Router::getRoute($routeName, $params);
+        return Router::getRoute($routeName, $params, $queryParams);
     }
 
     /**
