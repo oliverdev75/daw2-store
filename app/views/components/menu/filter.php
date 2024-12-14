@@ -6,6 +6,13 @@
             <div class="ms-2 flex flex-col gap-y-3">
                 <?php
                     $this->component('form.checkbox', [
+                        'label' => 'Principles',
+                        'name' => 'principles',
+                        'id' => 'principles'
+                    ])
+                ?>
+                <?php
+                    $this->component('form.checkbox', [
                         'label' => 'Snacks',
                         'name' => 'snacks',
                         'id' => 'snacks'
@@ -13,9 +20,9 @@
                 ?>
                 <?php
                     $this->component('form.checkbox', [
-                        'label' => 'Principals',
-                        'name' => 'principals',
-                        'id' => 'principals'
+                        'label' => 'Drinks',
+                        'name' => 'drinks',
+                        'id' => 'drinks'
                     ])
                 ?>
                 <?php
@@ -27,6 +34,6 @@
                 ?>
             </div>
         </div>
-        <button id="filter-apply-btn" class="hidden justify-self-center btn btn-secondary" type="submit">Apply</button>
+        <button class="filter-apply-btn hidden justify-self-center btn btn-secondary" type="submit">Apply</button>
     </form>
 </div>

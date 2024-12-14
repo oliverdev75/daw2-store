@@ -73,6 +73,7 @@ class Database
         // $this->checkDataTypes($params, $model);
         self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
         $preparedQuery = self::$connection->prepare(self::$query);
+        var_dump(self::$query);
         $preparedQuery->bind_param($typeIndicators, ...$params);
         $preparedQuery->execute();
         // $this->query = $this->prepareQuery($query, $params);

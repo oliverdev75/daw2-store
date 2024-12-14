@@ -17,17 +17,17 @@ class ProductController extends Controller
         $order_type = null,
         $principles = null,
         $snacks = null,
+        $drinks = null,
         $desserts = null
     ) {
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
         $productsCategoryFilter = [];
 
-        if ($product_name) {
+        if ($product_name && !($principles || $snacks || $desserts)) {
             $products = [];
             $productsQuery = Product::where('name', 'like', "%$product_name%");
 
-            return Send::view('product.index', $viewTitle, ['products' => $products]);
         } else {
             if ($principles) {
                 $productsCategoryFilter[] = 'Principles';
@@ -35,6 +35,10 @@ class ProductController extends Controller
 
             if ($snacks) {
                 $productsCategoryFilter[] = 'Snacks';
+            }
+
+            if ($drinks) {
+                $productsCategoryFilter[] = 'Drinks';
             }
 
             if ($desserts) {
@@ -46,7 +50,7 @@ class ProductController extends Controller
             }
         }
 
-        if ($order || !($principles || $snacks || $desserts)) {
+        if ($order && !($principles || $snacks || $desserts)) {
             if ($order == 'name') {
                 $products = $productsQuery->orderBy($order, $order_type)->get();
             } else {

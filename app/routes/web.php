@@ -28,3 +28,7 @@ Route::controller(CartController::class, function () {
     Route::post('cart.addproduct', '/cart/product/add', 'add');
     Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
 });
+
+Route::get('text.cart', '/cartlist', function () {
+    $_SERVER['cart']['products'];
+});

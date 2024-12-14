@@ -11,7 +11,7 @@ use App\Models\Product;
 class CartController extends Controller
 {
 
-    static function setup()
+    private static function setup()
     {
         if (!isset($_SERVER['cart'])) {
             $_SERVER['cart'] = ['products' => [], 'ingredi ents' => []];
@@ -21,7 +21,7 @@ class CartController extends Controller
     static function add($postData)
     {
         if (!UserController::current()) {
-            return Send::redirect()->route('user.login');
+            return Send::redirect()->route('user.login', [], );
         }
 
         self::setup();
@@ -29,7 +29,7 @@ class CartController extends Controller
         $_SERVER['cart']['products'][] = $product;
         foreach ($product->getIngredients() as $ingredient) {
             $_SERVER['cart']['ingredients'] = [
-                "{$product->getId()}:{$ingredient['id']}" => [
+                "{$product->getId()}-{$ingredient['id']}" => [
                     'quantity' => $ingredient['quantity'],
                     'price' => $ingredient['price']
                 ]
@@ -61,7 +61,7 @@ class CartController extends Controller
         for ($i = 0; $i < $_SERVER['cart']['products']; $i++) {
             $product = $_SERVER['cart']['products'][$i];
             foreach ($_SERVER['cart']['ingredients'] as $prodIngredient => $ingredientData) {
-                $productId = explode(':', $prodIngredient)[0];
+                $productId = explode('-', $prodIngredient)[0];
 
                 if ($productId == $product->getId()) {
                     self::createOrderData(compact(
@@ -77,7 +77,7 @@ class CartController extends Controller
 
     static function createOrderData($data)
     {
-        $ingredientQuant = $data['postData']["{$data['product']->getId()}_{$data['ingredientData']['id']}_quantity"];
+        $ingredientQuant = $data['postData']["{$data['product']->getId()}-{$data['ingredientData']['id']}_quantity"];
         $query = "insert into order_line (order_id, product_id, ingredient_id, quantity, total_price) ";
         $query .= "values (:order_id, :product_id, :ingredient_id, :quantity, :total_price)";
 
