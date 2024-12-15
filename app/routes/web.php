@@ -30,5 +30,6 @@ Route::controller(CartController::class, function () {
 });
 
 Route::get('text.cart', '/cartlist', function () {
-    $_SERVER['cart']['products'];
+    session_start();
+    var_dump($_SESSION['cart']);
 });

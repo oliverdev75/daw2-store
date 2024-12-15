@@ -12,8 +12,9 @@ class UserController extends Controller
 
     const LOGIN_TITLE = 'Log in: SymfonyRestaurant';
 
-    static function login(): View
+    static function login($src = null): View
     {
+        $srcPage = $src;
         return Send::view('user.login');
     }
 
@@ -51,18 +52,19 @@ class UserController extends Controller
 
     static function auth($postData)
     {
-        $user = User::where('email', $postData['username'])->get();
+        $user = User::where('email', $postData['username'])->first();
+        var_dump($user);
         if (!$user) {
-            return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong']);
+            return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => $postData['src']]);
         }
 
-        if (password_verify($postData['password'], $user[0]->password)) {
+        if (password_verify($postData['password'], $user->getPassword())) {
             session_start();
             $_SESSION['user'] = $user;
-            return Send::redirect();
+            return Send::redirect()->route($postData['src'] ? $postData['src'] : 'main');
         }
 
-        return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong']);
+        return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => $postData['src']]);
     }
 
     static function current()

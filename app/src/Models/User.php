@@ -35,6 +35,15 @@ class User extends Model
     }
 
     /**
+     * Get the value of password
+     */
+    function getPassword()
+    {
+        return $this->password;
+    }
+
+
+    /**
      * Get the value of role
      */
     function getRole()

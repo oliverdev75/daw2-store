@@ -24,10 +24,11 @@ class Product extends Model
         $ingredients = [];
         $productsIngredients = $this->queryRows("select * from products_ingredients where product_id = {$this->getId()}");
         $ingredientObjects = array_map(function ($prodIngredient) {
-            return Ingredient::find($prodIngredient['ingredient_id']);
+            $ingr = Ingredient::find(intval($prodIngredient['ingredient_id']));
+            return $ingr;
         }, $productsIngredients);
-        for ($i = 0; $i < $ingredientObjects; $i++) {
-            $ingredients[$i] = [...get_object_vars($ingredientObjects[$i]), "quantity" => intval($productsIngredients['quantity'])];
+        for ($i = 0; $i < count($ingredientObjects); $i++) {
+            $ingredients[$i] = [...get_object_vars($ingredientObjects[$i]), "quantity" => intval($productsIngredients[$i]['quantity'])];
         }
 
         return $ingredients;

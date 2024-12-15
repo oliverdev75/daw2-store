@@ -7,48 +7,51 @@ use Framework\Response\Types\View;
 use Framework\Database\Database;
 use App\Models\Order;
 use App\Models\Product;
+use Framework\Routing\Router;
 
 class CartController extends Controller
 {
 
     private static function setup()
     {
-        if (!isset($_SERVER['cart'])) {
-            $_SERVER['cart'] = ['products' => [], 'ingredi ents' => []];
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = ['products' => [], 'ingredients' => []];
         }
     }
 
     static function add($postData)
     {
         if (!UserController::current()) {
-            return Send::redirect()->route('user.login', [], );
+            return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
         }
 
         self::setup();
         $product = Product::find(intval($postData['id']));
-        $_SERVER['cart']['products'][] = $product;
+        $_SESSION['cart']['products'][] = $product;
         foreach ($product->getIngredients() as $ingredient) {
-            $_SERVER['cart']['ingredients'] = [
-                "{$product->getId()}-{$ingredient['id']}" => [
-                    'quantity' => $ingredient['quantity'],
-                    'price' => $ingredient['price']
-                ]
+            $_SESSION['cart']['ingredients']["{$product->getId()}-{$ingredient['id']}"] = [
+                'quantity' => $ingredient['quantity'],
+                'price' => $ingredient['price']
             ];
         }
-
+        
         return Send::redirect()->route('product.index');
     }
 
     static function delete($postData)
     {
-        for ($i = 0; $i < $_SERVER['cart']['products']; $i++) {
-            if (intval($_SERVER['cart']['products'][$i]->getId()) == intval($postData['id'])) {
-                unset($_SERVER['cart']['products'][$i]);
+        if (!UserController::current()) {
+            return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
+        }
+        
+        for ($i = 0; $i < $_SESSION['cart']['products']; $i++) {
+            if (intval($_SESSION['cart']['products'][$i]->getId()) == intval($postData['id'])) {
+                unset($_SESSION['cart']['products'][$i]);
                 break;
             }
         }
 
-        return Send::redirect()->route('product.index');
+        return Send::json([$_SESSION['cart']]);
     }
 
     static function order($postData)
@@ -58,9 +61,9 @@ class CartController extends Controller
         ]);
         $orderId = Order::getLastId();
 
-        for ($i = 0; $i < $_SERVER['cart']['products']; $i++) {
-            $product = $_SERVER['cart']['products'][$i];
-            foreach ($_SERVER['cart']['ingredients'] as $prodIngredient => $ingredientData) {
+        for ($i = 0; $i < $_SESSION['cart']['products']; $i++) {
+            $product = $_SESSION['cart']['products'][$i];
+            foreach ($_SESSION['cart']['ingredients'] as $prodIngredient => $ingredientData) {
                 $productId = explode('-', $prodIngredient)[0];
 
                 if ($productId == $product->getId()) {
