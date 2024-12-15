@@ -45,6 +45,21 @@ a:hover {
     color: var(--neutral-base-color) !important;
 }
 
+.btn-icon {
+    height: fit-content;
+    padding: 1px 5px;
+    border-radius: 0.25rem;
+}
+
+.btn-red {
+    color: var(--neutral-base-color) !important;
+    background: #ef4444;
+}
+
+.btn-danger:hover {
+    background: #a53030;
+}
+
 .btn-full {
     width: 100%;
 }
