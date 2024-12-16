@@ -91,12 +91,6 @@ class CartController extends Controller
             return Send::json(['status' => 'error', 'message' => 'Quantities must be numeric.']);
         }
 
-        foreach ($data['postData'] as $postInput => $value) {
-            if (!str_contains($postInput, '-')) {
-                Database::execPrepared("insert into ")
-            }
-        }
-
         $query = "insert into mixes (product_id, ingredient_id, quantity, total_price) ";
         $query .= "values (:product_id, :ingredient_id, :quantity, :total_price)";
 
@@ -106,6 +100,14 @@ class CartController extends Controller
             $ingredientQuant,
             floatval($ingredientQuant * floatval($data['ingredientData']['price']))
         ], typeIndicators: 'iiiif');
+
+        foreach ($data['postData'] as $postInput => $value) {
+            if (!str_contains($postInput, '-')) {
+                $query = "insert into orders_mixes (order_id, mix_id, quantity, total_price) ";
+                $query .= "values ({$data['orderId']}, )"
+                Database::execPrepared();
+            }
+        }
 
         return 'ok';
     }
