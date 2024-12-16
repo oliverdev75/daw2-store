@@ -69,7 +69,7 @@ class ProductController extends Controller
         $ordered = [];
         $orderedModels = [];
         foreach ($products as $product) {
-            $ordered["$product->id"] = $product->getPrice(false);
+            $ordered["{$product->getId()}"] = $product->getPrice(false);
         }
         $orderType == 'asc' ? asort($ordered, SORT_NUMERIC) : arsort($ordered, SORT_NUMERIC);
         foreach ($ordered as $id => $price) {

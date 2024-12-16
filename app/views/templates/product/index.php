@@ -79,7 +79,7 @@
                     <div class="grid products-list-layout gap-12">
                         <?php foreach ($products as $product): ?>
                             <?php
-                            $this->component('product.card', [
+                            $this->component('product.card.menu', [
                                 'id' => $product->id,
                                 'name' => $product->name,
                                 'category' => 'Principle',

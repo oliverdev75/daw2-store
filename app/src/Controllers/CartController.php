@@ -45,7 +45,7 @@ class CartController extends Controller
         }
         
         for ($i = 0; $i < $_SESSION['cart']['products']; $i++) {
-            if (intval($_SESSION['cart']['products'][$i]->getId()) == intval($postData['id'])) {
+            if ($_SESSION['cart']['products'][$i]->getId() == intval($postData['id'])) {
                 unset($_SESSION['cart']['products'][$i]);
                 break;
             }
@@ -67,29 +67,46 @@ class CartController extends Controller
                 $productId = explode('-', $prodIngredient)[0];
 
                 if ($productId == $product->getId()) {
-                    self::createOrderData(compact(
+                    $result = self::createOrderData(compact(
                         'orderId',
                         'product',
                         'ingredientData',
                         'postData',
                     ));
+
+                    if (!$result == 'ok') {
+                        return $result;
+                    }
                 }
             }
         }
+
+        return Send::json(['status' => 'ok']);
     }
 
     static function createOrderData($data)
     {
         $ingredientQuant = $data['postData']["{$data['product']->getId()}-{$data['ingredientData']['id']}_quantity"];
-        $query = "insert into order_line (order_id, product_id, ingredient_id, quantity, total_price) ";
-        $query .= "values (:order_id, :product_id, :ingredient_id, :quantity, :total_price)";
+        if (!is_numeric($ingredientQuant)) {
+            return Send::json(['status' => 'error', 'message' => 'Quantities must be numeric.']);
+        }
+
+        foreach ($data['postData'] as $postInput => $value) {
+            if (!str_contains($postInput, '-')) {
+                Database::execPrepared("insert into ")
+            }
+        }
+
+        $query = "insert into mixes (product_id, ingredient_id, quantity, total_price) ";
+        $query .= "values (:product_id, :ingredient_id, :quantity, :total_price)";
 
         Database::execPrepared($query, params: [
-            $data['orderId'],
             $data['product']->getId(),
             $data['ingredientData']['id'],
             $ingredientQuant,
             floatval($ingredientQuant * floatval($data['ingredientData']['price']))
         ], typeIndicators: 'iiiif');
+
+        return 'ok';
     }
 }

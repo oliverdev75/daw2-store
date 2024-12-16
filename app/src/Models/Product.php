@@ -29,6 +29,7 @@ class Product extends Model
         }, $productsIngredients);
         for ($i = 0; $i < count($ingredientObjects); $i++) {
             $ingredients[$i] = [...get_object_vars($ingredientObjects[$i]), "quantity" => intval($productsIngredients[$i]['quantity'])];
+            $ingredients[$i]['image'] = $ingredientObjects[$i]->getImage();
         }
 
         return $ingredients;

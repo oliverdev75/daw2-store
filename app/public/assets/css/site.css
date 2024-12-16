@@ -47,17 +47,16 @@ a:hover {
 
 .btn-icon {
     height: fit-content;
-    padding: 1px 5px;
+    padding: 4px 9px;
     border-radius: 0.25rem;
 }
 
 .btn-red {
-    color: var(--neutral-base-color) !important;
     background: #ef4444;
 }
 
 .btn-danger:hover {
-    background: #a53030;
+    background: #7b1f1f;
 }
 
 .btn-full {
