@@ -8,6 +8,7 @@ class Json {
 
     use Response;
 
+    protected $headers = [];
     protected $content;
 
     function __construct(array $data, int $statusCode = 200)
@@ -22,6 +23,7 @@ class Json {
 
     public function send()
     {
+        $this->setHeaders();
         echo json_encode($this->content);
     }
 }

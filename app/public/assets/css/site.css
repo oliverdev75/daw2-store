@@ -36,13 +36,26 @@ a:hover {
 }
 
 .btn {
-    width: fit-content;
     display: block;
     border-radius: 3px;
     font-weight: 700;
     text-align: center;
     text-decoration: none !important;
     color: var(--neutral-base-color) !important;
+}
+
+.btn-icon {
+    height: fit-content;
+    padding: 4px 9px;
+    border-radius: 0.25rem;
+}
+
+.btn-red {
+    background: #ef4444;
+}
+
+.btn-danger:hover {
+    background: #7b1f1f;
 }
 
 .btn-full {
@@ -144,8 +157,8 @@ a:hover {
 /* Messages */
 
 .message {
+    display: none;
     width: 100%;
-    display: block;
     padding: 10px 15px;
     border-radius: 7px;
     border-width: 1px;

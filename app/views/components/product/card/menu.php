@@ -10,7 +10,7 @@
         <span class="text-xl"><?= $price ?></span>
         <div class="justify-self-end w-full grid gap-y-2">
             <a class="btn btn-tertiary btn-full" role="button" href="<?= $this->route('product.show', compact('id')) ?>">Details</a>
-            <form action="" method="post">
+            <form action="<?= $this->route('cart.addproduct') ?>" method="post">
                 <input type="hidden" name="id" value="<?= $id ?>">
                 <button class="btn btn-secondary btn-full" type="submit">Add to cart</button>
             </form>

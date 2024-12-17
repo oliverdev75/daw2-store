@@ -27,4 +27,10 @@ Route::controller(ProductController::class, function () {
 Route::controller(CartController::class, function () {
     Route::post('cart.addproduct', '/cart/product/add', 'add');
     Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
+    Route::post('cart.order', '/cart/order', 'order');
+});
+
+Route::get('text.cart', '/cartlist', function () {
+    session_start();
+    var_dump($_SESSION['cart']);
 });

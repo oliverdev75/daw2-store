@@ -11,7 +11,7 @@ use ReflectionProperty;
 class Database
 {
 
-    private static $connection;
+    protected static $connection;
     private static $query;
 
     protected static function table(string $name): string
@@ -67,15 +67,15 @@ class Database
         return $found;
     }
 
-    static function execPrepared(string $query, array $paramBinders, string $typeIndicators): \mysqli_stmt
+    static function execPrepared(string $query, array $params, string $typeIndicators): \mysqli_stmt
     {
         self::connect();
-        // $this->checkDataTypes($paramBinders, $model);
+        // $this->checkDataTypes($params, $model);
         self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
         $preparedQuery = self::$connection->prepare(self::$query);
-        $preparedQuery->bind_param($typeIndicators, ...$paramBinders);
+        $preparedQuery->bind_param($typeIndicators, ...$params);
         $preparedQuery->execute();
-        // $this->query = $this->prepareQuery($query, $paramBinders);
+        // $this->query = $this->prepareQuery($query, $params);
 
 
         return $preparedQuery;

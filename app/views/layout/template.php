@@ -21,7 +21,7 @@
     <?php $this->header(['user' => $data['user']]) ?>
 
     <?php if ($templateParsedName != '.templates.site.index'): ?>
-        <main class="min-h-full mx-5 sm:mx-12 min-[1500px]:mx-48 min-[1900px]:mx-80 grow flex flex-col">
+        <main class="min-h-full mx-5 sm:mx-28 min-[1500px]:mx-48 min-[1900px]:mx-80 grow flex flex-col">
             <?php $this->component($templateParsedName, $data, 'body') ?>
         </main>
     <?php else: ?>
