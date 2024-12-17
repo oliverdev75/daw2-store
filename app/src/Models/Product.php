@@ -9,7 +9,12 @@ class Product extends Model
 
     function __construct() {}
 
-    function getPrice($formated = true): string | float
+    public function getCategory(): string
+    {
+        return $this->category;
+    }
+
+    public function getPrice($formated = true): string | float
     {
         $ingredientsQuery = "select ingredient_id from products_ingredients where product_id = {$this->getId()}";
         $total = array_reduce($this->queryRows($ingredientsQuery), function ($total, $prodIngredient) {
@@ -19,7 +24,7 @@ class Product extends Model
         return $formated ? number_format($total, 2, ',') : $total;
     }
 
-    function getIngredients(): array
+    public function getIngredients(): array
     {
         $ingredients = [];
         $productsIngredients = $this->queryRows("select * from products_ingredients where product_id = {$this->getId()}");
@@ -28,8 +33,11 @@ class Product extends Model
             return $ingr;
         }, $productsIngredients);
         for ($i = 0; $i < count($ingredientObjects); $i++) {
-            $ingredients[$i] = [...get_object_vars($ingredientObjects[$i]), "quantity" => intval($productsIngredients[$i]['quantity'])];
-            $ingredients[$i]['image'] = $ingredientObjects[$i]->getImage();
+            $ingredients[$i] = [
+                ...$ingredientObjects[$i]->toArray(),
+                'quantity' => $productsIngredients[$i]['quantity'],
+                'image' => $ingredientObjects[$i]->getImage()
+            ];
         }
 
         return $ingredients;

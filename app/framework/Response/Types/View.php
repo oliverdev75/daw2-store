@@ -11,13 +11,20 @@ class View extends Printable
 
     use Response;
 
+    private $headers = [];
+
     public function __construct(
         string $template,
         string $title = "SymfonyRestaurant",
         array | null $data = null,
-        int $statusCode = 200
+        int $statusCode = 200,
+        bool $httpAllowAll = false
     ) {
         $this->setStatusCode($statusCode);
+        if ($httpAllowAll) {
+            $this->allowOrigin();
+            $this->setContentType('application/json');
+        }
 
         $path = \VIEWS_PATH . \VIEWS_LAYOUT_DIR . \VIEWS_TEMPLATE . '.php';
         $templateParsedName = ".templates.$template";
@@ -35,6 +42,7 @@ class View extends Printable
 
     public function send()
     {
+        $this->setHeaders();
         $this->show($this->path);
     }
 

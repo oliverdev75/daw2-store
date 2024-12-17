@@ -12,24 +12,31 @@ trait Response {
 
     protected function allowOrigin(string $origin = '*'): void
     {
-        header("Access-Control-Allow-Origin: $origin");
+        $this->headers[] = "Access-Control-Allow-Origin: $origin";
     }
 
     protected function allowHeaders(array $headers = ['Content-Type', 'Access-Control-Allow-Headers', 'Authorization', 'X-Requested-With']): void
     {
         $headersString = join(', ', $headers);
-        header("Access-Control-Allow-Headers: $headersString");
+        $this->headers[] = "Access-Control-Allow-Headers: $headersString";
     }
 
     protected function allowMethods(array $origin = ['GET', 'POST', 'PUT', 'DELETE']): void
     {
         $originString = join(', ', $origin);
-        header("Access-Control-Allow-Origin: $originString");
+        $this->headers[] = "Access-Control-Allow-Methods: $originString";
     }
 
     protected function setContentType(string $type = 'text/html; charset=UTF-8'): void
     {
-        header("Content-Type: $type");
+        $this->headers[] = "Content-Type: $type";
+    }
+
+    protected function setHeaders(): void
+    {
+        foreach ($this->headers as $header) {
+            header($header);
+        }
     }
 
 }

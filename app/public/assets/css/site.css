@@ -36,7 +36,6 @@ a:hover {
 }
 
 .btn {
-    width: fit-content;
     display: block;
     border-radius: 3px;
     font-weight: 700;
@@ -158,8 +157,8 @@ a:hover {
 /* Messages */
 
 .message {
+    display: none;
     width: 100%;
-    display: block;
     padding: 10px 15px;
     border-radius: 7px;
     border-width: 1px;

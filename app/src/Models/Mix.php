@@ -4,15 +4,15 @@ namespace App\Models;
 
 use App\Models\Model;
 
-class Order extends Model
+class Mix extends Model
 {
 
     function __construct() {}
 
     function getPrice($formated = true): string | float
     {
-        $orderLineQuery = "select * from order_line where order_id = {$this->id}";
-        $total = array_reduce($this->queryRows($orderLineQuery), function ($total, $prodIngredient) {
+        $orderMixQuery = "select * from mixes where id = {$this->id}";
+        $total = array_reduce($this->queryRows($orderMixQuery), function ($total, $prodIngredient) {
             return $total += floatval($prodIngredient['total_price']);
         }, 0);
 

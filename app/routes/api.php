@@ -12,7 +12,7 @@ Route::get('test.users', '/user/{id}', [UserController::class, 'show']);
 Route::get('test.models', '/products', function () {
     return Send::json([
         'data' => [
-            Product::all()
+            Product::all()->get()
         ]
     ]);
 });

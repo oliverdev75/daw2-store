@@ -17,12 +17,19 @@
         </div>
         <div class="w-full row-start-2 col-span-2">
             <ul class="list-none grid grid-flow-col auto-cols-max gap-5">
-                <?php for ($i = 0; $i < 3; $i++): ?>
-                    <li class="h-9 w-fit flex items-center gap-x-4">
-                        <img class="max-w-8 h-9 object-cover" src="<?= $ingredient['image'] ?>" alt="<?= $i ?>">
-                        <input class="input-text-quant w-10 h-7 font-bold" type="text" name="<?= "{$id}-{$ingredient['id']}" ?>">
-                    </li>
-                <?php endfor ?>
+                <?php foreach($ingredients as $ingredientId => $data): ?>
+                    <?php if(intval(explode('-', $ingredientId)[0]) == $id): ?>
+                        <li class="h-9 w-fit flex items-center gap-x-4">
+                            <img class="max-w-8 h-9 object-cover" src="<?= $ingredient['image'] ?>" alt="<?= $i ?>">
+                            <input
+                                class="input-text-quant w-10 h-7 font-bold"
+                                type="text"
+                                name="<?= "{$id}-{$ingredient['id']}" ?>"
+                                value="<?= $ingredient['quantity'] ?>"
+                            >
+                        </li>
+                    <?php endif ?>
+                <?php endforeach ?>
             </ul>
         </div>
     </div>
