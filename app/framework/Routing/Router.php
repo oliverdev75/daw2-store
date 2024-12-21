@@ -211,9 +211,17 @@ class Router
             return $_GET;
         } else if ($reqMethod == 'POST') {
             if ($matchedRoute->getType() == 'web') {
-                return ['postData' => $_POST];
+                if ($_POST) {
+                    return ['postData' => $_POST];
+                } else {
+                    return [];
+                }
             } else {
-                return ['postData' => json_decode(file_get_contents('php://input'))];
+                if ($data = ['postData' => get_object_vars(json_decode(file_get_contents('php://input')))]) {
+                    return $data;
+                } else {
+                    return [];
+                }
             }
         }
     }

@@ -1,25 +1,31 @@
 
-const host = 'http://127.0.0.1:3000'
-const endpoint = `${host}/cart/order`
+const host = 'http://localhost:3000'
+const endpoint = `${host}/api/cart/product/update`
 const ordersPage = `${host}/orders`
 const loginPage = `${host}/login`
 
-const quantityInputs = document.querySelectorAll('.input-text-quant')
-const orderForm = document.querySelector('#order-form')
-const orderErrorMessage = document.querySelector('#order-error')
+const quantitiesForms = document.getElementsByClassName('quantities-form')
+const orderMessage = document.getElementById('order-error')
 
-orderForm.addEventListener('submit', event => {
-    event.preventDefault()
-    const quantitiesForm = new FormData(event.target)
-    quantityInputs.forEach(input => {
-        quantitiesForm.append(input.name, input.value)
+for (const form of quantitiesForms) {
+    form.addEventListener('submit', event => {
+        event.preventDefault()
+
+        orderMessage.style.display = 'none'
+        const quantitiesFormData = new FormData(event.target)
+        const productQuantity = document.getElementById(`product-${form.id}`)
+        quantitiesFormData.append(productQuantity.name, productQuantity.value)
+        const quantities = {}
+        quantitiesFormData.entries().forEach(inputValue => {
+            quantities[inputValue[0]] = inputValue[1]
+        })
+        console.log(quantities)
+        sendQuantities(quantities, event.target)
     })
+}
 
-    const quantities = {};
-    quantitiesForm.entries().forEach(inputValue => {
-        quantities[inputValue[0]] = inputValue[1]
-    })
 
+function sendQuantities(quantities, form) {
     fetch(endpoint, {
         method: 'POST',
         body: JSON.stringify(quantities)
@@ -27,18 +33,49 @@ orderForm.addEventListener('submit', event => {
     .then(res => res.json())
     .then(res => {
         if (res.status == 'ok') {
-            location.href = ordersPage
+            console.log(res.data)
+            orderMessage.textContent = res.message
+            toggleMessageStyle('success')
+            setQuantities(res.data, form)
         } else {
             if (res.message == 'No session') {
                 location.href = loginPage
             }
-            orderErrorMessage.textContent = res.message
-            orderErrorMessage.style.display = 'block'
+            
+            orderMessage.textContent = res.message
+            toggleMessageStyle('danger')
         }
     })
     .catch(error => {
         console.log(error)
-        orderErrorMessage.textContent = "There was an error with the order."
-        orderErrorMessage.style.display = 'block'
+        orderMessage.textContent = "There was an error with the order."
+        toggleMessageStyle('danger')
     })
-})
+}
+
+function toggleMessageStyle(type) {
+    if (type == 'success') {
+        if (!orderMessage.classList.contains('message-success')) {
+            orderMessage.classList.remove('message-danger')
+            orderMessage.classList.add('message-success')
+        }
+    } else {
+        if (!orderMessage.classList.contains('message-danger')) {
+            orderMessage.classList.remove('message-success')
+            orderMessage.classList.add('message-danger')
+        }
+    }
+    orderMessage.style.display = 'block'
+}
+
+function setQuantities(data, form) {
+    document.getElementById(`product-${form.id}`).value = data.product
+    document.getElementById('subtotal').textContent = data.prices.subtotal + '€'
+    document.getElementById('iva').textContent = data.prices.iva + '€'
+    document.getElementById('total').textContent = data.prices.total + '€'
+    const ingredientInputs = document.getElementsByClassName(`ingredient-${form.id}`)
+
+    for (let i = 0; i < data.ingredients.length; i++) {
+        ingredientInputs[i].value = data.ingredients[i];
+    }
+}

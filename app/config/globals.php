@@ -20,6 +20,10 @@ define('ASSETS_PATH', '/assets');
 
 define('API_PREFIX', '/api');
 
+/* Storage */
+
+define('STORAGE', '/storage');
+
 /* Database */
 
 define('DB_HOST', '127.0.0.1');

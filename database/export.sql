@@ -1,14 +1,13 @@
-/*!999999\- enable the sandbox mode */ 
--- MariaDB dump 10.19  Distrib 10.6.18-MariaDB, for debian-linux-gnu (x86_64)
+-- MySQL dump 10.13  Distrib 9.1.0, for Win64 (x86_64)
 --
 -- Host: localhost    Database: restaurant
 -- ------------------------------------------------------
--- Server version	9.0.1
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+/*!50503 SET NAMES utf8mb4 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -22,13 +21,13 @@
 
 DROP TABLE IF EXISTS `ingredients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ingredients` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `price` float NOT NULL DEFAULT '0',
   `create_time` datetime NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -45,25 +44,49 @@ INSERT INTO `ingredients` VALUES (1,'Flour',1.5,'2024-12-03 16:24:13','flour'),(
 UNLOCK TABLES;
 
 --
+-- Table structure for table `mix_line`
+--
+
+DROP TABLE IF EXISTS `mix_line`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `mix_line` (
+  `mix_id` int NOT NULL,
+  `product_id` int NOT NULL,
+  `ingredient_id` int NOT NULL,
+  `quantity` int NOT NULL,
+  `total_price` float NOT NULL,
+  PRIMARY KEY (`mix_id`,`product_id`,`ingredient_id`),
+  KEY `fk_order_line_products` (`product_id`),
+  KEY `fk_order_line_ingredient` (`ingredient_id`),
+  CONSTRAINT `fk_order_line_ingredient` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_order_line_orders` FOREIGN KEY (`mix_id`) REFERENCES `mixes` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_order_line_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `mix_line`
+--
+
+LOCK TABLES `mix_line` WRITE;
+/*!40000 ALTER TABLE `mix_line` DISABLE KEYS */;
+INSERT INTO `mix_line` VALUES (38,2,1,3,4.5),(38,2,6,2,5),(38,2,8,1,0.8),(38,2,12,1,1.2),(39,3,1,2,3),(39,3,3,1,0.75),(39,3,8,2,1.6),(39,3,12,1,1.2),(40,3,1,2,3),(40,3,3,1,0.75),(40,3,8,2,1.6),(40,3,12,1,1.2);
+/*!40000 ALTER TABLE `mix_line` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `mixes`
 --
 
 DROP TABLE IF EXISTS `mixes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mixes` (
-  `id` int NOT NULL,
-  `product_id` int NOT NULL,
-  `ingredient_id` int NOT NULL,
-  `quantity` int NOT NULL,
-  `total_price` float NOT NULL,
-  PRIMARY KEY (`id`,`product_id`,`ingredient_id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `fk_mixes_products` (`product_id`),
-  KEY `fk_mixes_ingredients` (`ingredient_id`),
-  CONSTRAINT `fk_order_line_ingredient` FOREIGN KEY (`ingredient_id`) REFERENCES `ingredients` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `fk_order_line_products` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` int NOT NULL AUTO_INCREMENT,
+  `create_time` datetime NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -72,6 +95,7 @@ CREATE TABLE `mixes` (
 
 LOCK TABLES `mixes` WRITE;
 /*!40000 ALTER TABLE `mixes` DISABLE KEYS */;
+INSERT INTO `mixes` VALUES (34,'2024-12-20 22:47:13'),(35,'2024-12-20 22:47:13'),(36,'2024-12-21 00:00:21'),(37,'2024-12-21 00:00:21'),(38,'2024-12-21 17:19:14'),(39,'2024-12-21 17:19:15'),(40,'2024-12-21 19:14:17');
 /*!40000 ALTER TABLE `mixes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -81,11 +105,11 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `offers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `offers` (
   `id` int NOT NULL,
   `name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `type` varchar(11) COLLATE utf8mb4_general_ci NOT NULL,
+  `type` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `discount` float NOT NULL,
   `beggining_date` date NOT NULL,
   `ending_date` date NOT NULL,
@@ -110,7 +134,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `orders`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
@@ -118,7 +142,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `fk_orders_users` (`user_id`),
   CONSTRAINT `fk_orders_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +151,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,'2024-12-17 16:49:47'),(2,1,'2024-12-17 16:49:51'),(3,1,'2024-12-17 16:50:01'),(4,1,'2024-12-17 16:50:37'),(5,1,'2024-12-17 16:52:12'),(6,1,'2024-12-17 16:53:09'),(7,1,'2024-12-17 16:53:33'),(8,1,'2024-12-17 16:54:24');
+INSERT INTO `orders` VALUES (1,21,'2024-12-20 08:34:51'),(2,21,'2024-12-20 08:35:40'),(3,21,'2024-12-20 08:36:18'),(4,21,'2024-12-20 08:40:41'),(5,21,'2024-12-20 09:22:59'),(6,21,'2024-12-20 09:27:13'),(7,21,'2024-12-20 09:29:21'),(8,21,'2024-12-20 09:50:20'),(9,21,'2024-12-20 09:54:14'),(10,21,'2024-12-20 09:55:17'),(11,21,'2024-12-20 09:56:11'),(12,21,'2024-12-20 09:59:10'),(13,21,'2024-12-20 10:01:00'),(14,21,'2024-12-20 10:08:09'),(15,21,'2024-12-20 22:47:13'),(16,21,'2024-12-21 00:00:21'),(17,21,'2024-12-21 17:19:14'),(18,21,'2024-12-21 19:14:17');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -137,11 +161,13 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `orders_mixes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `orders_mixes` (
   `order_id` int NOT NULL,
   `mix_id` int NOT NULL,
   `quantity` int NOT NULL,
+  `price` float NOT NULL,
+  `iva` float NOT NULL,
   `total_price` float NOT NULL,
   PRIMARY KEY (`order_id`,`mix_id`),
   KEY `fk_order_mixes_mixes` (`mix_id`),
@@ -156,6 +182,7 @@ CREATE TABLE `orders_mixes` (
 
 LOCK TABLES `orders_mixes` WRITE;
 /*!40000 ALTER TABLE `orders_mixes` DISABLE KEYS */;
+INSERT INTO `orders_mixes` VALUES (17,38,1,18.05,3.7905,21.8405),(17,39,1,18.05,3.7905,21.8405),(18,40,1,6.55,1.3755,7.9255);
 /*!40000 ALTER TABLE `orders_mixes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -165,14 +192,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `products`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `offer_id` int DEFAULT NULL,
   `create_time` datetime NOT NULL,
-  `category` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `category` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `image` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `fk_products_offers` (`offer_id`),
@@ -196,7 +223,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `products_ingredients`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `products_ingredients` (
   `product_id` int NOT NULL,
   `ingredient_id` int NOT NULL,
@@ -224,14 +251,14 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `users` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `surnames` varchar(30) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `name` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `surnames` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `role` varchar(6) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `role` varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `create_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
@@ -257,4 +284,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-17 19:16:21
+-- Dump completed on 2024-12-21 20:55:36

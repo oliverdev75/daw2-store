@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="<?= $this->css('header') ?>">
     <link rel="stylesheet" href="<?= $this->css('footer') ?>">
     <link rel="stylesheet" href="<?= $this->css('menu') ?>">
+    <link rel="stylesheet" href="<?= $this->css('cart') ?>">
     <link rel="stylesheet" href="<?= $this->css('product.card') ?>">
     <title><?= $title ?></title>
 </head>

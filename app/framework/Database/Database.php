@@ -46,16 +46,12 @@ class Database
         return $rows;
     }
 
-    protected static function queryObjects(string $query, string $model): mixed
+    protected static function select(string $query, string $model): mixed
     {
-        self::connect();
-        $found = self::parseObjects(self::$connection->query($query), $model);
-        self::$connection->close();
-
-        return $found;
+        return self::parseObjects(self::query($query), $model);
     }
 
-    protected function select(string $query, array $paramBinders, string $typeIndicators, string $model): array
+    protected function filteredSelect(string $query, array $paramBinders, string $typeIndicators, string $model): array
     {
         self::connect();
         // $this->checkDataTypes($paramBinders, $model);
@@ -70,7 +66,7 @@ class Database
     static function execPrepared(string $query, array $params, string $typeIndicators): \mysqli_stmt
     {
         self::connect();
-        // $this->checkDataTypes($params, $model);
+        // $this->checkDataTypes($params, $table);
         self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
         $preparedQuery = self::$connection->prepare(self::$query);
         $preparedQuery->bind_param($typeIndicators, ...$params);

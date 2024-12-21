@@ -12,9 +12,7 @@
                             <?php foreach ($principles as $principle): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'id' => $principle->getId(),
-                                        'image' => $principle->getImage(),
-                                        'price' => $principle->getPrice(),
+                                        'product' => $principle,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -37,9 +35,7 @@
                             <?php foreach ($snacks as $snack): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'id' => $snack->getId(),
-                                        'image' => $snack->getImage(),
-                                        'price' => $snack->getPrice(),
+                                        'snack' => $snack,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -62,9 +58,7 @@
                             <?php foreach ($drinks as $drink): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'id' => $drink->getId(),
-                                        'image' => $drink->getImage(),
-                                        'price' => $drink->getPrice(),
+                                        'drink' => $drink,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -87,9 +81,7 @@
                             <?php foreach ($desserts as $dessert): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'id' => $dessert->getId(),
-                                        'image' => $dessert->getImage(),
-                                        'price' => $dessert->getPrice(),
+                                        'dessert' => $dessert,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -110,12 +102,12 @@
                 <div class="px-5 py-6 rounded-lg shadow-lg grid">
                     <h3 class="mb-4 text-2xl">Total</h3>
                     <div class="mb-3 grid gap-y-2">
-                        <span>Price: <strong><?= $subtotal ?>€</strong></span>
-                        <span>IVA: <strong><?= $IVA ?>€</strong></span>
+                        <span>Price: <strong id="subtotal"><?= $subtotal ?> €</strong></span>
+                        <span>IVA: <strong id="iva"><?= $IVA ?> €</strong></span>
                     </div>
                     <div class="grid gap-y-3">
-                        <span class="text-lg">Tota price: <strong><?= $total ?>€</strong></span>
-                        <form id="order-form" action="<?= $this->route('cart.order') ?>" method="post">
+                        <span class="text-lg">Tota price: <strong id="total"><?= $total ?> €</strong></span>
+                        <form id="order-form" class="m-0" action="<?= $this->route('cart.order') ?>" method="post">
                             <button class="btn btn-primary w-full" type="submit">Order</button>
                         </form>
                     </div>

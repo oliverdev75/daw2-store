@@ -1,4 +1,4 @@
--- Active: 1733158023054@@127.0.0.1@3336@restaurant
+-- Active: 1732818887997@@127.0.0.1@3336@restaurant
 CREATE TABLE IF NOT EXISTS orders_mixes (
     order_id int NOT NULL,
     mix_id int NOT NULL,

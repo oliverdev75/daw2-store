@@ -7,6 +7,8 @@ use App\Models\Model;
 class Product extends Model
 {
 
+    protected $quantity;
+
     function __construct() {}
 
     public function getCategory(): string
@@ -14,30 +16,35 @@ class Product extends Model
         return $this->category;
     }
 
-    public function getPrice($formated = true): string | float
+    public function getQuantity(): int
     {
-        $ingredientsQuery = "select ingredient_id from products_ingredients where product_id = {$this->getId()}";
+        return $this->quantity;
+    }
+
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
+
+    public function getPrice($format = true): string | float
+    {
+        $ingredientsQuery = "select * from products_ingredients where product_id = {$this->getId()}";
         $total = array_reduce($this->queryRows($ingredientsQuery), function ($total, $prodIngredient) {
-            return $total += Ingredient::find($prodIngredient['ingredient_id'])->getPrice();
+            $total += Ingredient::find($prodIngredient['ingredient_id'])->getPrice() * $prodIngredient['quantity'];
+            return $total;
         }, 0);
 
-        return $formated ? number_format($total, 2, ',') : $total;
+        return $format ? number_format($total, 2, ',') : $total;
     }
 
     public function getIngredients(): array
     {
-        $ingredients = [];
         $productsIngredients = $this->queryRows("select * from products_ingredients where product_id = {$this->getId()}");
-        $ingredientObjects = array_map(function ($prodIngredient) {
-            $ingr = Ingredient::find(intval($prodIngredient['ingredient_id']));
-            return $ingr;
+        $ingredients = array_map(function ($prodIngredient) {
+            return Ingredient::find(intval($prodIngredient['ingredient_id']));
         }, $productsIngredients);
-        for ($i = 0; $i < count($ingredientObjects); $i++) {
-            $ingredients[$i] = [
-                ...$ingredientObjects[$i]->toArray(),
-                'quantity' => $productsIngredients[$i]['quantity'],
-                'image' => $ingredientObjects[$i]->getImage()
-            ];
+        for ($i = 0; $i < count($ingredients); $i++) {
+            $ingredients[$i]->setQuantity(intval($productsIngredients[$i]['quantity']));
         }
 
         return $ingredients;

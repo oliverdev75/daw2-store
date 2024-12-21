@@ -9,6 +9,7 @@ class QueryBuilder extends Database
 {
 
     protected $model;
+    protected $table;
     protected $filtered = true;
     protected $conditionParams = [];
     protected $updateParams = [];
@@ -18,8 +19,9 @@ class QueryBuilder extends Database
     protected $conditionTypeIndicators = '';
     protected $order = '';
 
-    function __construct(string $model)
+    function __construct(string $table, string $model)
     {
+        $this->table = $table;
         $this->model = $model;
     }
 
@@ -79,7 +81,7 @@ class QueryBuilder extends Database
             } else if (is_int($value)) {
                 $this->conditionTypeIndicators .= 'i';
             } else if (is_float($value)) {
-                $this->conditionTypeIndicators .= 'f';
+                $this->conditionTypeIndicators .= 'd';
             }
 
             $this->conditionParams[$conditionPos] .= "?,";
@@ -131,7 +133,7 @@ class QueryBuilder extends Database
         } else if (is_int($value)) {
             $this->$typeIndicatorsProperty .= 'i';
         } else if (is_float($value)) {
-            $this->$typeIndicatorsProperty .= 'f';
+            $this->$typeIndicatorsProperty .= 'd';
         }
 
         array_push($this->$paramsProperty, "$sequenceOperator $column $condOperator :$column");
@@ -169,19 +171,19 @@ class QueryBuilder extends Database
      */
     function get(): array
     {
-        $query = "select * from {$this->table($this->model)}";
+        $query = "select * from {$this->table}";
         $query .= $this->filtered ? " where {$this->parseFilterParams()}" : '';
         $query .= $this->order;
 
         if ($this->filtered) {
-            return $this->select(
+            return $this->filteredSelect(
                 $query,
                 array_merge($this->conditionParamBinders, $this->updateParamBinders),
                 $this->conditionTypeIndicators . $this->updateTypeIndicators,
                 $this->model
             );
         } else {
-            return $this->queryObjects($query, $this->model);
+            return $this->select($query, $this->model);
         }
     }
 
@@ -193,7 +195,7 @@ class QueryBuilder extends Database
     function update(): void
     {
         $this->execPrepared(
-            "update {$this->table($this->model)} set {$this->parseUpdateParams()} where {$this->parseFilterParams()}",
+            "update {$this->table} set {$this->parseUpdateParams()} where {$this->parseFilterParams()}",
             array_merge($this->updateParamBinders, $this->conditionParamBinders),
             $this->updateTypeIndicators . $this->conditionTypeIndicators
         );
@@ -207,7 +209,7 @@ class QueryBuilder extends Database
     function delete(): void
     {
         $this->execPrepared(
-            "delete from table {$this->table($this->model)} where {$this->parseFilterParams()}",
+            "delete from table {$this->table} where {$this->parseFilterParams()}",
             array_merge($this->conditionParamBinders, $this->updateParamBinders),
             $this->conditionTypeIndicators . $this->updateTypeIndicators
         );

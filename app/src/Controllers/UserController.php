@@ -97,6 +97,7 @@ class UserController extends Controller
 
         $products = CartController::getProducts();
         $ingredients = CartController::getIngredients();
+        [ $subtotal, $IVA, $total ] = CartController::getPrice();
         $principles = array_filter($products ?? [], function ($product) {
             return $product->getCategory() == 'Principles';
         });
@@ -110,9 +111,7 @@ class UserController extends Controller
             return $product->getCategory() == 'Desserts';
         });
 
-        [ $subtotal, $IVA, $total ] = CartController::getPrice();
-
-        return Send::view('user.cart', 'Cart: SymofnyRestaurant', compact(
+        return Send::view('user.cart', 'Cart: SymfonyRestaurant', compact(
             'principles',
             'snacks',
             'drinks',

@@ -7,13 +7,15 @@ use App\Models\Model;
 class Mix extends Model
 {
 
+    protected static $table = 'mixes';
+
     function __construct() {}
 
     function getPrice($formated = true): string | float
     {
-        $orderMixQuery = "select * from mixes where id = {$this->id}";
+        $orderMixQuery = "select * from mix_line where mix_id = {$this->id}";
         $total = array_reduce($this->queryRows($orderMixQuery), function ($total, $prodIngredient) {
-            return $total += floatval($prodIngredient['total_price']);
+            return floatval($total += floatval($prodIngredient['total_price']));
         }, 0);
 
         return $formated ? number_format($total, 2, ',') : $total;

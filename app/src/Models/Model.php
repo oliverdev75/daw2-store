@@ -8,14 +8,20 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
-    static function getLastId(): int
+    protected static $table = null;
+
+    private const USERS_IMAGES = '/users';
+    private const PRODUCTS_IMAGES = '/products';
+    private const INGREDIENTS_IMAGES = '/ingredients';
+
+    public static function getLastId(): int
     {
         return (int) self::$connection->insert_id;
     }
 
-    static function create(array $values): void
+    public static function create(array $values = []): void
     {
-        $table = self::table(get_called_class());
+        $table = static::$table ?? self::table(get_called_class());
         $values['create_time'] = date('c');
 
         $data = array_values($values);
@@ -29,36 +35,36 @@ class Model extends Database
             } else if (is_int($value)) {
                 $typeIndicators .= 'i';
             } else if (is_float($value) || is_double($value)) {
-                $typeIndicators .= 'f';
+                $typeIndicators .= 'd';
             }
         }
 
         self::execPrepared("insert into $table ($columns) values ($valuesBinders)", $data, $typeIndicators);
     }
 
-    static function all(): QueryBuilder
+    public static function all(): QueryBuilder
     {
-        return (new QueryBuilder(get_called_class()))->all();
+        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->all();
     }
 
-    static function find(int $id): Model
+    public static function find(int $id): Model
     {
-        return (new QueryBuilder(get_called_class()))->where('id', $id)->first();
+        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->where('id', $id)->first();
     }
 
-    static function first(): Model
+    public static function first(): Model
     {
-        return (new QueryBuilder(get_called_class()))->all()->first();
+        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->all()->first();
     }
 
-    static function where(...$args): QueryBuilder
+    public static function where(...$args): QueryBuilder
     {
-        return (new QueryBuilder(get_called_class()))->where(...$args);
+        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->where(...$args);
     }
 
-    static function in(string $column, array $args): QueryBuilder
+    public static function in(string $column, array $args): QueryBuilder
     {
-        return (new QueryBuilder(get_called_class()))->in($column, $args);
+        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->in($column, $args);
     }
 
 
@@ -86,5 +92,16 @@ class Model extends Database
     function getCreationTime()
     {
         return date_parse($this->create_time);
+    }
+
+    function getImage()
+    {
+        $path = STORAGE.match ($this->table(get_called_class())) {
+            'users' => self::USERS_IMAGES,
+            'products' => self::PRODUCTS_IMAGES,
+            'ingredients' => self::INGREDIENTS_IMAGES
+        };
+
+        return $path."/{$this->image}.webp";
     }
 }

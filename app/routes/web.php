@@ -1,6 +1,7 @@
 <?php
 
 use Framework\Routing\Route;
+use Framework\Response\Send;
 use App\Controllers\GeneralController;
 use App\Controllers\UserController;
 use App\Controllers\ProductController;
@@ -17,6 +18,7 @@ Route::controller(UserController::class, function () {
     Route::post('user.store', '/signup', 'store');
     Route::get('user.logout', '/logout', 'logout');
     Route::get('user.cart', '/cart', 'cart');
+    Route::get('user.orders', '/orders', 'orders');
 });
 
 Route::controller(ProductController::class, function () {
@@ -26,11 +28,12 @@ Route::controller(ProductController::class, function () {
 
 Route::controller(CartController::class, function () {
     Route::post('cart.addproduct', '/cart/product/add', 'add');
+    Route::post('cart.updateproduct', '/cart/product/update', 'update', 'api');
     Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
     Route::post('cart.order', '/cart/order', 'order');
 });
 
 Route::get('text.cart', '/cartlist', function () {
     session_start();
-    var_dump($_SESSION['cart']);
+    return Send::json([$_SESSION['cart']['products'][2]->getQuantity()]);
 });
