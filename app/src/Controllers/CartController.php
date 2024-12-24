@@ -12,6 +12,42 @@ use Framework\Routing\Router;
 class CartController extends Controller
 {
 
+    static function index(): mixed
+    {
+        $user = UserController::current();
+        if (!$user) {
+            return Send::redirect()->route('user.login', [], ['src' => urlencode(Router::getRoute('cart.index'))]);
+        }
+
+        $products = CartController::getProducts();
+        $ingredients = CartController::getIngredients();
+        [ $subtotal, $IVA, $total ] = CartController::getPrice();
+        $principles = array_filter($products ?? [], function ($product) {
+            return $product->getCategory() == 'Principles';
+        });
+        $snacks = array_filter($products ?? [], function ($product) {
+            return $product->getCategory() == 'Snacks';
+        });
+        $drinks = array_filter($products ?? [], function ($product) {
+            return $product->getCategory() == 'Drinks';
+        });
+        $desserts = array_filter($products ?? [], function ($product) {
+            return $product->getCategory() == 'Desserts';
+        });
+
+        return Send::view('user.cart', 'Cart: SymfonyRestaurant', compact(
+            'user',
+            'principles',
+            'snacks',
+            'drinks',
+            'desserts',
+            'ingredients',
+            'subtotal',
+            'IVA',
+            'total'
+        ));
+    }
+
     public static function getProducts()
     {
         self::setup();
@@ -85,14 +121,13 @@ class CartController extends Controller
 
         self::setup();
         $product = Product::find(intval($postData['id']));
-        if ($_SESSION['cart']['products'][$product->getId()] instanceof Product) {
-
-        }
-
-        $product->setQuantity(1);
-        $_SESSION['cart']['products'][$product->getId()] = $product;
-        foreach ($product->getIngredients() as $ingredient) {
-            $_SESSION['cart']['ingredients']["{$product->getId()}-{$ingredient->getId()}"] = $ingredient;
+        if ($_SESSION['cart']['products']['p-'.$product->getId()] instanceof Product) {
+            $_SESSION['cart']['error'] = true;
+        } else {
+            $_SESSION['cart']['products']['p-'.$product->getId()] = $product->setQuantity(1);
+            foreach ($product->getIngredients() as $ingredient) {
+                $_SESSION['cart']['ingredients']["{$product->getId()}-{$ingredient->getId()}"] = $ingredient;
+            }
         }
         
         return Send::redirect()->route('product.index');
@@ -107,7 +142,7 @@ class CartController extends Controller
         $data = ['product' => null, 'ingredients' => []];
         foreach ($postData as $id => $quantity) {
             if (preg_match('/:/', $id)) {
-                $_SESSION['cart']['products'][intval(ltrim($id, ':'))]->setQuantity(intval($quantity));
+                $_SESSION['cart']['products']['p-'.ltrim($id, ':')]->setQuantity(intval($quantity));
                 $data['product'] = $quantity;
             } else {
                 $_SESSION['cart']['ingredients'][$id]->setQuantity(intval($quantity));
@@ -137,13 +172,13 @@ class CartController extends Controller
         }
         
         for ($i = 0; $i < $_SESSION['cart']['products']; $i++) {
-            if (isset($_SESSION['cart']['products'][$postData['id']])) {
-                unset($_SESSION['cart']['products'][$postData['id']]);
+            if (isset($_SESSION['cart']['products']['p-'.$postData['id']])) {
+                unset($_SESSION['cart']['products']['p-'.$postData['id']]);
                 break;
             }
         }
 
-        return Send::redirect()->route('user.cart');
+        return Send::redirect()->route('cart.index');
     }
 
     public static function order()
@@ -157,6 +192,7 @@ class CartController extends Controller
             'user_id' => $user->getId()
         ]);
         $orderId = Order::getLastId();
+        $totalPrice = 0;
 
         foreach ($_SESSION['cart']['products'] as $product) {
             Mix::create();
@@ -165,19 +201,25 @@ class CartController extends Controller
                 $productId = explode('-', $prodIngredient)[0];
 
                 if ($productId == $product->getId() && $ingredientData->getQuantity() != 0) {
-                    self::createMix($mixId, $orderId, $product, $ingredientData);
+                    self::createMix($mixId, $product, $ingredientData);
                 }
             }
             
-            self::fillOrder($orderId, Mix::find($mixId), $product->getQuantity());
+            $totalPrice += self::fillOrder($orderId, Mix::find($mixId), $product->getQuantity());
         }
+
+        Order::where('id', $orderId)
+            ->set('subtotal', $totalPrice)
+            ->set('iva', $totalPrice * 0.21)
+            ->set('total_price', $totalPrice * 1.21)
+            ->update();
 
         //return Send::redirect()->route('product.index');
     }
 
-    private static function createMix($id, $orderId, $product, $ingredient)
+    private static function createMix($id, $product, $ingredient)
     {
-        $query = "insert into mix_line (mix_id, product_id, ingredient_id, quantity, total_price) ";
+        $query = "insert into mix_line (mix_id, product_id, ingredient_id, quantity, price) ";
         $query .= "values (?, ?, ?, ?, ?)";
 
         Database::execPrepared($query, params: [
@@ -191,19 +233,18 @@ class CartController extends Controller
 
     private static function fillOrder($orderId, $mix, $quantity)
     {
-        // $orderMixPrice = floatval($mix->getPrice() * $quantity);
-        // $orderMixIva = floatval(($orderMixPrice / 100) * 21);
-        [ $subtotal, $IVA, $total ] = self::getPrice(false);
-        $query = "insert into orders_mixes (order_id, mix_id, quantity, price, iva, total_price) ";
-        $query .= "values (?, ?, ?, ?, ?, ?)";
+        var_dump($mix->getPrice(false), $quantity);
+        $orderMixPrice = $mix->getPrice(false) * $quantity;
+        $query = "insert into orders_mixes (order_id, mix_id, quantity, price) ";
+        $query .= "values (?, ?, ?, ?)";
 
         Database::execPrepared($query, params: [
             $orderId,
             $mix->getId(),
             $quantity,
-            $subtotal,
-            $IVA,
-            $total
-        ], typeIndicators: 'iiiddd');
+            $orderMixPrice
+        ], typeIndicators: 'iiid');
+
+        return $orderMixPrice;
     }
 }

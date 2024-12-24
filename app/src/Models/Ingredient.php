@@ -7,6 +7,10 @@ use App\Models\Model;
 class Ingredient extends Model
 {
 
+    private const USERS_IMAGES = '/users';
+    private const PRODUCTS_IMAGES = '/products';
+    private const INGREDIENTS_IMAGES = '/ingredients';
+
     protected $quantity;
 
     function __construct(){}
@@ -23,7 +27,9 @@ class Ingredient extends Model
 
     function setQuantity($quantity)
     {
-        return $this->quantity = $quantity;
+        $this->quantity = $quantity;
+
+        return $this;
     }
 
     function getTotalPrice(bool $format = false): float | string
@@ -32,4 +38,8 @@ class Ingredient extends Model
         return $format ? number_format($total, 2, ',') : $total;
     }
 
+    function getImage()
+    {
+        return STORAGE.self::INGREDIENTS_IMAGES."/{$this->image}.webp";
+    }
 }

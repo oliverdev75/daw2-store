@@ -6,6 +6,7 @@ use App\Controllers\GeneralController;
 use App\Controllers\UserController;
 use App\Controllers\ProductController;
 use App\Controllers\CartController;
+use App\Controllers\OrderController;
 
 Route::controller(GeneralController::class, function () {
     Route::get('main', '/', 'index');
@@ -17,8 +18,6 @@ Route::controller(UserController::class, function () {
     Route::get('user.signup', '/signup', 'signup');
     Route::post('user.store', '/signup', 'store');
     Route::get('user.logout', '/logout', 'logout');
-    Route::get('user.cart', '/cart', 'cart');
-    Route::get('user.orders', '/orders', 'orders');
 });
 
 Route::controller(ProductController::class, function () {
@@ -27,13 +26,19 @@ Route::controller(ProductController::class, function () {
 });
 
 Route::controller(CartController::class, function () {
+    Route::get('cart.index', '/cart', 'index');
     Route::post('cart.addproduct', '/cart/product/add', 'add');
     Route::post('cart.updateproduct', '/cart/product/update', 'update', 'api');
     Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
     Route::post('cart.order', '/cart/order', 'order');
 });
 
+Route::controller(OrderController::class, function () {
+    Route::get('order.index', '/orders', 'index');
+    Route::get('order.show', '/order/{id}', 'show');
+});
+
 Route::get('text.cart', '/cartlist', function () {
     session_start();
-    return Send::json([$_SESSION['cart']['products'][2]->getQuantity()]);
+    var_dump($_SESSION['cart']['products']);
 });

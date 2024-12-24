@@ -2,7 +2,7 @@
     <span>Cart</span>
     <div class="grid gap-y-7">
         <h1 class="text-3xl">Finish your order!</h1>
-        <div id="order-error" class="message message-danger"></div>
+        <div id="order-error" class="message message-danger" style="display: none;"></div>
         <div class="mt-10 grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-x-20">
             <section class="row-start-2 sm:row-start-1 grid gap-y-5">
                 <div class="grid gap-y-3">
@@ -35,7 +35,7 @@
                             <?php foreach ($snacks as $snack): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'snack' => $snack,
+                                        'product' => $snack,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -58,7 +58,7 @@
                             <?php foreach ($drinks as $drink): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'drink' => $drink,
+                                        'product' => $drink,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>
@@ -81,7 +81,7 @@
                             <?php foreach ($desserts as $dessert): ?>
                                 <?php
                                     $this->component('product.card.cart', [
-                                        'dessert' => $dessert,
+                                        'product' => $dessert,
                                         'ingredients' => $ingredients
                                     ])
                                 ?>

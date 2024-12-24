@@ -10,7 +10,7 @@ class QueryBuilder extends Database
 
     protected $model;
     protected $table;
-    protected $filtered = true;
+    protected $isFiltered = true;
     protected $conditionParams = [];
     protected $updateParams = [];
     protected $conditionParamBinders = [];
@@ -27,7 +27,7 @@ class QueryBuilder extends Database
 
     function all(): self
     {
-        $this->filtered = false;
+        $this->isFiltered = false;
 
         return $this;
     }
@@ -172,10 +172,10 @@ class QueryBuilder extends Database
     function get(): array
     {
         $query = "select * from {$this->table}";
-        $query .= $this->filtered ? " where {$this->parseFilterParams()}" : '';
+        $query .= $this->isFiltered ? " where {$this->parseFilterParams()}" : '';
         $query .= $this->order;
 
-        if ($this->filtered) {
+        if ($this->isFiltered) {
             return $this->filteredSelect(
                 $query,
                 array_merge($this->conditionParamBinders, $this->updateParamBinders),
@@ -213,6 +213,17 @@ class QueryBuilder extends Database
             array_merge($this->conditionParamBinders, $this->updateParamBinders),
             $this->conditionTypeIndicators . $this->updateTypeIndicators
         );
+    }
+
+    function getQuery(): string
+    {
+        $query = " {$this->table}";
+
+        if ($this->isFiltered) {
+            $query .=  " where {$this->parseFilterParams()}";
+        }
+
+        return $query . $this->order;
     }
 
     /**

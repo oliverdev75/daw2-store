@@ -10,10 +10,6 @@ class Model extends Database
 
     protected static $table = null;
 
-    private const USERS_IMAGES = '/users';
-    private const PRODUCTS_IMAGES = '/products';
-    private const INGREDIENTS_IMAGES = '/ingredients';
-
     public static function getLastId(): int
     {
         return (int) self::$connection->insert_id;
@@ -78,7 +74,7 @@ class Model extends Database
      */
     function getId()
     {
-        return (int) $this->id;
+        return $this->id;
     }
 
     function getName()
@@ -92,16 +88,5 @@ class Model extends Database
     function getCreationTime()
     {
         return date_parse($this->create_time);
-    }
-
-    function getImage()
-    {
-        $path = STORAGE.match ($this->table(get_called_class())) {
-            'users' => self::USERS_IMAGES,
-            'products' => self::PRODUCTS_IMAGES,
-            'ingredients' => self::INGREDIENTS_IMAGES
-        };
-
-        return $path."/{$this->image}.webp";
     }
 }

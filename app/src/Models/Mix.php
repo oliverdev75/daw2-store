@@ -13,24 +13,31 @@ class Mix extends Model
 
     function getPrice($formated = true): string | float
     {
-        $orderMixQuery = "select * from mix_line where mix_id = {$this->id}";
+        $orderMixQuery = "SELECT * from mix_line where mix_id = {$this->id}";
         $total = array_reduce($this->queryRows($orderMixQuery), function ($total, $prodIngredient) {
-            return floatval($total += floatval($prodIngredient['total_price']));
+            return $total += $prodIngredient['price'];
         }, 0);
 
         return $formated ? number_format($total, 2, ',') : $total;
     }
 
-    function getIngredients(): array
+    function getProducts(): array
     {
-        $ingredients = [];
-        $orderLine = $this->queryRows("select distinct ingredient_id from order_line where order_id = {$this->id}");
-        $ingredientObjects = array_map(function ($orderIngredient) {
-            return Ingredient::find($orderIngredient['ingredient_id']);
-        }, $orderLine);
-        for ($i = 0; $i < $ingredientObjects; $i++) {
-            $ingredients[$i] = $ingredientObjects[$i]->toArray();
-        }
+        $mixLineProducts = $this->queryRows("SELECT distinct product_id from mix_line where mix_id = {$this->id}");
+        $products = array_map(function ($mixProduct) {
+            $product = Product::find($mixProduct['product_id']);
+            return $product->setMixIngredients($this->getProductIngredients($mixProduct['product_id']));
+        }, $mixLineProducts);
+
+        return $products;
+    }
+
+    private function getProductIngredients($id): array
+    {
+        $mixLineIngredients = $this->queryRows("SELECT ingredient_id, quantity from mix_line where mix_id = {$this->id} product_id = $id");
+        $ingredients = array_map(function ($mixIngredient) {
+            return Ingredient::find($mixIngredient['ingredient_id'])->setQuantity($mixIngredient['quantity']);
+        }, $mixLineIngredients);
 
         return $ingredients;
     }

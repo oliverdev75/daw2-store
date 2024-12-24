@@ -2,6 +2,9 @@
     <span>Menu</span>
     <div class="grid gap-y-7">
         <h1 class="text-4xl">Menu</h1>
+        <?php if(!is_null($error)): ?>
+            <div class="message message-info">This product is already in cart, go <a href="<?= $this->route('cart.index') ?>">there</a>.</div>
+        <?php endif ?>
         <div class="grid min-[1120px]:grid-cols-5 md:gap-x-16">
             <?php $this->component('menu.filter') ?>
             <div class="min-[1120px]:col-span-4 grid min-[1120px]:grid-cols-1 gap-y-16">

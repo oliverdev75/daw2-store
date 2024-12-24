@@ -28,7 +28,6 @@ class View extends Printable
 
         $path = \VIEWS_PATH . \VIEWS_LAYOUT_DIR . \VIEWS_TEMPLATE . '.php';
         $templateParsedName = ".templates.$template";
-        $data['user'] = UserController::current();
 
         parent::__construct(
             $path,

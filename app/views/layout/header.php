@@ -30,7 +30,7 @@
                 </li>
                 <?php if (!is_null($user)): ?>
                     <li>
-                        <a href="<?= $this->route('user.cart') ?>">
+                        <a href="<?= $this->route('cart.index') ?>">
                             <i class="bi bi-cart2 text-3xl"></i>
                         </a>
                     </li>

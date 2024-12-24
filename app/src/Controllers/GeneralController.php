@@ -10,6 +10,6 @@ class GeneralController extends Controller
 
     function index(): View
     {
-        return Send::view('site.index');
+        return Send::view('site.index', 'SymfonyRestaurant', ['user' => UserController::current()]);
     }
 }

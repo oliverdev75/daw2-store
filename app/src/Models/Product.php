@@ -8,6 +8,7 @@ class Product extends Model
 {
 
     protected $quantity;
+    protected $ingredients;
 
     function __construct() {}
 
@@ -24,6 +25,20 @@ class Product extends Model
     public function setQuantity($quantity)
     {
         $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getMixIngredients()
+    {
+        return $this->ingredients;
+    }
+
+    public function setMixIngredients($ingredients)
+    {
+        $this->ingredients = $ingredients;
+
+        return $this;
     }
 
     public function getPrice($format = true): string | float

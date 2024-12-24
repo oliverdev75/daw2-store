@@ -12,10 +12,11 @@ class UserController extends Controller
 {
 
     const LOGIN_TITLE = 'Log in: SymfonyRestaurant';
+    const SIGNUP_TITLE = 'Sign up: SymfonyRestaurant';
 
     static function login($src = null): View
     {
-        return Send::view('user.login', "Login: SymfonyRestaurant", compact('src'));
+        return Send::view('user.login', self::LOGIN_TITLE, compact('src'));
     }
 
     static function logout()
@@ -29,26 +30,29 @@ class UserController extends Controller
 
     static function auth($postData)
     {
+        if (self::current()) {
+            return Send::redirect();
+        }
+        
         $user = User::where('email', $postData['username'])->first();
         if (!$user) {
             return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => urlencode($postData['src'])]);
         }
 
         if (password_verify($postData['password'], $user->getPassword())) {
-            session_start();
             $_SESSION['user'] = $user;
             if (urldecode($postData['src'])) {
                 return Send::redirect(urldecode($postData['src']));
             }
-            return Send::redirect()->route($postData['src'] ? $postData['src'] : 'main');
+            return Send::redirect()->route('main');
         }
 
-        return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => $postData['src']]);
+        return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => $postData['src'], 'user' => null]);
     }
 
     static function signup(): View
     {
-        return Send::view('user.signup');
+        return Send::view('user.signup', self::SIGNUP_TITLE, ['user' => null]);
     }
 
     static function store($postData)
@@ -86,41 +90,6 @@ class UserController extends Controller
         }
 
         return null;
-    }
-
-    static function cart(): mixed
-    {
-        $user = self::current();
-        if (!$user) {
-            return Send::redirect()->route('user.login', [], ['src' => urlencode(Router::getRoute('user.cart'))]);
-        }
-
-        $products = CartController::getProducts();
-        $ingredients = CartController::getIngredients();
-        [ $subtotal, $IVA, $total ] = CartController::getPrice();
-        $principles = array_filter($products ?? [], function ($product) {
-            return $product->getCategory() == 'Principles';
-        });
-        $snacks = array_filter($products ?? [], function ($product) {
-            return $product->getCategory() == 'Snacks';
-        });
-        $drinks = array_filter($products ?? [], function ($product) {
-            return $product->getCategory() == 'Drinks';
-        });
-        $desserts = array_filter($products ?? [], function ($product) {
-            return $product->getCategory() == 'Desserts';
-        });
-
-        return Send::view('user.cart', 'Cart: SymfonyRestaurant', compact(
-            'principles',
-            'snacks',
-            'drinks',
-            'desserts',
-            'ingredients',
-            'subtotal',
-            'IVA',
-            'total'
-        ));
     }
 
     static function show(

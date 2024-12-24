@@ -4,9 +4,7 @@ namespace App\Controllers;
 
 use Framework\Response\Send;
 use Framework\Response\Types\View;
-use Framework\Database\Database;
 use App\Models\Product;
-use App\Models\Ingredient;
 
 class ProductController extends Controller
 {
@@ -19,10 +17,17 @@ class ProductController extends Controller
         $snacks = null,
         $drinks = null,
         $desserts = null
-    ) {
+    ): View
+    {
+        $user = UserController::current();
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
         $productsCategoryFilter = [];
+        $error = null;
+        if (isset($_SESSION['cart']['error'])) {
+            $error = $_SESSION['cart']['error'];
+            unset($_SESSION['cart']['error']);
+        }
 
         if ($product_name && !($principles || $snacks || $desserts)) {
             $products = [];
@@ -55,13 +60,13 @@ class ProductController extends Controller
                 $products = $productsQuery->orderBy($order, $order_type)->get();
             } else {
                 $products = $this->orderPrices($productsQuery->get(), $order_type);
-                return Send::view('product.index', $viewTitle, ['products' => $products]);
+                return Send::view('product.index', $viewTitle, ['products' => $products, 'error' => $error, 'user' => $user]);
             }
         } else {
             $products = $productsQuery->get();
         }
-
-        return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get()]);
+        
+        return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get(), 'error' => $error, 'user' => $user]);
     }
 
     private function orderPrices($products, $orderType): array
