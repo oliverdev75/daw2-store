@@ -2,46 +2,43 @@
 
 namespace App\Models;
 
-use App\Models\Model;
-
 class Order extends Model
 {
 
+    protected $formattedCreationTime;
+
     function __construct() {}
 
-    function getProducts(): array
+    public function getMixes(): array
     {
-        $orderProducts = $this->queryRows("select mix_id from orders_mixes where order_id = {$this->id}");
-        $products = array_map(function ($orderIngredient) {
-            return Ingredient::find($orderIngredient['ingredient_id']);
-        }, $orderLine);
+        $orderMixes = $this->queryRows("SELECT DISTINCT mix_id FROM orders_mixes WHERE order_id = {$this->id}");
+        $mixes = array_map(function ($orderMix) {
+            return Mix::find($orderMix['mix_id']);
+        }, $orderMixes);
 
-        return $products;
+        return $mixes;
     }
 
-    function getIngredients(): array
-    {
-        $ingredients = [];
-        $orderLine = $this->queryRows("select distinct ingredient_id from mix_line where order_id = {$this->id}");
-        $ingredients = array_map(function ($orderIngredient) {
-            return Ingredient::find($orderIngredient['ingredient_id']);
-        }, $orderLine);
-
-        return $ingredients;
-    }
-
-    function getPrice($format = true): string | float
+    public function getPrice($format = true): string | float
     {
         return $format ? number_format($this->subtotal, 2, ',') : $this->subtotal;
     }
 
-    function getIVA($format = true): string | float
+    public function getIVA($format = true): string | float
     {
         return $format ? number_format($this->iva, 2, ',') : $this->iva;
     }
 
-    function getTotalPrice($format = true): string | float
+    public function getTotalPrice($format = true): string | float
     {
         return $format ? number_format($this->total_price, 2, ',') : $this->total_price;
+    }
+
+    public function getFormattedCreationTime(): string
+    {
+        $date = $this->getCreationTime();
+        $dateMinute = $date['minute'] < 10 ? "0{$date['minute']}" : $date['minute'];
+        
+        return "{$date['day']}/{$date['month']}/{$date['year']} at {$date['hour']}:{$dateMinute}";
     }
 }

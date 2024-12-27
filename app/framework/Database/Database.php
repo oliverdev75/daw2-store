@@ -14,7 +14,7 @@ class Database
     protected static $connection;
     private static $query;
 
-    protected static function table(string $name): string
+    protected static function makeTable(string $name): string
     {
         return strtolower(explode('\\', $name)[count(explode('\\', $name)) - 1]) . 's';
     }
@@ -54,9 +54,7 @@ class Database
     protected function filteredSelect(string $query, array $paramBinders, string $typeIndicators, string $model): array
     {
         self::connect();
-        // $this->checkDataTypes($paramBinders, $model);
         $preparedQuery = $this->execPrepared($query, $paramBinders, $typeIndicators);
-        // $this->query = $this->prepareQuery($query, $paramBinders);
         $found = $this->parseObjects($preparedQuery->get_result(), $model);
         self::$connection->close();
 
@@ -66,12 +64,12 @@ class Database
     static function execPrepared(string $query, array $params, string $typeIndicators): \mysqli_stmt
     {
         self::connect();
-        // $this->checkDataTypes($params, $table);
-        self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
+
+        //self::$query = preg_replace('/(?J)[ ]+(?<columns>:[a-zA-Z0-9_]+)[ ]{0,}/', ' ? ', $query);
+        self::$query = $query;
         $preparedQuery = self::$connection->prepare(self::$query);
         $preparedQuery->bind_param($typeIndicators, ...$params);
         $preparedQuery->execute();
-        // $this->query = $this->prepareQuery($query, $params);
 
 
         return $preparedQuery;

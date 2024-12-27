@@ -181,9 +181,9 @@ a:hover {
 }
 
 .message-success {
-    color: rgba(0, 255, 26);
-    border-color: rgba(0, 255, 26);
-    background-color: rgba(0, 255, 26, 0.29);
+    color: rgba(0, 177, 18);
+    border-color: rgba(0, 177, 18);
+    background-color: rgba(80, 255, 98, 0.22);
 }
 
 .message-info {

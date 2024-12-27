@@ -66,7 +66,12 @@ class ProductController extends Controller
             $products = $productsQuery->get();
         }
         
-        return Send::view('product.index', $viewTitle, ['products' => $productsQuery->get(), 'error' => $error, 'user' => $user]);
+        return Send::view('product.index', $viewTitle, [
+            'products' => $productsQuery->get(),
+            'lastOrder' => OrderController::getLast(),
+            'error' => $error,
+            'user' => $user
+        ]);
     }
 
     private function orderPrices($products, $orderType): array

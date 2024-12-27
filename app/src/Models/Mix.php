@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Model;
-
 class Mix extends Model
 {
 
@@ -11,9 +9,15 @@ class Mix extends Model
 
     function __construct() {}
 
+    function getQuantity()
+    {
+        $query = "SELECT * FROM orders_mixes WHERE mix_id = {$this->id}";
+        return $this->queryRows($query)[0]['quantity'];
+    }
+    
     function getPrice($formated = true): string | float
     {
-        $orderMixQuery = "SELECT * from mix_line where mix_id = {$this->id}";
+        $orderMixQuery = "SELECT * FROM mix_line WHERE mix_id = {$this->id}";
         $total = array_reduce($this->queryRows($orderMixQuery), function ($total, $prodIngredient) {
             return $total += $prodIngredient['price'];
         }, 0);
@@ -21,20 +25,17 @@ class Mix extends Model
         return $formated ? number_format($total, 2, ',') : $total;
     }
 
-    function getProducts(): array
+    function getProduct(): Model
     {
-        $mixLineProducts = $this->queryRows("SELECT distinct product_id from mix_line where mix_id = {$this->id}");
-        $products = array_map(function ($mixProduct) {
-            $product = Product::find($mixProduct['product_id']);
-            return $product->setMixIngredients($this->getProductIngredients($mixProduct['product_id']));
-        }, $mixLineProducts);
-
-        return $products;
+        $mixLineProducts = $this->queryRows("SELECT distinct product_id FROM mix_line WHERE mix_id = {$this->id}");
+        
+        return Product::find($mixLineProducts[0]['product_id'])
+            ->setMixIngredients($this->getProductIngredients($mixLineProducts[0]['product_id']));
     }
 
     private function getProductIngredients($id): array
     {
-        $mixLineIngredients = $this->queryRows("SELECT ingredient_id, quantity from mix_line where mix_id = {$this->id} product_id = $id");
+        $mixLineIngredients = $this->queryRows("SELECT ingredient_id, quantity FROM mix_line WHERE mix_id = {$this->id} AND product_id = $id");
         $ingredients = array_map(function ($mixIngredient) {
             return Ingredient::find($mixIngredient['ingredient_id'])->setQuantity($mixIngredient['quantity']);
         }, $mixLineIngredients);

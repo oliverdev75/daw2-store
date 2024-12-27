@@ -30,12 +30,12 @@ Route::controller(CartController::class, function () {
     Route::post('cart.addproduct', '/cart/product/add', 'add');
     Route::post('cart.updateproduct', '/cart/product/update', 'update', 'api');
     Route::post('cart.deleteproduct', '/cart/product/delete', 'delete');
-    Route::post('cart.order', '/cart/order', 'order');
 });
 
 Route::controller(OrderController::class, function () {
     Route::get('order.index', '/orders', 'index');
     Route::get('order.show', '/order/{id}', 'show');
+    Route::post('order.store', '/order/store', 'store');
 });
 
 Route::get('text.cart', '/cartlist', function () {

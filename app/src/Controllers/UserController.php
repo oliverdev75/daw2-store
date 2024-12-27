@@ -44,7 +44,7 @@ class UserController extends Controller
             if (urldecode($postData['src'])) {
                 return Send::redirect(urldecode($postData['src']));
             }
-            return Send::redirect()->route('main');
+            return Send::redirect()->route('product.index');
         }
 
         return Send::view('user.login', self::LOGIN_TITLE, ['message' => 'Username or password wrong', 'src' => $postData['src'], 'user' => null]);
@@ -79,7 +79,7 @@ class UserController extends Controller
 
         User::create($data);
 
-        return Send::redirect()->route('user.login');
+        return Send::redirect()->route('product.index');
     }
 
     static function current()

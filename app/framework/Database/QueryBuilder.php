@@ -136,7 +136,7 @@ class QueryBuilder extends Database
             $this->$typeIndicatorsProperty .= 'd';
         }
 
-        array_push($this->$paramsProperty, "$sequenceOperator $column $condOperator :$column");
+        array_push($this->$paramsProperty, "$sequenceOperator $column $condOperator ?");
         array_push($this->$paramBindersProperty, $value);
     }
 

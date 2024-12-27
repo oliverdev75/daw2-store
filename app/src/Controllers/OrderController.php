@@ -5,12 +5,14 @@ namespace App\Controllers;
 use Framework\Response\Send;
 use Framework\Response\Types\View;
 use Framework\Routing\Router;
+use Framework\Database\Database;
 use App\Models\Order;
+use App\Models\Mix;
 
 class OrderController extends Controller
 {
 
-    function index()
+    function index($date = null)
     {
         $user = UserController::current();
 
@@ -18,8 +20,11 @@ class OrderController extends Controller
             return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('order.index')]);
         }
 
+        $orders = Order::where('user_id', $user->getId())->orderBy('create_time', 'desc');
+        $orders = $date ? $orders->where('date(create_time)', $date) : $orders;
+
         return Send::view('order.index', 'Orders: SymfonyRestaurant', [
-            'orders' => Order::where('user_id', $user->getId())->get(),
+            'orders' => $orders->get(),
             'user' => UserController::current()
         ]);
     }
@@ -32,11 +37,116 @@ class OrderController extends Controller
             return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('order.index')]);
         }
 
-        $order = Order::find((int) $id);
-        $orderDate = $order->getCreationTime();
-        $title = "Order: {$orderDate['day']}/{$orderDate['month']}/{$orderDate['year']} at {$orderDate['hour']}:{$orderDate['minute']}";
+        $message = false;
+        if (isset($_SESSION['order']['created'])) {
+            $message = true;
+            unset($_SESSION['order']['created']);
+        }
 
-        return Send::view('order.show', $title, compact('order', 'user'));
+        $order = Order::find((int) $id);
+        $mixes = $order ? $order->getMixes() : [];
+        $principles = array_filter($mixes, function ($mix) {
+            return $mix->getProduct()->getCategory() == 'Principles';
+        });
+        $snacks = array_filter($mixes, function ($mix) {
+            return $mix->getProduct()->getCategory() == 'Snacks';
+        });
+        $drinks = array_filter($mixes, function ($mix) {
+            return $mix->getProduct()->getCategory() == 'Drinks';
+        });
+        $desserts = array_filter($mixes, function ($mix) {
+            return $mix->getProduct()->getCategory() == 'Desserts';
+        });
+        
+        $title = $order
+            ? "Order: {$order->getFormattedCreationTime()}"
+            : "Order: does not exist";
+
+        return Send::view('order.show', $title, compact(
+            'message',
+            'order',
+            'principles',
+            'snacks',
+            'drinks',
+            'desserts',
+            'user'
+        ));
     }
 
+    public static function store()
+    {
+        $user = UserController::current();
+        if (!$user) {
+            return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
+        }
+
+        if (!$_SESSION['cart']['products']) {
+            $_SESSION['cart']['error'] = 'There are not products in cart, please add at least one to make de order.';
+            return Send::redirect()->route('cart.index');
+        }
+
+        Order::create([
+            'user_id' => $user->getId()
+        ]);
+        $orderId = Order::getLastId();
+        $totalPrice = 0;
+
+        foreach ($_SESSION['cart']['products'] as $product) {
+            Mix::create();
+            $mixId = Mix::getLastId();
+            foreach ($_SESSION['cart']['ingredients'] as $prodIngredient => $ingredientData) {
+                $productId = explode('-', $prodIngredient)[0];
+
+                if ($productId == $product->getId() && $ingredientData->getQuantity() != 0) {
+                    self::createMix($mixId, $product, $ingredientData);
+                }
+            }
+            
+            $totalPrice += self::fillOrder($orderId, Mix::find($mixId), $product->getQuantity());
+        }
+
+        Order::where('id', $orderId)
+            ->set('subtotal', $totalPrice)
+            ->set('iva', $totalPrice * 0.21)
+            ->set('total_price', $totalPrice * 1.21)
+            ->update();
+
+        $_SESSION['order']['created'] = true;
+        return Send::redirect()->route('order.show', ['id' => $orderId]);
+    }
+
+    private static function createMix($id, $product, $ingredient)
+    {
+        $query = "insert into mix_line (mix_id, product_id, ingredient_id, quantity, price) ";
+        $query .= "values (?, ?, ?, ?, ?)";
+
+        Database::execPrepared($query, params: [
+            $id,
+            $product->getId(),
+            $ingredient->getId(),
+            $ingredient->getQuantity(),
+            $ingredient->getTotalPrice()
+        ], typeIndicators: 'iiiid');
+    }
+
+    private static function fillOrder($orderId, $mix, $quantity)
+    {
+        $orderMixPrice = $mix->getPrice(false) * $quantity;
+        $query = "insert into orders_mixes (order_id, mix_id, quantity, price) ";
+        $query .= "values (?, ?, ?, ?)";
+
+        Database::execPrepared($query, params: [
+            $orderId,
+            $mix->getId(),
+            $quantity,
+            $orderMixPrice
+        ], typeIndicators: 'iiid');
+
+        return $orderMixPrice;
+    }
+
+    public static function getLast()
+    {
+        return Order::getLastId();
+    } 
 }

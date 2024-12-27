@@ -10,14 +10,24 @@ class Model extends Database
 
     protected static $table = null;
 
+    private static function table()
+    {
+        return static::$table ?? self::makeTable(get_called_class());
+    }
+
+    private static function builder()
+    {
+        return new QueryBuilder(self::table(), get_called_class());
+    }
+
     public static function getLastId(): int
     {
-        return (int) self::$connection->insert_id;
+        return self::query('SELECT MAX(id) FROM '.self::table())->fetch_column();
     }
 
     public static function create(array $values = []): void
     {
-        $table = static::$table ?? self::table(get_called_class());
+        $table = self::table();
         $values['create_time'] = date('c');
 
         $data = array_values($values);
@@ -40,27 +50,27 @@ class Model extends Database
 
     public static function all(): QueryBuilder
     {
-        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->all();
+        return self::builder()->all();
     }
 
-    public static function find(int $id): Model
+    public static function find(int $id): mixed
     {
-        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->where('id', $id)->first();
+        return self::builder()->where('id', $id)->first();
     }
 
-    public static function first(): Model
+    public static function first(): mixed
     {
-        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->all()->first();
+        return self::builder()->all()->first();
     }
 
     public static function where(...$args): QueryBuilder
     {
-        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->where(...$args);
+        return self::builder()->where(...$args);
     }
 
     public static function in(string $column, array $args): QueryBuilder
     {
-        return (new QueryBuilder(static::$table ?? self::table(get_called_class()), get_called_class()))->in($column, $args);
+        return self::builder()->in($column, $args);
     }
 
 

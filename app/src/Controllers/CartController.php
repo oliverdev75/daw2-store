@@ -19,6 +19,12 @@ class CartController extends Controller
             return Send::redirect()->route('user.login', [], ['src' => urlencode(Router::getRoute('cart.index'))]);
         }
 
+        $error = null;
+        if (isset($_SESSION['cart']['error'])) {
+            $error = $_SESSION['cart']['error'];
+            unset($_SESSION['cart']['error']);
+        }
+
         $products = CartController::getProducts();
         $ingredients = CartController::getIngredients();
         [ $subtotal, $IVA, $total ] = CartController::getPrice();
@@ -36,6 +42,7 @@ class CartController extends Controller
         });
 
         return Send::view('user.cart', 'Cart: SymfonyRestaurant', compact(
+            'error',
             'user',
             'principles',
             'snacks',
@@ -179,72 +186,5 @@ class CartController extends Controller
         }
 
         return Send::redirect()->route('cart.index');
-    }
-
-    public static function order()
-    {
-        $user = UserController::current();
-        if (!$user) {
-            return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
-        }
-
-        Order::create([
-            'user_id' => $user->getId()
-        ]);
-        $orderId = Order::getLastId();
-        $totalPrice = 0;
-
-        foreach ($_SESSION['cart']['products'] as $product) {
-            Mix::create();
-            $mixId = Mix::getLastId();
-            foreach ($_SESSION['cart']['ingredients'] as $prodIngredient => $ingredientData) {
-                $productId = explode('-', $prodIngredient)[0];
-
-                if ($productId == $product->getId() && $ingredientData->getQuantity() != 0) {
-                    self::createMix($mixId, $product, $ingredientData);
-                }
-            }
-            
-            $totalPrice += self::fillOrder($orderId, Mix::find($mixId), $product->getQuantity());
-        }
-
-        Order::where('id', $orderId)
-            ->set('subtotal', $totalPrice)
-            ->set('iva', $totalPrice * 0.21)
-            ->set('total_price', $totalPrice * 1.21)
-            ->update();
-
-        //return Send::redirect()->route('product.index');
-    }
-
-    private static function createMix($id, $product, $ingredient)
-    {
-        $query = "insert into mix_line (mix_id, product_id, ingredient_id, quantity, price) ";
-        $query .= "values (?, ?, ?, ?, ?)";
-
-        Database::execPrepared($query, params: [
-            $id,
-            $product->getId(),
-            $ingredient->getId(),
-            $ingredient->getQuantity(),
-            $ingredient->getTotalPrice()
-        ], typeIndicators: 'iiiid');
-    }
-
-    private static function fillOrder($orderId, $mix, $quantity)
-    {
-        var_dump($mix->getPrice(false), $quantity);
-        $orderMixPrice = $mix->getPrice(false) * $quantity;
-        $query = "insert into orders_mixes (order_id, mix_id, quantity, price) ";
-        $query .= "values (?, ?, ?, ?)";
-
-        Database::execPrepared($query, params: [
-            $orderId,
-            $mix->getId(),
-            $quantity,
-            $orderMixPrice
-        ], typeIndicators: 'iiid');
-
-        return $orderMixPrice;
     }
 }

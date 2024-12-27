@@ -2,18 +2,19 @@
     <span>Cart</span>
     <div class="grid gap-y-7">
         <h1 class="text-3xl">Finish your order!</h1>
-        <div id="order-error" class="message message-danger" style="display: none;"></div>
+        <div id="order-error" class="message message-danger" style="display: <?= $error ? 'block' : 'none' ?>;"><?= $error ?? '' ?></div>
         <div class="mt-10 grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-x-20">
             <section class="row-start-2 sm:row-start-1 grid gap-y-5">
                 <div class="grid gap-y-3">
-                    <h2 class="text-[1.3rem]">Principals</h2>
+                    <h2 class="text-[1.3rem]">Principles</h2>
                     <?php if ($principles): ?>
                         <div class="grid gap-y-3">
                             <?php foreach ($principles as $principle): ?>
                                 <?php
-                                    $this->component('product.card.cart', [
+                                    $this->component('product.card.order', [
                                         'product' => $principle,
-                                        'ingredients' => $ingredients
+                                        'ingredients' => $ingredients,
+                                        'type' => 'cart'
                                     ])
                                 ?>
                             <?php endforeach ?>
@@ -34,9 +35,10 @@
                         <div class="grid gap-y-3">
                             <?php foreach ($snacks as $snack): ?>
                                 <?php
-                                    $this->component('product.card.cart', [
+                                    $this->component('product.card.order', [
                                         'product' => $snack,
-                                        'ingredients' => $ingredients
+                                        'ingredients' => $ingredients,
+                                        'type' => 'cart'
                                     ])
                                 ?>
                             <?php endforeach ?>
@@ -57,9 +59,10 @@
                         <div class="grid gap-y-3">
                             <?php foreach ($drinks as $drink): ?>
                                 <?php
-                                    $this->component('product.card.cart', [
+                                    $this->component('product.card.order', [
                                         'product' => $drink,
-                                        'ingredients' => $ingredients
+                                        'ingredients' => $ingredients,
+                                        'type' => 'cart'
                                     ])
                                 ?>
                             <?php endforeach ?>
@@ -80,9 +83,10 @@
                         <div class="grid gap-y-3">
                             <?php foreach ($desserts as $dessert): ?>
                                 <?php
-                                    $this->component('product.card.cart', [
+                                    $this->component('product.card.order', [
                                         'product' => $dessert,
-                                        'ingredients' => $ingredients
+                                        'ingredients' => $ingredients,
+                                        'type' => 'cart'
                                     ])
                                 ?>
                             <?php endforeach ?>
@@ -107,7 +111,7 @@
                     </div>
                     <div class="grid gap-y-3">
                         <span class="text-lg">Tota price: <strong id="total"><?= $total ?> €</strong></span>
-                        <form id="order-form" class="m-0" action="<?= $this->route('cart.order') ?>" method="post">
+                        <form id="order-form" class="m-0" action="<?= $this->route('order.store') ?>" method="post">
                             <button class="btn btn-primary w-full" type="submit">Order</button>
                         </form>
                     </div>
