@@ -55,7 +55,7 @@ CREATE TABLE `mix_line` (
   `product_id` int NOT NULL,
   `ingredient_id` int NOT NULL,
   `quantity` int NOT NULL,
-  `total_price` float NOT NULL,
+  `price` float NOT NULL,
   PRIMARY KEY (`mix_id`,`product_id`,`ingredient_id`),
   KEY `fk_order_line_products` (`product_id`),
   KEY `fk_order_line_ingredient` (`ingredient_id`),
@@ -71,7 +71,7 @@ CREATE TABLE `mix_line` (
 
 LOCK TABLES `mix_line` WRITE;
 /*!40000 ALTER TABLE `mix_line` DISABLE KEYS */;
-INSERT INTO `mix_line` VALUES (38,2,1,3,4.5),(38,2,6,2,5),(38,2,8,1,0.8),(38,2,12,1,1.2),(39,3,1,2,3),(39,3,3,1,0.75),(39,3,8,2,1.6),(39,3,12,1,1.2),(40,3,1,2,3),(40,3,3,1,0.75),(40,3,8,2,1.6),(40,3,12,1,1.2);
+INSERT INTO `mix_line` VALUES (41,1,1,2,3),(41,1,4,1,1.25),(41,1,7,1,1),(41,1,12,1,1.2),(42,5,1,3,4.5),(42,5,4,1,1.25),(42,5,6,2,5),(42,5,12,1,1.2),(44,1,1,2,3),(44,1,4,1,1.25),(44,1,7,1,1),(44,1,12,1,1.2),(45,3,1,2,3),(45,3,3,1,0.75),(45,3,8,2,1.6),(45,3,12,1,1.2),(46,3,1,2,3),(46,3,3,1,0.75),(46,3,8,2,1.6),(46,3,12,1,1.2),(47,4,3,1,0.75),(47,4,5,10,17.5),(47,4,8,1,0.8),(47,4,12,2,2.4),(48,3,1,2,3),(48,3,3,1,0.75),(48,3,8,2,1.6),(48,3,12,1,1.2),(49,7,4,2,2.5),(49,7,5,1,1.75),(49,7,8,1,0.8),(49,7,11,1,1.1),(50,10,4,2,2.5),(50,10,7,7,7),(50,10,8,1,0.8),(50,10,11,1,1.1),(51,6,7,2,2),(51,6,8,1,0.8),(51,6,9,1,0.6),(51,6,10,3,2.7),(52,2,1,3,4.5),(52,2,6,2,5),(52,2,8,1,0.8),(52,2,12,1,1.2),(53,2,1,3,4.5),(53,2,6,2,5),(53,2,8,1,0.8),(53,2,12,1,1.2),(54,2,1,3,4.5),(54,2,6,2,5),(54,2,8,1,0.8),(54,2,12,1,1.2),(55,2,1,3,4.5),(55,2,6,2,5),(55,2,8,4,3.2),(55,2,12,1,1.2);
 /*!40000 ALTER TABLE `mix_line` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,7 +86,7 @@ CREATE TABLE `mixes` (
   `id` int NOT NULL AUTO_INCREMENT,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +95,7 @@ CREATE TABLE `mixes` (
 
 LOCK TABLES `mixes` WRITE;
 /*!40000 ALTER TABLE `mixes` DISABLE KEYS */;
-INSERT INTO `mixes` VALUES (34,'2024-12-20 22:47:13'),(35,'2024-12-20 22:47:13'),(36,'2024-12-21 00:00:21'),(37,'2024-12-21 00:00:21'),(38,'2024-12-21 17:19:14'),(39,'2024-12-21 17:19:15'),(40,'2024-12-21 19:14:17');
+INSERT INTO `mixes` VALUES (34,'2024-12-20 22:47:13'),(35,'2024-12-20 22:47:13'),(36,'2024-12-21 00:00:21'),(37,'2024-12-21 00:00:21'),(38,'2024-12-21 17:19:14'),(39,'2024-12-21 17:19:15'),(40,'2024-12-21 19:14:17'),(41,'2024-12-24 16:07:20'),(42,'2024-12-24 16:07:20'),(43,'2024-12-25 16:19:37'),(44,'2024-12-25 16:19:54'),(45,'2024-12-25 16:19:54'),(46,'2024-12-25 16:26:38'),(47,'2024-12-25 16:26:38'),(48,'2024-12-25 16:28:28'),(49,'2024-12-25 16:28:28'),(50,'2024-12-25 16:28:28'),(51,'2024-12-25 16:28:28'),(52,'2024-12-26 19:18:28'),(53,'2024-12-26 19:32:03'),(54,'2024-12-26 20:01:18'),(55,'2024-12-26 20:43:24');
 /*!40000 ALTER TABLE `mixes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -138,11 +138,14 @@ DROP TABLE IF EXISTS `orders`;
 CREATE TABLE `orders` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
+  `subtotal` float DEFAULT NULL,
+  `iva` float DEFAULT NULL,
+  `total_price` float DEFAULT NULL,
   `create_time` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_orders_users` (`user_id`),
   CONSTRAINT `fk_orders_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -151,7 +154,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,21,'2024-12-20 08:34:51'),(2,21,'2024-12-20 08:35:40'),(3,21,'2024-12-20 08:36:18'),(4,21,'2024-12-20 08:40:41'),(5,21,'2024-12-20 09:22:59'),(6,21,'2024-12-20 09:27:13'),(7,21,'2024-12-20 09:29:21'),(8,21,'2024-12-20 09:50:20'),(9,21,'2024-12-20 09:54:14'),(10,21,'2024-12-20 09:55:17'),(11,21,'2024-12-20 09:56:11'),(12,21,'2024-12-20 09:59:10'),(13,21,'2024-12-20 10:01:00'),(14,21,'2024-12-20 10:08:09'),(15,21,'2024-12-20 22:47:13'),(16,21,'2024-12-21 00:00:21'),(17,21,'2024-12-21 17:19:14'),(18,21,'2024-12-21 19:14:17');
+INSERT INTO `orders` VALUES (5,21,60.75,12.7575,73.5075,'2024-12-25 16:26:38'),(6,21,92.8,19.488,112.288,'2024-12-25 16:28:28'),(7,21,11.5,2.415,13.915,'2024-12-26 19:18:28'),(8,21,11.5,2.415,13.915,'2024-12-26 19:32:03'),(9,21,57.5,12.075,69.575,'2024-12-26 20:01:18'),(10,21,69.5,14.595,84.095,'2024-12-26 20:43:24'),(11,21,0,0,0,'2024-12-27 18:03:59');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -167,8 +170,6 @@ CREATE TABLE `orders_mixes` (
   `mix_id` int NOT NULL,
   `quantity` int NOT NULL,
   `price` float NOT NULL,
-  `iva` float NOT NULL,
-  `total_price` float NOT NULL,
   PRIMARY KEY (`order_id`,`mix_id`),
   KEY `fk_order_mixes_mixes` (`mix_id`),
   CONSTRAINT `fk_order_mixes_mixes` FOREIGN KEY (`mix_id`) REFERENCES `mixes` (`id`) ON DELETE CASCADE,
@@ -182,7 +183,7 @@ CREATE TABLE `orders_mixes` (
 
 LOCK TABLES `orders_mixes` WRITE;
 /*!40000 ALTER TABLE `orders_mixes` DISABLE KEYS */;
-INSERT INTO `orders_mixes` VALUES (17,38,1,18.05,3.7905,21.8405),(17,39,1,18.05,3.7905,21.8405),(18,40,1,6.55,1.3755,7.9255);
+INSERT INTO `orders_mixes` VALUES (5,46,6,39.3),(5,47,1,21.45),(6,48,6,39.3),(6,49,4,24.6),(6,50,2,22.8),(6,51,1,6.1),(7,52,1,11.5),(8,53,1,11.5),(9,54,5,57.5),(10,55,5,69.5);
 /*!40000 ALTER TABLE `orders_mixes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -284,4 +285,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-21 20:55:36
+-- Dump completed on 2024-12-28 13:43:02
