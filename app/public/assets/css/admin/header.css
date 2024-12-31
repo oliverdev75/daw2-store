@@ -1,0 +1,16 @@
+header {
+    background-color: var(--secondary-color);
+}
+
+header a {
+    color: #fff !important;
+}
+
+header a:hover {
+    text-decoration: none;
+    background-color: #1a6e96;
+}
+
+header .active {
+    background-color: var(--primary-color);
+}

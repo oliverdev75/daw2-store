@@ -17,16 +17,11 @@ class View extends Printable
         string $template,
         string $title = "SymfonyRestaurant",
         array | null $data = null,
-        int $statusCode = 200,
-        bool $httpAllowAll = false
+        string $userRole = 'client',
+        int $statusCode = 200
     ) {
         $this->setStatusCode($statusCode);
-        if ($httpAllowAll) {
-            $this->allowOrigin();
-            $this->setContentType('application/json');
-        }
-
-        $path = \VIEWS_PATH . \VIEWS_LAYOUT_DIR . \VIEWS_TEMPLATE . '.php';
+        $path = VIEWS_PATH . VIEWS_LAYOUT_DIR . ($userRole == 'client' ? VIEWS_CLIENT_TEMPLATE : VIEWS_ADMIN_TEMPLATE) . '.php';
         $templateParsedName = ".templates.$template";
 
         parent::__construct(
@@ -43,15 +38,5 @@ class View extends Printable
     {
         $this->setHeaders();
         $this->show($this->path);
-    }
-
-    protected function header(array | null $data = null): void
-    {
-        $this->component('header', $data, 'layout');
-    }
-
-    protected function footer(): void
-    {
-        $this->component('footer', [], 'layout');
     }
 }

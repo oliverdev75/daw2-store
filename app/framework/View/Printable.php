@@ -7,7 +7,6 @@ use Framework\Routing\Router;
 class Printable
 {
 
-    protected const VIEWS_PATH = __DIR__ . '/../../views';
     protected const ASSETS_PATH = '/assets';
     protected $data;
     protected $path;

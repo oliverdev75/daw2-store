@@ -11,15 +11,17 @@ class Send
 {
 
     static function view(
-        string $bodyContent,
+        string $template,
         string $title = "SymfonyRestaurant",
         array | null $data = null,
+        string $userRole = 'client',
         int $statusCode = 200
     ): View {
         return new View(
-            $bodyContent,
+            $template,
             $title,
             $data,
+            $userRole,
             $statusCode
         );
     }

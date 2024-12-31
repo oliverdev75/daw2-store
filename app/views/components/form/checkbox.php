@@ -3,5 +3,5 @@
         <div class="checkbox-box size-[0.9rem] rounded"></div>
     </div>
     <input id="<?= $id ?>" class="hidden" type="checkbox" name="<?= $name ?>">
-    <label class="text-sm" for="<?= $id ?>"><?= $label ?></label>
+    <span class="text-sm"><?= $label ?></span>
 </div>

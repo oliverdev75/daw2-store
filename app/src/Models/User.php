@@ -24,6 +24,11 @@ class User extends Model
         return $this->surnames;
     }
 
+    function getCompleteName()
+    {
+        return $this->name.' '.$this->surnames;
+    }
+
     /**
      * Get the value of username
      */

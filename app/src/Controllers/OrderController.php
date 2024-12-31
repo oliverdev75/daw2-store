@@ -112,6 +112,9 @@ class OrderController extends Controller
             ->update();
 
         $_SESSION['order']['created'] = true;
+        $_SESSION['cart']['products'] = [];
+        $_SESSION['cart']['ingredients'] = [];
+        
         return Send::redirect()->route('order.show', ['id' => $orderId]);
     }
 

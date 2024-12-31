@@ -15,7 +15,7 @@ class Component extends Printable {
             $directory = 'layout/';
         }
 
-        $path = self::VIEWS_PATH."/{$directory}" . str_replace('.', '/', $name).'.php';
+        $path = VIEWS_PATH."/{$directory}" . str_replace('.', '/', $name).'.php';
         parent::__construct($path, $data);
         $this->show($this->path);
     }

@@ -7,6 +7,7 @@ use App\Controllers\UserController;
 use App\Controllers\ProductController;
 use App\Controllers\CartController;
 use App\Controllers\OrderController;
+use App\Controllers\AdminController;
 
 Route::controller(GeneralController::class, function () {
     Route::get('main', '/', 'index');
@@ -38,7 +39,13 @@ Route::controller(OrderController::class, function () {
     Route::post('order.store', '/order/store', 'store');
 });
 
-Route::get('text.cart', '/cartlist', function () {
-    session_start();
-    var_dump($_SESSION['cart']['products']);
+Route::get('admin.main', '/admin', function () {
+    return Send::redirect()->route('admin.users');
+});
+
+Route::controller(AdminController::class, function () {
+    Route::get('admin.users', '/admin/users', 'users');
+    Route::get('admin.products', '/admin/products', 'products');
+    Route::get('admin.ingredients', '/admin/ingredients', 'ingredients');
+    Route::get('admin.orders', '/admin/orders', 'orders');
 });

@@ -10,16 +10,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= $this->css('root') ?>">
     <link rel="stylesheet" href="<?= $this->css('site') ?>">
-    <link rel="stylesheet" href="<?= $this->css('header') ?>">
-    <link rel="stylesheet" href="<?= $this->css('footer') ?>">
-    <link rel="stylesheet" href="<?= $this->css('menu') ?>">
-    <link rel="stylesheet" href="<?= $this->css('cart') ?>">
-    <link rel="stylesheet" href="<?= $this->css('product.card') ?>">
+    <link rel="stylesheet" href="<?= $this->css('client.header') ?>">
+    <link rel="stylesheet" href="<?= $this->css('client.footer') ?>">
+    <link rel="stylesheet" href="<?= $this->css('client.menu') ?>">
+    <link rel="stylesheet" href="<?= $this->css('client.cart') ?>">
+    <link rel="stylesheet" href="<?= $this->css('client.product.card') ?>">
     <title><?= $title ?></title>
 </head>
 
 <body>
-    <?php $this->header(['user' => $data['user']]) ?>
+    <?php $this->component('client.header', ['user' => $data['user']], 'layout') ?>
 
     <?php if ($templateParsedName != '.templates.site.index'): ?>
         <main class="min-h-full mx-5 sm:mx-28 min-[1500px]:mx-48 min-[1900px]:mx-80 grow flex flex-col">
@@ -31,7 +31,7 @@
         </main>
     <?php endif; ?>
 
-    <?php $this->footer() ?>
+    <?php $this->component('client.footer', [], 'layout') ?>
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="<?= $this->js('form.checkbox') ?>"></script>

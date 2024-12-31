@@ -28,7 +28,7 @@
                 <li>
                     <a class="font-bold" href="<?= $this->route('site.aboutus') ?>">About us</a>
                 </li>
-                <?php if (!is_null($user)): ?>
+                <?php if(!is_null($user)): ?>
                     <li>
                         <a href="<?= $this->route('cart.index') ?>">
                             <i class="bi bi-cart2 text-3xl"></i>
@@ -39,6 +39,13 @@
                             LOG OUT
                         </a>
                     </li>
+                    <?php if($user->getRole() == 'admin'): ?>
+                        <li>
+                            <a class="btn btn-secondary px-3 py-[5px] rounded-md bg-blue-500 hover:bg-blue-600" href="<?= $this->route('admin.main') ?>">
+                                GO ADMIN
+                            </a>
+                        </li>
+                    <?php endif ?>
                 <?php else: ?>
                     <li>
                         <a class="font-bold" href="<?= $this->route('user.login') ?>">Log in</a>
