@@ -2,9 +2,11 @@
     <span>Menu</span>
     <div class="grid gap-y-7">
         <h1 class="text-4xl">Menu</h1>
-        <div class="px-6 py-4 bg-neutral-100 border border-solid border-neutral-300 text-lg rounded-md">
-            See your last <a href="<?= $this->route('order.show', ['id' => $lastOrder]) ?>">order</a>.
-        </div>
+        <?php if($lastOrder): ?>
+            <div class="px-6 py-4 bg-neutral-100 border border-solid border-neutral-300 text-lg rounded-md">
+                See your last <a href="<?= $this->route('order.show', ['id' => $lastOrder]) ?>">order</a>.
+            </div>
+        <?php endif ?>
         <?php if(!is_null($error)): ?>
             <div class="message message-info">This product is already in cart, go <a href="<?= $this->route('cart.index') ?>">there</a> to increment its quantity.</div>
         <?php endif ?>

@@ -6,7 +6,7 @@ class Product extends Model
 {
 
     protected $quantity;
-    protected $ingredients;
+    protected $mixIngredients;
 
     function __construct() {}
 
@@ -29,12 +29,12 @@ class Product extends Model
 
     public function getMixIngredients()
     {
-        return $this->ingredients;
+        return $this->mixIngredients;
     }
 
-    public function setMixIngredients($ingredients)
+    public function setMixIngredients($mixIngredients)
     {
-        $this->ingredients = $ingredients;
+        $this->mixIngredients = $mixIngredients;
 
         return $this;
     }

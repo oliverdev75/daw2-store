@@ -73,16 +73,21 @@ class OrderController extends Controller
         ));
     }
 
-    public static function store()
+    public static function store($postData)
     {
         $user = UserController::current();
         if (!$user) {
             return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
         }
 
-        if (!$_SESSION['cart']['products']) {
+        if (!$_SESSION['cart']['products'] && $postData['type'] == 'client') {
             $_SESSION['cart']['error'] = 'There are not products in cart, please add at least one to make de order.';
             return Send::redirect()->route('cart.index');
+        } else if (!$_SESSION['cart']['products'] && $postData['type'] == 'admin') {
+            return Send::json([
+                'status' => 'error',
+                'message' => 'There are not products in cart, please add at least one to make de order.'
+            ]);
         }
 
         Order::create([
@@ -111,11 +116,18 @@ class OrderController extends Controller
             ->set('total_price', $totalPrice * 1.21)
             ->update();
 
-        $_SESSION['order']['created'] = true;
         $_SESSION['cart']['products'] = [];
         $_SESSION['cart']['ingredients'] = [];
         
-        return Send::redirect()->route('order.show', ['id' => $orderId]);
+        if ($postData['type'] == 'client') {
+            $_SESSION['order']['created'] = true;
+            return Send::redirect()->route('order.show', ['id' => $orderId]);
+        } else {
+            return Send::json([
+                'status' => 'ok',
+                'message' => 'Order created successfuly!'
+            ]);
+        }
     }
 
     private static function createMix($id, $product, $ingredient)
@@ -150,6 +162,12 @@ class OrderController extends Controller
 
     public static function getLast()
     {
-        return Order::getLastId();
+        $orders = Order::where('user_id', UserController::current()->getId())->get();
+
+        if ($orders) {
+            return $orders[count($orders) - 1]->getId();
+        }
+
+        return null;
     } 
 }

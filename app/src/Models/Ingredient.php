@@ -5,10 +5,6 @@ namespace App\Models;
 class Ingredient extends Model
 {
 
-    private const USERS_IMAGES = '/users';
-    private const PRODUCTS_IMAGES = '/products';
-    private const INGREDIENTS_IMAGES = '/ingredients';
-
     protected $quantity;
 
     function __construct(){}
@@ -34,10 +30,5 @@ class Ingredient extends Model
     {
         $total = $this->price * $this->quantity;
         return $format ? number_format($total, 2, ',') : $total;
-    }
-
-    function getImage()
-    {
-        return STORAGE.self::INGREDIENTS_IMAGES."/{$this->image}.webp";
     }
 }

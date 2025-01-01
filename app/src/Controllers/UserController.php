@@ -91,15 +91,4 @@ class UserController extends Controller
 
         return null;
     }
-
-    static function show(
-        $id
-    ): Json {
-        // $users = [];
-        // foreach (User::all() as $user) {
-        //     $users[] = $user->toArray();
-        // }
-        // return Send::json(['data' => $users]);
-        return Send::json(['data' => User::where('role', 'editor')->set('surnames', 'sf')->update()]);
-    }
 }
