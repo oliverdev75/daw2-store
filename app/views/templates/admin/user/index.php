@@ -34,8 +34,8 @@
           </tbody>
         </table>
     </div>
-    <button id="modal-del" class="btn btn-secondary">Open</button>
-    <div class="modal-overlay" data-open-btn="modal-del">
+    <button class="btn btn-secondary modal-open-btn" data-modal="modal-del">Open</button>
+    <div id="modal-del" class="modal-overlay">
         <div class="modal-content">
             <div class="modal-body">
                 <p class="font-semibold text-lg">Sure you want to delete this user?</p>
@@ -47,11 +47,14 @@
         </div>
     </div>
 
-    <button id="modal-edit" class="btn btn-secondary">Open</button>
-    <div class="modal-overlay" data-open-btn="modal-edit">
+    <button class="btn btn-secondary modal-open-btn" data-modal="modal-edit">Open</button>
+    <div id="modal-edit" class="modal-overlay">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header flex justify-between items-center">
                 <h2 class="text-3xl">Edit user</h2>
+                <button class="btn text-neutral-500 modal-close-btn">
+                    <i class="bi bi-x-lg"></i>
+                </button>
             </div>
             <div class="modal-body flex flex-col gap-y-5">
                 <div class="flex gap-x-5">

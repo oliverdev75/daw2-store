@@ -44,6 +44,11 @@ class UserController extends Controller
             if (urldecode($postData['src'])) {
                 return Send::redirect(urldecode($postData['src']));
             }
+
+            if ($user->isAdmin()) {
+                return Send::redirect()->route('admin.main');
+            }
+            
             return Send::redirect()->route('product.index');
         }
 

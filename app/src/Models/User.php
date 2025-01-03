@@ -53,4 +53,9 @@ class User extends Model
     {
         return $this->role;
     }
+
+    function isAdmin()
+    {
+        return $this->role == 'admin';
+    }
 }

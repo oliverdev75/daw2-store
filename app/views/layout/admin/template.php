@@ -26,7 +26,7 @@
         </div>
 
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="<?= $this->js('admin.modals') ?>"></script>
+        <script src="<?= $this->js('admin.modals.handler') ?>"></script>
         <script src="<?= $this->js('form.checkbox') ?>"></script>
     </body>
 </html>

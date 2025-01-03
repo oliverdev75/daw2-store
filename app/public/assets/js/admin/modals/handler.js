@@ -1,6 +1,6 @@
 
-for (const modal of document.getElementsByClassName('modal-overlay')) {
-    const openButton = document.getElementById(modal.getAttribute('data-open-btn'))
+for (const openButton of document.getElementsByClassName('modal-open-btn')) {
+    const modal = document.getElementById(openButton.getAttribute('data-modal'))
     const closeButtons = modal.getElementsByClassName('modal-close-btn')
     openButton.addEventListener('click', () => {
         console.log('Pressed')
