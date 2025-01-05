@@ -29,21 +29,21 @@ class ApiController
 
     public static function storeUpdateUser($postData)
     {
-        if ($postData['action'] == 'create') {
+        if ($postData->action == 'create') {
             User::create([
-                'name' => $postData['name'],
-                'surnames' => $postData['surnames'],
-                'email' => $postData['email'],
-                'role' => $postData['role'],
-                'password' => password_hash($postData['password'], PASSWORD_BCRYPT)
+                'name' => $postData->name,
+                'surnames' => $postData->surnames,
+                'email' => $postData->email,
+                'role' => $postData->role,
+                'password' => password_hash($postData->password, PASSWORD_BCRYPT)
             ]);
         } else {
-            User::where('id', $postData['id'])
-                ->set('name', $postData['data']['name'])
-                ->set('surnames', $postData['data']['surnames'])
-                ->set('email', $postData['data']['email'])
-                ->set('password', password_hash($postData['data']['password'], PASSWORD_BCRYPT))
-                ->set('role', $postData['data']['role'])
+            User::where('id', $postData->id)
+                ->set('name', $postData->data->name)
+                ->set('surnames', $postData->data->surnames)
+                ->set('email', $postData->data->email)
+                ->set('password', password_hash($postData->data->password, PASSWORD_BCRYPT))
+                ->set('role', $postData->data->role)
                 ->update();
         }
 
@@ -53,9 +53,9 @@ class ApiController
         ]);
     }
 
-    public static function deleteUser($postData)
+    public static function destroyUser($postData)
     {
-        User::where('id', (int) $postData['id'])->delete();
+        User::where('id', (int) $postData->id)->delete();
 
         return Send::json([
             'status' => 'ok',
@@ -87,17 +87,17 @@ class ApiController
 
     public static function storeUpdateProduct($postData)
     {
-        if ($postData['action'] == 'create') {
+        if ($postData->action == 'create') {
             Product::create([
-                'name' => $postData['name'],
-                'category' => $postData['category'],
-                'offer_id' => $postData['offer_id'],
+                'name' => $postData->name,
+                'category' => $postData->category,
+                'offer_id' => $postData->offer_id,
             ]);
         } else {
-            Product::where('id', $postData['id'])
-                ->set('name', $postData['data']['name'])
-                ->set('category', $postData['data']['category'])
-                ->set('offer_id', $postData['data']['offer_id'])
+            Product::where('id', $postData->id)
+                ->set('name', $postData->data->name)
+                ->set('category', $postData->data->category)
+                ->set('offer_id', $postData->data->offer_id)
                 ->update();
         }
 
@@ -107,9 +107,9 @@ class ApiController
         ]);
     }
 
-    public static function deleteProduct($postData)
+    public static function destroyProduct($postData)
     {
-        Product::where('id', (int) $postData['id'])->delete();
+        Product::where('id', (int) $postData->id)->delete();
 
         return Send::json([
             'status' => 'ok',
@@ -141,17 +141,17 @@ class ApiController
 
     public static function storeUpdateIngredient($postData)
     {
-        if ($postData['action'] == 'create') {
+        if ($postData->action == 'create') {
             Ingredient::create([
-                'name' => $postData['name'],
-                'price' => $postData['price'],
-                'image' => $postData['image'],
+                'name' => $postData->name,
+                'price' => $postData->price,
+                'image' => $postData->image,
             ]);
         } else {
-            Ingredient::where('id', $postData['id'])
-                ->set('name', $postData['data']['name'])
-                ->set('price', password_hash($postData['data']['price'], PASSWORD_BCRYPT))
-                ->set('image', $postData['data']['image'])
+            Ingredient::where('id', $postData->id)
+                ->set('name', $postData->data->name)
+                ->set('price', password_hash($postData->data->price, PASSWORD_BCRYPT))
+                ->set('image', $postData->data->image)
                 ->update();
         }
 
@@ -161,13 +161,13 @@ class ApiController
         ]);
     }
 
-    public static function deleteIngredient($postData)
+    public static function destroyIngredient($postData)
     {
-        Ingredient::where('id', (int) $postData['id'])->delete();
+        Ingredient::where('id', (int) $postData->id)->delete();
 
         return Send::json([
             'status' => 'ok',
-            'message' => 'Ingredient deleted successfuly'
+            'message' => 'Ingredient destroyed successfuly'
         ]);
     }
 

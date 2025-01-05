@@ -218,12 +218,22 @@ class Router
                 }
             } else {
                 if ($data = ['postData' => get_object_vars(json_decode(file_get_contents('php://input')))]) {
-                    return $data;
+                    return ['postData' => $this->parseClass($data['postData'])];
                 } else {
                     return [];
                 }
             }
         }
+    }
+
+    private function parseClass($data)
+    {
+        $object = new \stdClass;
+        foreach ($data as $key => $value) {
+            $object->$key = $value;
+        }
+
+        return $object;
     }
 
 
