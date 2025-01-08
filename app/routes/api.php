@@ -31,6 +31,7 @@ Route::controller(ApiController::class, function () {
     Route::get('api.order.all', '/orders', 'allOrder');
     Route::get('api.order.info', '/order/{id}', 'infoOrder');
 
+    Route::get('api.logs', '/logs', 'allLog');
 });
 
 Route::post('api.order.store', '/order/store', [OrderController::class, 'store']);

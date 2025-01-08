@@ -14,7 +14,7 @@
             <?php $this->component('menu.filter') ?>
             <div class="min-[1120px]:col-span-4 grid min-[1120px]:grid-cols-1 gap-y-16">
                 <form id="menu-filter-form" method="get" action="<?= $this->route('product.index') ?>">
-                    <div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-1 sm:grid-cols-2 justify-items-center sm:justify-items-start gap-y-2 sm:gap-y-4">
+                    <div class="grid grid-rows-4 sm:grid-rows-2 grid-cols-1 sm:grid-cols-[0.5fr_1.5fr] sm:gap-x-10 justify-items-center sm:justify-items-start gap-y-2 sm:gap-y-4">
                         <div class="row-span-2 sm:row-span-1 sm:col-span-2 w-full grid grid-rows-2 sm:grid-rows-1 grid-cols-1 sm:grid-cols-2 sm:grid-flow-col justify-items-center sm:justify-items-start items-center gap-y-2 sm:gap-y-4 sm:gap-x-3">
                             <div class="sm:col-span-2 w-full h-fit px-5 sm:px-3 py-[6px] flex gap-2 sm:gap-0 justify-between rounded-[0.1rem] border border-solid border-neutral-500 text-neutral-500">
                                 <input class="w-full focus:outline-none" type="text" name="product_name" placeholder="Search by product name..." value="<?= $defaultValue ?>">

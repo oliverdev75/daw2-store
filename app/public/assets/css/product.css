@@ -1,0 +1,8 @@
+.input-text-quant {
+    width: 3rem;
+    padding: .5rem .3rem;
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 0.25rem;
+    border: 1px solid var(--neutral-border-color);
+}

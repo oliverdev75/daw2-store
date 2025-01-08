@@ -48,4 +48,5 @@ Route::controller(AdminController::class, function () {
     Route::get('admin.products', '/admin/products', 'products');
     Route::get('admin.ingredients', '/admin/ingredients', 'ingredients');
     Route::get('admin.orders', '/admin/orders', 'orders');
+    Route::get('admin.logs', '/admin/logs', 'logs');
 });

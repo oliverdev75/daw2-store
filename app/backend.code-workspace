@@ -1,0 +1,23 @@
+{
+	"folders": [
+		{
+			"path": "src"
+		},
+		{
+			"path": "routes"
+		},
+		{
+			"path": "config"
+		},
+		{
+			"path": "framework"
+		},
+		{
+			"path": "vendor"
+		},
+		{
+			"path": "public"
+		}
+	],
+	"settings": {}
+}

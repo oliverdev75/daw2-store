@@ -217,25 +217,14 @@ class Router
                     return [];
                 }
             } else {
-                if ($data = ['postData' => get_object_vars(json_decode(file_get_contents('php://input')))]) {
-                    return ['postData' => $this->parseClass($data['postData'])];
+                if ($data = ['postData' => json_decode(file_get_contents('php://input'))]) {
+                    return $data;
                 } else {
                     return [];
                 }
             }
         }
     }
-
-    private function parseClass($data)
-    {
-        $object = new \stdClass;
-        foreach ($data as $key => $value) {
-            $object->$key = $value;
-        }
-
-        return $object;
-    }
-
 
     /**
      * Cleans the given array, removing all empty positions and ordering indexes.

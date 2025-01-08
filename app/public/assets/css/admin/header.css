@@ -1,16 +1,34 @@
 header {
-    background-color: var(--secondary-color);
+    background-color: var(--neutral-background-color);
+}
+
+header i {
+    color: var(--neutral-font-color);
 }
 
 header a {
-    color: #fff !important;
+    color: var(--neutral-font-color) !important;
 }
 
-header a:hover {
-    text-decoration: none;
+header ul a:hover {
     background-color: #1a6e96;
 }
 
 header .active {
     background-color: var(--primary-color);
+}
+
+header a:hover span {
+    text-decoration: none;
+}
+
+header ul a:hover span,
+header ul a:hover i {
+    color: var(--neutral-base-color) !important;
+    text-decoration: none;
+}
+
+header .active span,
+header .active i {
+    color: var(--neutral-base-color);
 }

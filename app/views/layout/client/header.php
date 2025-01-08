@@ -1,7 +1,7 @@
 <header class="w-full px-7 py-5 shadow-lg">
     <nav class="w-full grid grid-flow-col justify-between items-center overflow-hidden">
         <a class="w-fit flex gap-x-3 items-center" href="/">
-            <img src="<?= $this->image('logo') ?>" class="w-14 h-14" alt="SymfonyRestaurant logo">
+            <img src="/assets/img/logo.svg" class="w-14 h-14" alt="SymfonyRestaurant logo">
             <span class="text-xl font-bold hidden md:inline">SymfonyRestaurant</span>
         </a>
         <label class="lg:hidden" for="header-nav-toggler-button" aria-label="Toggle navigation">

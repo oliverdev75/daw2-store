@@ -91,6 +91,14 @@ class Api {
         })
     }
 
+    static async getOrders() {
+        return await this.get('orders')
+    }
+
+    static async getOrder(id) {
+        return await this.get(`order/${id}`)
+    }
+
     static async getIngredients() {
         return await this.get('ingredients')
     }
@@ -118,6 +126,10 @@ class Api {
         return await this.post('ingredient/destroy', {
             id: id
         })
+    }
+
+    static async getLogs() {
+        return await this.get('logs')
     }
 }
 

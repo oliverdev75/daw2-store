@@ -7,8 +7,10 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/x-icon">
         <link rel="stylesheet" href="<?= $this->css('root') ?>">
         <link rel="stylesheet" href="<?= $this->css('site') ?>">
+        <link rel="stylesheet" href="<?= $this->css('product') ?>">
         <link rel="stylesheet" href="<?= $this->css('admin.header') ?>">
         <link rel="stylesheet" href="<?= $this->css('admin.main') ?>">
         <title><?= $title ?></title>
@@ -26,7 +28,6 @@
         </div>
 
         <script src="https://cdn.tailwindcss.com"></script>
-        <script src="<?= $this->js('admin.modals.handler') ?>"></script>
         <script src="<?= $this->js('form.checkbox') ?>"></script>
     </body>
 </html>

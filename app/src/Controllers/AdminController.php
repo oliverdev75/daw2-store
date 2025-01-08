@@ -16,7 +16,7 @@ class AdminController
 
     public static function products()
     {
-        return Send::view('admin.product.index', 'Users: SymfonyRestaurant', [
+        return Send::view('admin.product.index', 'Products: SymfonyRestaurant', [
             'active' => 'products',
             'user' => UserController::current()
         ], 'admin');
@@ -24,7 +24,7 @@ class AdminController
 
     public static function ingredients()
     {
-        return Send::view('admin.ingredient.index', 'Users: SymfonyRestaurant', [
+        return Send::view('admin.ingredient.index', 'Ingredients: SymfonyRestaurant', [
             'active' => 'ingredients',
             'user' => UserController::current()
         ], 'admin');
@@ -32,8 +32,16 @@ class AdminController
 
     public static function orders()
     {
-        return Send::view('admin.order.index', 'Users: SymfonyRestaurant', [
+        return Send::view('admin.order.index', 'Orders: SymfonyRestaurant', [
             'active' => 'orders',
+            'user' => UserController::current()
+        ], 'admin');
+    }
+
+    public static function logs()
+    {
+        return Send::view('admin.logs', 'Logs: SymfonyRestaurant', [
+            'active' => 'logs',
             'user' => UserController::current()
         ], 'admin');
     }

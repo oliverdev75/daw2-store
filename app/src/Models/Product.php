@@ -54,12 +54,20 @@ class Product extends Model
     {
         $productsIngredients = $this->queryRows("select * from products_ingredients where product_id = {$this->getId()}");
         $ingredients = array_map(function ($prodIngredient) {
-            return Ingredient::find(intval($prodIngredient['ingredient_id']));
+            $ingredient = Ingredient::find(intval($prodIngredient['ingredient_id']));
+            return $ingredient->setupImagePath();
         }, $productsIngredients);
         for ($i = 0; $i < count($ingredients); $i++) {
             $ingredients[$i]->setQuantity(intval($productsIngredients[$i]['quantity']));
         }
 
         return $ingredients;
+    }
+
+    function setupImagePath()
+    {
+        $this->imagePath = $this->getImage();
+
+        return $this;
     }
 }

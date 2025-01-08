@@ -3,9 +3,9 @@
     <div class="grid gap-y-7">
         <h1 class="text-3xl">Finish your order!</h1>
         <div id="order-error" class="message message-danger" style="display: <?= $error ? 'block' : 'none' ?>;"><?= $error ?? '' ?></div>
-        <div class="mt-10 grid grid-cols-1 sm:grid-cols-[2fr_1fr] gap-x-20">
-            <section class="row-start-2 sm:row-start-1 grid gap-y-5">
-                <div class="grid gap-y-3">
+        <div class="mt-10 grid grid-cols-1 min-[980px]:grid-cols-[2fr_1fr] gap-x-20">
+            <section class="row-start-2 min-[980px]:row-start-1 grid gap-y-5">
+                <div class="mt-10 sm:m-0 grid gap-y-3">
                     <h2 class="text-[1.3rem]">Principles</h2>
                     <?php if ($principles): ?>
                         <div class="grid gap-y-3">
@@ -110,8 +110,9 @@
                         <span>IVA: <strong id="iva"><?= $IVA ?> €</strong></span>
                     </div>
                     <div class="grid gap-y-3">
-                        <span class="text-lg">Tota price: <strong id="total"><?= $total ?> €</strong></span>
+                        <span class="text-lg">Total price: <strong id="total"><?= $total ?> €</strong></span>
                         <form id="order-form" class="m-0" action="<?= $this->route('order.store') ?>" method="post">
+                            <input type="hidden" name="type" value="client">
                             <button class="btn btn-primary w-full" type="submit">Order</button>
                         </form>
                     </div>

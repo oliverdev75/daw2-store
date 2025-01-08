@@ -8,11 +8,8 @@ use Framework\Database\QueryBuilder;
 class Model extends Database
 {
 
-    private const USERS_IMAGES = '/users';
-    private const PRODUCTS_IMAGES = '/products';
-    private const INGREDIENTS_IMAGES = '/ingredients';
-
     protected static $table = null;
+    public $create_time;
 
     private static function table()
     {
@@ -97,7 +94,7 @@ class Model extends Database
     }
 
     /**
-     * Get the value of creation_time;
+     * Get the value of create_time;
      */
     function getCreationTime()
     {
@@ -107,9 +104,9 @@ class Model extends Database
     function getImage()
     {
         return STORAGE. match ($this->table()) {
-            'users' => self::USERS_IMAGES,
-            'products' => self::PRODUCTS_IMAGES,
-            'ingredients' => self::INGREDIENTS_IMAGES,
+            'users' => USERS_IMAGES,
+            'products' => PRODUCTS_IMAGES,
+            'ingredients' => INGREDIENTS_IMAGES,
         } ."/{$this->image}.webp";
     }
 }

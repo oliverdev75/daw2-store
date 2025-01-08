@@ -209,7 +209,7 @@ class QueryBuilder extends Database
     function delete(): void
     {
         $this->execPrepared(
-            "delete from table {$this->table} where {$this->parseFilterParams()}",
+            "delete from {$this->table} where {$this->parseFilterParams()}",
             array_merge($this->conditionParamBinders, $this->updateParamBinders),
             $this->conditionTypeIndicators . $this->updateTypeIndicators
         );

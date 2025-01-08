@@ -1,10 +1,10 @@
-<article class="px-10 py-5 grid grid-cols-[1fr_4fr] sm:grid-flow-col auto-cols-max border-b border-neutral-400 gap-x-5">
-    <div class="h-full">
+<article class="px-10 py-5 border border-solid border-neutral-300 grid  grid-cols-1 sm:grid-cols-[1fr_4fr] min-[1100px]:grid-cols-[2fr_3fr] min-[1200px]:grid-flow-col gap-x-5">
+    <div class="flex justify-center sm:block h-full">
         <img src="<?= $this->image('home.ceviche') ?>" alt="<?= $product->getName() ?> image">
     </div>
-    <div class="col-start-2 w-full grid sm:grid-cols-2 auto-rows-max">
-        <h2 class="text-2xl self-center"><?= $product->getName() ?></h2>
-        <div class="w-full h-20 col-start-2 grid grid-flow-col justify-end">
+    <div class="mt-5 min-[460px]:m-0 row-start-2 sm:row-start-1 sm:col-start-2 w-full grid grid-cols-1 auto-cols-max justify-between grid-flow-col auto-rows-max justify-center min-[460px]:justify-start gap-y-7 min-[460px]:gap-y-5 min-[476px]:gap-0">
+        <h2 class="text-2xl self-center text-center min-[460px]:text-start"><?= $product->getName() ?></h2>
+        <div class="w-full h-10 min-[460px]:h-20 row-start-2 min-[460px]:row-start-1 min-[460px]:col-start-2 grid grid-flow-col justify-center min-[460px]:justify-end items-center xl:items-start">
             <div class="h-8 flex items-start gap-x-3">
                 <?php if($type == 'cart'): ?>
                     <input
@@ -15,7 +15,7 @@
                     >
                     <form class="h-full" action="<?= $this->route('cart.deleteproduct') ?>" method="post">
                         <input type="hidden" name="id" value="<?= $product->getId() ?>">
-                        <button class="btn-icon btn-red h-fit" type="submit">
+                        <button class="btn-icon btn-danger h-fit" type="submit">
                             <i class="bi bi-trash text-[1.125rem] leading-[0] text-white"></i>
                         </button>
                     </form>
@@ -27,11 +27,11 @@
             </div>
         </div>
         <?php if($type == 'cart'): ?>
-            <form id="<?= $product->getId() ?>" class="quantities-form w-full row-start-2 col-span-2 grid gap-y-5" action="<?= $this->route('cart.updateproduct') ?>" method="post">
+            <form id="<?= $product->getId() ?>" class="quantities-form w-full row-start-3 min-[460px]:row-start-2 col-span-2 grid gap-y-5" action="<?= $this->route('cart.updateproduct') ?>" method="post">
                 <ul class="w-full list-none ingredients-list gap-7">
                     <?php foreach($ingredients as $ingredientId => $ingredient): ?>
                         <?php if(intval(explode('-', $ingredientId)[0]) == $product->getId()): ?>
-                            <li class="grid grid-cols-2 items-center gap-x-4">
+                            <li class="w-fit min-[460px]:w-full grid grid-cols-2 justify-items-center min-[460px]:justify-items-start items-center gap-x-4">
                                 <img class="w-16 object-fit" src="<?= $ingredient->getImage() ?>" alt="<?= $ingredient->getName() ?> image">
                                 <input
                                     class="ingredient-<?= $product->getId() ?> input-text-quant w-10 h-7 font-bold"

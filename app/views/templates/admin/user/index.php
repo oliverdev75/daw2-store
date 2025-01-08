@@ -10,51 +10,17 @@
     </div>
     <div class="h-fit border border-solid border-neutral-200 rounded-md">
         <table id="data-table" class="w-full">
+            <thead class="border-b border-solid border-neutral-200">
+                <tr>
+                    <th class="px-4 py-3 text-start">Name</th>
+                    <th class="px-4 py-3 text-start">Surnames</th>
+                    <th class="px-4 py-3 text-start">Email</th>
+                    <th class="px-4 py-3 text-start">Role</th>
+                    <th class="px-4 py-3 text-start">Creation time</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
         </table>
     </div>
-    <!-- <button class="btn btn-secondary modal-open-btn" data-modal="modal-del">Open</button>
-    <div id="modal-del" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p class="font-semibold text-lg">Sure you want to delete this user?</p>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-tertiary modal-close-btn">Cancel</button>
-                <button class="btn btn-danger">Delete</button>
-            </div>
-        </div>
-    </div>
-
-    <button class="btn btn-secondary modal-open-btn" data-modal="modal-edit">Open</button>
-    <div id="modal-edit" class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-header flex justify-between items-center">
-                <h2 class="text-3xl">Edit user</h2>
-                <button class="btn text-neutral-500 modal-close-btn">
-                    <i class="bi bi-x-lg"></i>
-                </button>
-            </div>
-            <div class="modal-body flex flex-col gap-y-5">
-                <div class="flex gap-x-5">
-                    <div class="flex flex-col">
-                        <label class="mb-px font-semibold text-sm text-neutral-500" for="name">Name:</label>
-                        <input id="name" class="input-text" type="text" value="John">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="mb-px font-semibold text-sm text-neutral-500" for="surnames">Surnames:</label>
-                        <input class="input-text" type="text" value="Doe">
-                    </div>
-                </div>
-                <div class="flex gap-x-5">
-                    <input class="input-text" type="password" name="" id="" value="xxxxxxx">
-                    <input class="input-text" type="password" name="" id="" value="xxxxxxx">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-tertiary modal-close-btn">Cancel</button>
-                <button class="btn btn-secondary">Edit</button>
-            </div>
-        </div>
-    </div> -->
     <script type="module" src="<?= $this->js('admin.datatables.users') ?>"></script>
 </div>

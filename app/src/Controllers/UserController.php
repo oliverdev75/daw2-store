@@ -7,6 +7,7 @@ use Framework\Response\Types\View;
 use Framework\Response\Types\Json;
 use Framework\Routing\Router;
 use App\Models\User;
+use App\Models\Log;
 
 class UserController extends Controller
 {
@@ -21,7 +22,11 @@ class UserController extends Controller
 
     static function logout()
     {
-        session_start();
+        $user = self::current();
+        if ($user) {
+            return Send::redirect();
+        }
+
         session_unset();
         session_destroy();
 

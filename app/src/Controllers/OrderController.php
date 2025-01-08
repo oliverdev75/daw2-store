@@ -8,6 +8,7 @@ use Framework\Routing\Router;
 use Framework\Database\Database;
 use App\Models\Order;
 use App\Models\Mix;
+use App\Models\Log;
 
 class OrderController extends Controller
 {

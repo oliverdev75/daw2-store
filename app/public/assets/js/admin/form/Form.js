@@ -38,6 +38,10 @@ class Form {
         this.form.append(input)
     }
 
+    appendInputHTML(input) {
+        this.form.innerHTML += input
+    }
+
     appendInputs(...inputs) {
         this.form.append(...inputs)
     }

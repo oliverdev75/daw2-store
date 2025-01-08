@@ -5,7 +5,9 @@ namespace App\Models;
 class Ingredient extends Model
 {
 
-    protected $quantity;
+    public $image;
+    public $imagePath;
+    public $quantity;
 
     function __construct(){}
 
@@ -30,5 +32,12 @@ class Ingredient extends Model
     {
         $total = $this->price * $this->quantity;
         return $format ? number_format($total, 2, ',') : $total;
+    }
+
+    function setupImagePath()
+    {
+        $this->imagePath = $this->getImage();
+
+        return $this;
     }
 }

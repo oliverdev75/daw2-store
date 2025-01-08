@@ -48,12 +48,6 @@ a:hover {
     color: var(--neutral-base-color) !important;
 }
 
-.btn-icon {
-    height: fit-content;
-    padding: 4px 9px;
-    border-radius: 0.25rem;
-}
-
 .btn-danger {
     padding: 8px 15px;
     background: #ef4444;
@@ -89,6 +83,12 @@ a:hover {
 
 .btn-secondary:hover {
     background-color: var(--btn-hover-secondary-backgroundColor);
+}
+
+.btn-icon {
+    height: fit-content;
+    padding: 4px 9px;
+    border-radius: 0.25rem;
 }
 
 /* .btn-tertiary:hover {

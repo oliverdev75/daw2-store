@@ -7,6 +7,7 @@ class Modal {
     body;
     submitButton;
     submitButtonHTML;
+    submitCallback;
     closeBtn;
 
     constructor(id, title = '', body = '', submitButton = '', cancelBtn = false, closeBtn = false) {
@@ -65,7 +66,7 @@ class Modal {
         }
     
         modalElements.push(body, footer)
-        const modalContent = this.createElement('div', ['modal-content'])
+        const modalContent = this.createElement('div', ['modal-content', 'max-h-[90vh]', 'overflow-auto'])
         modalContent.append(...modalElements)
         this.modal.append(modalContent)
     }
@@ -112,15 +113,24 @@ class Modal {
     }
 
     setSubmitCallback(callback) {
+        this.submitCallback = callback
         this.modal.querySelector('.modal-footer .modal-submit-btn').addEventListener('click', () => {
-            callback()
+            this.submitCallback()
             this.modal.style.display = 'none'
+            document.querySelector('html').style.overflow = 'auto'
         })
     }
 
     enableCancelButton() {
         this.modal.querySelector('.modal-footer').innerHTML = '<button class="btn btn-tertiary modal-close-btn">Cancel</button>'
         this.modal.querySelector('.modal-footer').innerHTML += this.submitButtonHTML
+        if (this.submitCallback) {
+            this.modal.querySelector('.modal-footer .modal-submit-btn').addEventListener('click', () => {
+                this.submitCallback()
+                this.modal.style.display = 'none'
+                document.querySelector('html').style.overflow = 'auto'
+            })
+        }
     }
 
     enableCloseButton() {

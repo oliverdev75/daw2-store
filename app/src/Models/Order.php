@@ -9,6 +9,11 @@ class Order extends Model
 
     function __construct() {}
 
+    public function getUser()
+    {
+        return User::find($this->user_id);
+    }
+
     public function getMixes(): array
     {
         $orderMixes = $this->queryRows("SELECT DISTINCT mix_id FROM orders_mixes WHERE order_id = {$this->id}");

@@ -3,7 +3,7 @@
     height: 100vh;
     width: 100vw;
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     background: #2e2e2eb0;
@@ -40,4 +40,14 @@
 
 tr:nth-child(even) {
     background-color: #f6f6f6;
+}
+
+.image-input {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.image-input input {
+    display: none;
 }

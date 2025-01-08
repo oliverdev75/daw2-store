@@ -4,9 +4,9 @@ class InputGroup {
 
     built;
 
-    constructor(elements, space = 'gap-x-5') {
+    constructor(elements, column = false, space = 'gap-x-5') {
         this.built = document.createElement('div')
-        this.built.classList.add('flex', space)
+        this.built.classList.add('flex', column ? 'flex-col' : 'flex-row', space)
         this.built.append(...elements)
     }
 

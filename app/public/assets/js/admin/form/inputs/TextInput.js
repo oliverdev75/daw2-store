@@ -1,24 +1,17 @@
+import Input from "./Input.js"
 
-class Input {
+class TextInput extends Input {
 
-    type;
-    id;
-    name;
-    label;
-    classList;
-    value;
-    placeholder;
-
-    constructor(type, id, name, label, classList = [], value = '', placeholder = '') {
-        this.type = type
-        this.id = id
-        this.name = name
-        this.label = label
-        this.classList = classList
-        this.value = value
-        this.placeholder = placeholder
+    constructor(id, name, label = '', classList = [], value = '', placeholder = '') {
+        super(
+            id,
+            name,
+            label,
+            classList,
+            value,
+            placeholder
+        )
     }
-
 
     build() {
         const built = document.createElement('div')
@@ -35,7 +28,8 @@ class Input {
         input.type = this.type
         input.classList.add('input-text')
         input.id = this.id
-        input.value = this.value
+        input.setAttribute('value', this.value)
+        console.log(this.value)
 
         if (this.placeholder) {
             input.placeholder = this.placeholder
@@ -52,6 +46,11 @@ class Input {
 
         return label
     }
+
+    static handleAll() {
+        ImageInput.handle()
+        IngredientInput.handle()
+    }
 }
 
-export default Input
+export default TextInput

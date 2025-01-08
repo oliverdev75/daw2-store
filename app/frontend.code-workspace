@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "public"
+		},
+		{
+			"path": "views"
+		},
+		{
+			"path": "config"
+		}
+	],
+	"settings": {}
+}
