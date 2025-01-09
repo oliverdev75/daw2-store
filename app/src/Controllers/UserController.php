@@ -23,7 +23,7 @@ class UserController extends Controller
     static function logout()
     {
         $user = self::current();
-        if ($user) {
+        if (!$user) {
             return Send::redirect();
         }
 
