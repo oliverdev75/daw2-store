@@ -88,9 +88,10 @@
                         <?php foreach ($products as $product): ?>
                             <?php
                             $this->component('product.card.menu', [
-                                'id' => $product->id,
-                                'name' => $product->name,
+                                'id' => $product->getId(),
+                                'name' => $product->getName(),
                                 'category' => 'Principle',
+                                'image' => $product->getImage(),
                                 'price' => $product->getPrice()
                             ])
                             ?>

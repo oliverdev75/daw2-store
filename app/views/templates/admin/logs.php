@@ -2,7 +2,7 @@
 <div class="mt-10 grid auto-rows-max gap-y-5">
     <div id="message-placeholder" class="message" style="display: none"></div>
     <div class="flex gap-2 md:gap-0 h-fit px-5 md:px-3 py-[6px] justify-between rounded-[0.1rem] border border-solid border-neutral-500 text-neutral-500">
-        <input class="w-full focus:outline-none" type="text" placeholder="Search users by name...">
+        <input class="w-full focus:outline-none" type="text" placeholder="Search log by name...">
     </div>
     <div class="h-fit border border-solid border-neutral-200 rounded-md">
         <table id="data-table" class="w-full">

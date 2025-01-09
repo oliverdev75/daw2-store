@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use Framework\Routing\Router;
 use Framework\Response\Send;
 use Framework\Response\Types\View;
 use App\Models\Product;
@@ -17,9 +18,12 @@ class ProductController extends Controller
         $snacks = null,
         $drinks = null,
         $desserts = null
-    ): View
+    )
     {
         $user = UserController::current();
+        if (!$user) {
+            return Send::redirect()->route('user.login', [], ['src' => Router::getRoute('product.index')]);
+        }
         $viewTitle = 'Menu: SymfonyRestaurant';
         $productsQuery = Product::all();
         $productsCategoryFilter = [];

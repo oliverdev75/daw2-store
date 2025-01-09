@@ -1,6 +1,6 @@
 <article class="px-10 py-5 border border-solid border-neutral-300 grid  grid-cols-1 sm:grid-cols-[1fr_4fr] min-[1100px]:grid-cols-[2fr_3fr] min-[1200px]:grid-flow-col gap-x-5">
     <div class="flex justify-center sm:block h-full">
-        <img src="<?= $this->image('home.ceviche') ?>" alt="<?= $product->getName() ?> image">
+        <img src="<?= $product->getImage() ?>" alt="<?= $product->getName() ?> image">
     </div>
     <div class="mt-5 min-[460px]:m-0 row-start-2 sm:row-start-1 sm:col-start-2 w-full grid grid-cols-1 auto-cols-max justify-between grid-flow-col auto-rows-max justify-center min-[460px]:justify-start gap-y-7 min-[460px]:gap-y-5 min-[476px]:gap-0">
         <h2 class="text-2xl self-center text-center min-[460px]:text-start"><?= $product->getName() ?></h2>
