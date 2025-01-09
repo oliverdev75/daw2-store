@@ -1,5 +1,5 @@
 
-const host = 'http://localhost:3000'
+const host = 'http://symfonyrestaurant.atwebpages.com'
 const endpoint = `${host}/api/cart/product/update`
 const ordersPage = `${host}/orders`
 const loginPage = `${host}/login`
