@@ -22,10 +22,10 @@ const userModel = {
     editFormCompositionCallback: user => {
         const form = new Form(`edit-${user.id}`)
 
-        const name = new TextInput('text', 'name', 'name', 'Name:', [], user.name)
-        const surnames = new TextInput('text', 'surnames', 'surnames', 'Surnames:', [], user.surnames)
-        const email = new TextInput('text', 'email', 'email', 'Email:', [], user.email)
-        const role = new TextInput('text', 'role', 'role', 'Role:', [], user.role)
+        const name = new TextInput('name', 'name', 'Name:', [], user.name)
+        const surnames = new TextInput('surnames', 'surnames', 'Surnames:', [], user.surnames)
+        const email = new TextInput('email', 'email', 'Email:', [], user.email)
+        const role = new TextInput('role', 'role', 'Role:', [], user.role)
 
         const namesGroup = new InputGroup([name.build(), surnames.build()])
         const emailRoleGroup = new InputGroup([email.build(), role.build()])
